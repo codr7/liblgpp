@@ -1,6 +1,6 @@
 ## Interpreters
 
-The goal of this post is to implement a simple but practical stack based virtual machine for interpreters in C++.
+The goal of this post is to implement a simple but practical stack based virtual machine for interpreters in C++; in the hope that the experience may generate enough insight to allow implementing similar ideas in any language, as well as a deeper understanding of what an interpreter is and how it works on the inside. One reason that might be of interest is that most code today runs on top of multiple layers of interpreters: Java, .net, JavaScript and so on, running in some kind of virtual containers. Another reason is that custom interpreters are powerful and flexible tools that allow solving thorny problems with grace.
 
 ```
 #include <cassert>
@@ -15,7 +15,8 @@ using namespace lgpp;
 int main() {
   VM vm;
   Stack s;
-  Val v;
+  Type<int> t("Int");
+  Val v(t, 42);
 
   vm.emit<ops::Push>(v);
   // Using a separate Stop op simplifies the critical eval loop
@@ -32,15 +33,11 @@ int main() {
 }
 ```
 
-Interpreters are useful tools for implementing all sorts of custom languages, from configuration languages to template processors to query languages, scripting languages and beyond.
+Distilling the fundamental VM building blocks in library form makes it possible to reduce the needed effort to the point where more problems start to look like custom languages, and where you can afford to try out new ideas and throw some away.
 
-Distilling the fundamental building blocks in library form makes it possible to reduce the needed effort to the point where more problems start to look like custom languages, and where you can afford to try out new ideas and throw some away.
+The VM supports two types of values, threads and integers; and the minimal set of operations needed to write simple algorithms using these features; but is easy to extend with additional types and operations.
 
-I opted for a stack based VM rather than register based because of its relative simplicity.
-
-The final VM supports two types of values, threads and integers; and the minimum number of operations needed to write simple algorithms using these features; but is easy to extend with additional types and operations.
-
-I have tried to keep the code as simple as straight forward as modern C++ allows, using the standard library where appropriate without getting lost in abstractions. Modern C++ is a fairly complex language, some sort of prior experience is definitely recommended for maximum enjoyment.
+Modern C++ is a fairly complex language, but it's unique in how it allows dialling in just the right balance between abstraction, performance and safety. I've tried my best to keep the code as simple as straight forward as modern C++ allows, using the standard library where appropriate without getting tangled up in needless abstraction.
 
 ### setup
 

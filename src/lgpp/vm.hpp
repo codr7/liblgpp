@@ -17,7 +17,7 @@ namespace lgpp {
     }
 
     const Op &eval(PC start_pc, Stack &stack);
-    const Op &eval(const Op start_op, Stack &stack);
+    const Op &eval(const Op &start_op, Stack &stack);
 
     vector<Op> ops;
   };
