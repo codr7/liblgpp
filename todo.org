@@ -1,3 +1,6 @@
+* add additional Push ctor
+** (Type<T> &, T)
+** update tests/blog
 * add threads
 ** add Thread.stack
 ** add vm.main_thread

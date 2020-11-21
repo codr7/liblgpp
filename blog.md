@@ -1,6 +1,6 @@
 ## Interpreters
 
-The goal of this post is to implement a simple but practical stack based virtual machine for interpreters in C++; in the hope that the experience may generate enough insight to allow implementing similar ideas in any language, as well as a deeper understanding of what an interpreter is and how it works on the inside. One reason that might be of interest is that most code today runs on top of multiple layers of interpreters: Java, .net, JavaScript and so on, running in some kind of virtual containers. Another reason is that custom interpreters are powerful and flexible tools that allow solving thorny problems with grace.
+The goal of this post is to implement a simple but practical stack based virtual machine for interpreters in C++; in the hope that the experience may generate enough insight to allow implementing similar ideas in any language, as well as a deeper understanding of what an interpreter is, how it works internally, and how to make them run fast enough for practical use. One reason that might be of interest is that most code today runs on top of multiple layers of interpreters: Java, .net, JavaScript and so on, running in some kind of virtual containers. Another reason is that custom interpreters are powerful and flexible tools that allow solving thorny problems with grace.
 
 ```
 #include <cassert>
@@ -9,6 +9,11 @@ The goal of this post is to implement a simple but practical stack based virtual
 #include "lgpp/ops/stop.hpp"
 #include "lgpp/stack.hpp"
 #include "lgpp/vm.hpp"
+
+namespace lgpp::types {
+    template <>
+    bool eq(lgpp::Type<int> &type, const int &x, const Val &y) { return x == y.as(type); }
+}
 
 using namespace lgpp;
 
@@ -29,13 +34,14 @@ int main() {
   assert(&vm.eval(0, s) == &stop);
   // Check the push result
   assert(s.size() == 1);
+  assert(s.back() == v);
   return 0;
 }
 ```
 
-Distilling the fundamental VM building blocks in library form makes it possible to reduce the needed effort to the point where more problems start to look like custom languages, and where you can afford to try out new ideas and throw some away.
+Distilling the fundamental VM building blocks in library form makes it possible to reduce needed effort to the point where more problems start to look like custom languages, and where it's affordable to try out new ideas and throw some away.
 
-The VM supports two types of values, threads and integers; and the minimal set of operations needed to write simple algorithms using these features; but is easy to extend with additional types and operations.
+The VM supports two types of values, threads and integers; and the minimal set of operations needed to write simple algorithms using these features; but is trivial to extend with additional types and operations.
 
 Modern C++ is a fairly complex language, but it's unique in how it allows dialling in just the right balance between abstraction, performance and safety. I've tried my best to keep the code as simple as straight forward as modern C++ allows, using the standard library where appropriate without getting tangled up in needless abstraction.
 

@@ -8,9 +8,7 @@
 
 namespace lgpp::types {
     template <>
-    bool eq(lgpp::Type<int> &type, const int &x, const Val &y) {
-      return x == y.as(type);
-    }
+    bool eq(lgpp::Type<int> &type, const int &x, const Val &y) { return x == y.as(type); }
 }
 
 using namespace lgpp;
@@ -27,5 +25,6 @@ int main() {
   assert(stop.pc == 1);
   assert(&vm.eval(0, s) == &stop); 
   assert(s.size() == 1);
+  assert(s.back() == v);
   return 0;
 }

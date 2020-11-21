@@ -1,6 +1,8 @@
 #ifndef LGPP_VAL_HPP
 #define LGPP_VAL_HPP
 
+#include <memory>
+
 namespace lgpp {  
   using namespace std;
   
@@ -44,6 +46,8 @@ namespace lgpp {
 
     shared_ptr<const Imp> imp;
   };
+
+  constexpr bool operator==(const Val &x, const Val &y) { return x.eq(y); }
 }
 
 #endif
