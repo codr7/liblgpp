@@ -1,5 +1,3 @@
-* add vm.eval overload that takes const op & instead of size_t
-** use from pc overload
 * make Val polymorphic
 ** add type/data
 * add Int type

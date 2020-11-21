@@ -16,7 +16,8 @@ namespace lgpp {
       ops.emplace_back(ops.size(), T(forward<Args>(args)...));
     }
 
-    const Op &eval(PC pc, Stack &stack);
+    const Op &eval(PC start_pc, Stack &stack);
+    const Op &eval(const Op start_op, Stack &stack);
 
     vector<Op> ops;
   };
