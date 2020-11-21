@@ -1,0 +1,17 @@
+* add vm.eval overload that takes const op & instead of size_t
+** use from pc overload
+* make Val polymorphic
+** add type/data
+* add Int type
+* add threads
+** add Thread.stack
+** add vm.main_thread
+*** pass main Stack in fibrec
+** integrate with C++ threads
+** add mutex protected set VM.threads
+** add Thread type
+* add ops from liblg
+* arrays
+
+stable_partition_position
+sort_subrange
