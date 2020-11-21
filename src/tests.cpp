@@ -3,6 +3,7 @@
 #include "lgpp/ops/push.hpp"
 #include "lgpp/ops/stop.hpp"
 #include "lgpp/stack.hpp"
+#include "lgpp/thread.hpp"
 #include "lgpp/type.hpp"
 #include "lgpp/vm.hpp"
 
@@ -13,7 +14,7 @@ namespace lgpp::types {
 
 using namespace lgpp;
 
-int main() {
+void vm_tests() {
   VM vm;
   Stack s;
   Type<int> t("Int");
@@ -21,10 +22,14 @@ int main() {
 
   vm.emit<ops::Push>(v);
   vm.emit<ops::Stop>();
-  auto &stop(vm.ops.back());
+  auto &stop(vm.last_op());
   assert(stop.pc == 1);
   assert(&vm.eval(0, s) == &stop); 
   assert(s.size() == 1);
   assert(s.back() == v);
+}
+
+int main() {
+  vm_tests();
   return 0;
 }

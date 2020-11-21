@@ -1,15 +1,5 @@
 * add additional Push ctor
 ** (Type<T> &, T)
 ** update tests/blog
-* add threads
-** add Thread.stack
-** add vm.main_thread
-*** pass main Stack in fibrec
-** integrate with C++ threads
-** add mutex protected set VM.threads
-** add Thread type
 * add ops from liblg
 * arrays
-
-stable_partition_position
-sort_subrange
