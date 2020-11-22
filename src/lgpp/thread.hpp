@@ -10,9 +10,7 @@ namespace lgpp {
     using Id = thread::id;
 
     template <typename T, typename...Args>
-    void emit(Args&&...args) {
-      ops.emplace_back(ops.size(), T(forward<Args>(args)...));
-    }
+    const T& emit(Args&&...args) { return ops.emplace_back(ops.size(), T(forward<Args>(args)...)).template as<T>(); }
 
     vector<Op> ops;
   };

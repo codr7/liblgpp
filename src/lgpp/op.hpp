@@ -35,6 +35,9 @@ namespace lgpp {
     template <typename T>
     Op(PC pc, T imp): pc(pc), imp(make_shared<TImp<T>>(move(imp))) { } 
 
+    template <typename T>
+    const T &as() { return dynamic_cast<const TImp<T> &>(*imp).it; }
+    
     const Op *eval(Stack &stack) const { return imp->eval(*this, stack); }
 
     const PC pc;

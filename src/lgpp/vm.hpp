@@ -19,12 +19,11 @@ namespace lgpp {
     VM() { threads.insert(make_pair(this_thread::get_id(), Thread())); }
     
     template <typename T, typename...Args>
-    void emit(Args&&...args) {
-      thread().emit<T, Args...>(forward<Args>(args)...);
-    }
+    const T& emit(Args&&...args) { return thread().emit<T, Args...>(forward<Args>(args)...); }
 
     const Op &last_op() const { return thread().ops.back(); }
-      
+    void clear_ops() { thread().ops.clear(); }
+    
     const Op &eval(PC start_pc, Stack &stack);
     const Op &eval(const Op &start_op, Stack &stack);
 
