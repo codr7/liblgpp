@@ -5,6 +5,7 @@
 #include "lgpp/ops/drop.hpp"
 #include "lgpp/ops/push.hpp"
 #include "lgpp/ops/stop.hpp"
+#include "lgpp/ops/swap.hpp"
 #include "lgpp/stack.hpp"
 #include "lgpp/thread.hpp"
 #include "lgpp/type.hpp"
@@ -33,15 +34,17 @@ void vm_stack_tests(VM &vm) {
   Stack s;
 
   vm.emit<ops::Push>(Int, 42);
+  vm.emit<ops::Push>(Int, 7);
+  vm.emit<ops::Swap>();
   vm.emit<ops::Stop>();
   auto &stop(vm.last_op());
-  assert(stop.pc == 1);
+  assert(stop.pc == 3);
   assert(&vm.eval(0, s) == &stop); 
-  assert(s.size() == 1);
+  assert(s.size() == 2);
   assert(s.back().as(Int) == 42);
   vm.clear_ops();
   
-  vm.emit<ops::Drop>();
+  vm.emit<ops::Drop>(1, 2);
   vm.emit<ops::Stop>();
   vm.eval(0, s); 
   assert(s.size() == 0);

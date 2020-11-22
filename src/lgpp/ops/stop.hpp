@@ -1,7 +1,6 @@
 #ifndef LGPP_OPS_STOP_HPP
 #define LGPP_OPS_STOP_HPP
 
-#include "../stack.hpp"
 #include "../val.hpp"
 #include "../op.hpp"
 
