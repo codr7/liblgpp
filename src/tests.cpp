@@ -1,7 +1,7 @@
 #include <cassert>
 
 #include "lgpp/label.hpp"
-#include "lgpp/ops/branch_equal.hpp"
+#include "lgpp/ops/branch_eq.hpp"
 #include "lgpp/ops/drop.hpp"
 #include "lgpp/ops/push.hpp"
 #include "lgpp/ops/stop.hpp"
@@ -20,7 +20,7 @@ void vm_branch_tests(VM &vm) {
   vm.thread().ops.reserve(10);
   vm.emit<ops::Push>(Int, 42);
   Label b;
-  vm.emit<ops::BranchEqual>(b, Int, 42);
+  vm.emit<ops::BranchEq>(b, Int, 42);
   vm.emit<ops::Push>(Int, 7);
   vm.emit<ops::Stop>();
   b.pc = vm.last_op().pc;
@@ -50,6 +50,7 @@ void vm_stack_tests(VM &vm) {
 
 void vm_tests() {
   VM vm;
+  
   vm_branch_tests(vm);
   vm_stack_tests(vm);
 }

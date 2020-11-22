@@ -8,14 +8,16 @@
 namespace lgpp::ops {
 
   struct Drop {
-    Drop(size_t offs = 0, size_t len = 1);
-
+    Drop(size_t offs = 0, size_t len = 1): offs(offs), len(len) {}
     size_t offs, len;
   };
 
-  
   template <>
-  const Op *eval(const Op &op, const Drop &imp, lgpp::Stack &stack);
+  inline const Op *eval(const Op &op, const Drop &imp, lgpp::Stack &stack) {
+    auto i = stack.end()-imp.offs-1;
+    stack.erase(i, i+imp.len);
+    return &op+1;
+  }
 
 }
 
