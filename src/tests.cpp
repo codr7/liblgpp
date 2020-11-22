@@ -1,10 +1,12 @@
 #include <cassert>
 
 #include "lgpp/label.hpp"
+#include "lgpp/ops/add.hpp"
 #include "lgpp/ops/branch_eq.hpp"
 #include "lgpp/ops/drop.hpp"
 #include "lgpp/ops/push.hpp"
 #include "lgpp/ops/stop.hpp"
+#include "lgpp/ops/sub.hpp"
 #include "lgpp/ops/swap.hpp"
 #include "lgpp/stack.hpp"
 #include "lgpp/thread.hpp"
@@ -14,6 +16,32 @@
 using namespace lgpp;
 
 Type<int> Int("Int");
+
+void vm_add_tests(VM &vm) {
+  Stack s;
+
+  vm.emit<ops::Push>(Int, 35);
+  vm.emit<ops::Push>(Int, 7);
+  vm.emit<ops::Add>();
+  vm.emit<ops::Stop>();
+  vm.eval(0, s); 
+  assert(s.size() == 1);
+  assert(s.back().as(Int) == 42);
+  vm.clear_ops();
+}
+
+void vm_sub_tests(VM &vm) {
+  Stack s;
+
+  vm.emit<ops::Push>(Int, 49);
+  vm.emit<ops::Push>(Int, 7);
+  vm.emit<ops::Sub>();
+  vm.emit<ops::Stop>();
+  vm.eval(0, s); 
+  assert(s.size() == 1);
+  assert(s.back().as(Int) == 42);
+  vm.clear_ops();
+}
 
 void vm_branch_tests(VM &vm) {
   Stack s;
@@ -55,6 +83,8 @@ void vm_stack_tests(VM &vm) {
 void vm_tests() {
   VM vm;
   
+  vm_add_tests(vm);
+  vm_sub_tests(vm);
   vm_branch_tests(vm);
   vm_stack_tests(vm);
 }

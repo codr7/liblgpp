@@ -1,7 +1,9 @@
 * add ops from liblg
-** types::add/call/cp/dec/ret
-** add thread.calls
-** add struct Call with pc/ret_pc
+** add cp op
+** add inc/dec ops
+** add call/ret ops
+*** add thread.calls
+*** add struct Call with pc/ret_pc
 * implement fibrec
 ** add bench
 ** compare to liblg
