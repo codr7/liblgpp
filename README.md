@@ -1,4 +1,4 @@
-This project implements a simple but practical stack based VM for interpreters in the form of a C++ library.
+This project implements a simple but practical stack based VM for interpreters in the form of a C++17 library.
 
 ```
 #include <cassert>
@@ -29,9 +29,30 @@ The idea is that distilling the fundamental building blocks in library form make
 
 The provided VM supports two types of values, threads and integers; and the minimal set of operations needed to write simple algorithms; but it is trivial to extend with additional types and operations.
 
-Modern C++ is a fairly complex language, but it is unique in how it allows dialling in just the right balance between abstraction, performance and safety. I've tried my best to keep the code as simple as straight forward as the language allows, using the standard library where appropriate without getting tangled up in needless abstraction.
-
 ### setup
+The project requires a C++17 compiler and CMake to build.
 
 ```
+$ git clone https://github.com/codr7/liblgpp.git
+$ cd liblgpp
+$ mkdir build
+$ cd build
+$ cmake ..
+$ make
+$ ./tests
+fibrec: 762023us
 ```
+
+### performance
+Single threaded performance is around 3 times slower than [Python3](https://github.com/codr7/liblgpp/blob/main/bench/fibrec.py).
+
+```
+$ cd bench
+$ python3 fibrec.py
+238096us
+```
+
+### design
+Modern C++ is a fairly complex language, but it is unique in the way it allows dialling in just the right balance between abstraction, performance and safety. I've tried my best to keep the code as simple as straight forward as the language allows, using the standard library where appropriate without getting tangled up.
+
+One somewhat unusual aspect of the design is that it doesn't use inheritance for [polymorphism](https://github.com/codr7/liblgpp/blob/main/src/lgpp/op.hpp), this allows more flexibility in extending the library and simplifies usage.
