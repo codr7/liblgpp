@@ -23,9 +23,14 @@ namespace lgpp {
 
     const Op &last_op() const { return thread().ops.back(); }
     void clear_ops() { thread().ops.clear(); }
-    
-    const Op &eval(PC start_pc, Stack &stack);
-    const Op &eval(const Op &start_op, Stack &stack);
+
+    const Op &eval(PC start_pc, Stack &stack) { return eval(*(thread().ops.data()+start_pc), stack); }
+  
+    const Op &eval(const Op &start_op, Stack &stack) {
+      const Op *pop = nullptr;
+      for (const Op *op = &start_op; op; pop = op, op = op->eval(stack));
+      return *pop;    
+    }
 
     Thread &thread() {
       lock_t lock(thread_mutex);

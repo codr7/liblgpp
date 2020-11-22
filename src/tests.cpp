@@ -28,7 +28,8 @@ void vm_branch_tests(VM &vm) {
   vm.emit<ops::Push>(Int, 2);
   vm.emit<ops::Stop>();
   b.pc = vm.last_op().pc;
-  vm.eval(0, s); 
+  vm.eval(0, s);
+  
   assert(s.size() == 1);
   assert(s.back().as(Int) == 1);
   vm.clear_ops();
@@ -42,6 +43,7 @@ void vm_add_tests(VM &vm) {
   vm.emit<ops::Add>();
   vm.emit<ops::Stop>();
   vm.eval(0, s); 
+
   assert(s.size() == 1);
   assert(s.back().as(Int) == 42);
   vm.clear_ops();
@@ -55,6 +57,7 @@ void vm_sub_tests(VM &vm) {
   vm.emit<ops::Sub>();
   vm.emit<ops::Stop>();
   vm.eval(0, s); 
+
   assert(s.size() == 1);
   assert(s.back().as(Int) == 42);
   vm.clear_ops();
@@ -93,6 +96,7 @@ void vm_stack_drop_tests(VM &vm) {
   vm.emit<ops::Drop>(1, 2);
   vm.emit<ops::Stop>();
   vm.eval(0, s); 
+
   assert(s.size() == 1);
   assert(pop(s).as(Int) == 1);
   vm.clear_ops();  
@@ -106,6 +110,7 @@ void vm_stack_swap_tests(VM &vm) {
   vm.emit<ops::Swap>();
   vm.emit<ops::Stop>();
   auto &stop(vm.last_op());
+
   assert(stop.pc == 3);
   assert(&vm.eval(0, s) == &stop); 
   assert(s.size() == 2);
