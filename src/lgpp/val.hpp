@@ -60,6 +60,12 @@ namespace lgpp {
     template <typename T>
     Val(Type<T> &type, T imp): imp(make_shared<TImp<T>>(type, move(imp))) {} 
 
+    Val(const Val &) noexcept = default;
+
+    Val(Val &&) noexcept = default;
+
+    Val &operator =(const Val &) = default;
+    
     template <typename T>
     T as(Type<T> &type) const {
       auto &timp = dynamic_cast<const TImp<T> &>(*imp);
@@ -67,13 +73,6 @@ namespace lgpp {
       return timp.data;
     }
     
-    bool eq(Val y) const { return imp->eq(y); }
-    bool gt(Val y) const { return imp->gt(y); }
-    bool lt(Val y) const { return imp->lt(y); }
-
-    Val add(Val y) const { return imp->add(y); }
-    Val sub(Val y) const { return imp->sub(y); }
-
     shared_ptr<const Imp> imp;
   };
 
@@ -94,15 +93,15 @@ namespace lgpp {
     Val sub(Type<T> &type, const T &x, Val y) { return Val(type, x - y.as(type)); }
   }
 
-  constexpr bool operator==(const Val &x, const Val &y) { return x.eq(y); }
+  constexpr bool operator==(const Val &x, const Val &y) { return x.imp->eq(y); }
 
-  constexpr bool operator>(const Val &x, const Val &y) { return x.gt(y); }
+  constexpr bool operator>(const Val &x, const Val &y) { return x.imp->gt(y); }
 
-  constexpr bool operator<(const Val &x, const Val &y) { return x.lt(y); }
+  constexpr bool operator<(const Val &x, const Val &y) { return x.imp->lt(y); }
 
-  inline Val operator+(const Val &x, const Val &y) { return x.add(y); }
+  inline Val operator+(const Val &x, const Val &y) { return x.imp->add(y); }
 
-  inline Val operator-(const Val &x, const Val &y) { return x.sub(y); }
+  inline Val operator-(const Val &x, const Val &y) { return x.imp->sub(y); }
   
 }
 

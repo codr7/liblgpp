@@ -18,7 +18,7 @@ namespace lgpp::ops {
 
   template <>
   inline const Op *eval(const Op &op, const Inc &imp, lgpp::VM &vm, lgpp::Stack &stack) {
-    push(stack, pop(stack).add(imp.delta));
+    push(stack, pop(stack) + imp.delta);
     return &op+1;
   }
 

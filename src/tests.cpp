@@ -17,6 +17,7 @@
 #include "lgpp/ops/swap.hpp"
 #include "lgpp/stack.hpp"
 #include "lgpp/thread.hpp"
+#include "lgpp/timer.hpp"
 #include "lgpp/type.hpp"
 #include "lgpp/vm.hpp"
 
@@ -197,11 +198,15 @@ void vm_fibrec_tests(VM &vm) {
   vm.emit<ops::Call>(fib);
   vm.emit<ops::Stop>();
 
+  Timer timer;
+  timer.reset();
+  
   for (auto i = 0; i < 100; i++) {
     vm.eval(start_pc, s);
     assert(pop(s).as(Int) == 6765);
   }
 
+  cout << "fibrec: " << timer.us() << "us" << endl;
   vm.clear_ops();
 }
 

@@ -12,7 +12,7 @@ namespace lgpp::ops {
   template <>
   inline const Op *eval(const Op &op, const Sub &imp, lgpp::VM &vm, lgpp::Stack &stack) {
     Val y(pop(stack)), x(pop(stack));
-    push(stack, x.sub(y));
+    push(stack, x - y);
     return &op+1;
   }
 

@@ -1,6 +1,3 @@
-* add fibrec bench
-** add timer to test
-** compare to python
 * add Spawn op
 ** start new thread
 *** add to threads map
@@ -10,6 +7,3 @@
 *** join thread on stack
 **** move thread stack to joiners stack
 * arrays bookmark
-
-
-  
