@@ -10,11 +10,6 @@ The goal of this post is to implement a simple but practical stack based virtual
 #include "lgpp/stack.hpp"
 #include "lgpp/vm.hpp"
 
-namespace lgpp::types {
-    template <>
-    bool eq(lgpp::Type<int> &type, const int &x, const Val &y) { return x == y.as(type); }
-}
-
 using namespace lgpp;
 
 int main() {

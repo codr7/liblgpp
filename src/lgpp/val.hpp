@@ -47,6 +47,11 @@ namespace lgpp {
     shared_ptr<const Imp> imp;
   };
 
+  namespace types {
+    template <typename T>
+    bool eq(Type<T> &type, const T &x, const Val &y) { return x == y.as(type); }
+  }
+
   constexpr bool operator==(const Val &x, const Val &y) { return x.eq(y); }
 }
 
