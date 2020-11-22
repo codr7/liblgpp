@@ -1,9 +1,16 @@
 * add ops from liblg
-** add cp op
 ** add inc/dec ops
 ** add call/ret ops
 *** add thread.calls
 *** add struct Call with pc/ret_pc
+* add Spawn op
+** start new thread
+*** add to threads map
+**** protect access with lock
+** push thread on stack
+** add Join op
+*** join thread on stack
+**** move thread stack to joiners stack
 * implement fibrec
 ** add bench
 ** compare to liblg
