@@ -1,3 +1,6 @@
+* add fibrec bench
+** add timer to test
+** compare to python
 * add Spawn op
 ** start new thread
 *** add to threads map
@@ -6,10 +9,7 @@
 ** add Join op
 *** join thread on stack
 **** move thread stack to joiners stack
-* add fibrec test
-** remove file/exe
 * arrays bookmark
 
-Inheritance is the base class of Evil.
-~Sean Parent
 
+  

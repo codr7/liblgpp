@@ -8,10 +8,6 @@ add_compile_options(-std=c++17 -stdlib=libc++ -fno-omit-frame-pointer -Wall -Wer
 
 file(GLOB_RECURSE src src/lgpp/*.cpp)
 
-add_executable(fibrec ${src} src/fibrec.cpp)
-target_compile_options(fibrec PUBLIC -O2 -g)
-target_include_directories(fibrec PUBLIC src/)
-
 add_executable(tests ${src} src/tests.cpp)
 target_compile_options(tests PUBLIC -O2 -g)
 target_include_directories(tests PUBLIC src/)

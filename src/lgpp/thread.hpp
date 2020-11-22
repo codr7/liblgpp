@@ -14,6 +14,8 @@ namespace lgpp {
     template <typename T, typename...Args>
     const T& emit(Args&&...args) { return ops.emplace_back(ops.size(), T(forward<Args>(args)...)).template as<T>(); }
 
+    PC emit_pc() const { return ops.size(); }
+    
     void push_ret(PC pc) { ret.push_back(pc); }
 
     PC pop_ret() {

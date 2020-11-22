@@ -1,8 +1,10 @@
 #include <cassert>
+#include <iostream>
 
 #include "lgpp/label.hpp"
 #include "lgpp/ops/add.hpp"
 #include "lgpp/ops/branch_eq.hpp"
+#include "lgpp/ops/branch_lt.hpp"
 #include "lgpp/ops/call.hpp"
 #include "lgpp/ops/cp.hpp"
 #include "lgpp/ops/dec.hpp"
@@ -167,11 +169,40 @@ void vm_stack_swap_tests(VM &vm) {
   vm.clear_ops();
 }
 
-
 void vm_stack_tests(VM &vm) {
   vm_stack_cp_tests(vm);
   vm_stack_drop_tests(vm);
   vm_stack_swap_tests(vm);
+}
+
+void vm_fibrec_tests(VM &vm) {
+  Stack s;
+  Label exit;
+  
+  Label fib(vm.emit_pc());
+  vm.emit<ops::BranchLt>(exit, Int, 2);
+  vm.emit<ops::Dec>(Int, 1);
+  vm.emit<ops::Cp>();
+  vm.emit<ops::Call>(fib);
+  vm.emit<ops::Swap>();
+  vm.emit<ops::Dec>(Int, 1);
+  vm.emit<ops::Call>(fib);
+  vm.emit<ops::Add>();
+
+  exit.pc = vm.emit_pc();
+  vm.emit<ops::Ret>();
+
+  PC start_pc = vm.emit_pc();
+  vm.emit<ops::Push>(Int, 20);
+  vm.emit<ops::Call>(fib);
+  vm.emit<ops::Stop>();
+
+  for (auto i = 0; i < 100; i++) {
+    vm.eval(start_pc, s);
+    assert(pop(s).as(Int) == 6765);
+  }
+
+  vm.clear_ops();
 }
 
 void vm_tests() {
@@ -181,6 +212,7 @@ void vm_tests() {
   vm_call_tests(vm);
   vm_math_tests(vm);
   vm_stack_tests(vm);
+  vm_fibrec_tests(vm);
 }
 
 int main() {

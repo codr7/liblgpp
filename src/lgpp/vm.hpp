@@ -21,7 +21,10 @@ namespace lgpp {
     template <typename T, typename...Args>
     const T& emit(Args&&...args) { return thread().emit<T, Args...>(forward<Args>(args)...); }
 
+    PC emit_pc() const { return thread().emit_pc(); }
+    
     const Op &last_op() const { return thread().ops.back(); }
+    
     void clear_ops() { thread().ops.clear(); }
 
     const Op &eval(PC start_pc, Stack &stack) { return eval(*(thread().ops.data()+start_pc), stack); }
