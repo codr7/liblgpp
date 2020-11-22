@@ -1,5 +1,6 @@
 #include <cassert>
 
+#include "lgpp/ops/drop.hpp"
 #include "lgpp/ops/push.hpp"
 #include "lgpp/ops/stop.hpp"
 #include "lgpp/stack.hpp"
@@ -21,6 +22,12 @@ void vm_tests() {
   assert(&vm.eval(0, s) == &stop); 
   assert(s.size() == 1);
   assert(s.back().as(t) == 42);
+
+  vm.thread().ops.clear();
+  vm.emit<ops::Drop>();
+  vm.emit<ops::Stop>();
+  vm.eval(0, s); 
+  assert(s.size() == 0);
 }
 
 int main() {
