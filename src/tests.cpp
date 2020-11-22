@@ -26,6 +26,7 @@ void vm_branch_tests(VM &vm) {
   vm.emit<ops::Stop>();
   b.pc = vm.last_op().pc;
   vm.eval(0, s); 
+  assert(s.size() == 1);
   assert(s.back().as(Int) == 42);
   vm.clear_ops();
 }

@@ -14,12 +14,20 @@ namespace lgpp {
   namespace types {
     template <typename T>
     bool eq(Type<T> &type, const T &x, const Val &y);
+
+    template <typename T>
+    bool gt(Type<T> &type, const T &x, const Val &y);
+
+    template <typename T>
+    bool lt(Type<T> &type, const T &x, const Val &y);
   }
 
   struct Val {
     struct Imp {
       virtual ~Imp() = default;
       virtual bool eq(const Val &y) const = 0;
+      virtual bool gt(const Val &y) const = 0;
+      virtual bool lt(const Val &y) const = 0;
     };
 
     template <typename T>
@@ -27,6 +35,8 @@ namespace lgpp {
       TImp(Type<T> &type, T data): type(type), data(move(data)) {}
 
       bool eq(const Val &y) const override { return types::eq(type, data, y); }
+      bool gt(const Val &y) const override { return types::gt(type, data, y); }
+      bool lt(const Val &y) const override { return types::lt(type, data, y); }
 
       Type<T> &type;
       T data;
@@ -43,6 +53,8 @@ namespace lgpp {
     }
     
     bool eq(const Val &y) const { return imp->eq(y); }
+    bool gt(const Val &y) const { return imp->gt(y); }
+    bool lt(const Val &y) const { return imp->lt(y); }
 
     shared_ptr<const Imp> imp;
   };
@@ -50,9 +62,20 @@ namespace lgpp {
   namespace types {
     template <typename T>
     bool eq(Type<T> &type, const T &x, const Val &y) { return x == y.as(type); }
+
+    template <typename T>
+    bool gt(Type<T> &type, const T &x, const Val &y) { return x > y.as(type); }
+
+    template <typename T>
+    bool lt(Type<T> &type, const T &x, const Val &y) { return x < y.as(type); }
   }
 
   constexpr bool operator==(const Val &x, const Val &y) { return x.eq(y); }
+
+  constexpr bool operator>(const Val &x, const Val &y) { return x.gt(y); }
+
+  constexpr bool operator<(const Val &x, const Val &y) { return x.lt(y); }
+  
 }
 
 #endif
