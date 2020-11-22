@@ -13,7 +13,7 @@ namespace lgpp::ops {
   };
 
   template <>
-  inline const Op *eval(const Op &op, const Drop &imp, lgpp::Stack &stack) {
+  inline const Op *eval(const Op &op, const Drop &imp, lgpp::VM &vm, lgpp::Stack &stack) {
     auto i = stack.end()-imp.offs-1;
     stack.erase(i, i+imp.len);
     return &op+1;

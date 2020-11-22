@@ -28,7 +28,7 @@ namespace lgpp {
   
     const Op &eval(const Op &start_op, Stack &stack) {
       const Op *pop = nullptr;
-      for (const Op *op = &start_op; op; pop = op, op = op->eval(stack));
+      for (const Op *op = &start_op; op; pop = op, op = op->eval(*this, stack));
       return *pop;    
     }
 
@@ -40,6 +40,10 @@ namespace lgpp {
     }
 
     const Thread &thread() const { return const_cast<VM *>(this)->thread(); }
+
+    void push_ret(PC pc) { thread().push_ret(pc); }
+    
+    PC pop_ret() { return thread().pop_ret(); }
 
     map<Thread::Id, Thread> threads;
     mutex thread_mutex;

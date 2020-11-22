@@ -18,7 +18,7 @@ namespace lgpp::ops {
   };
 
   template <>
-  inline const Op *eval(const Op &op, const BranchEq &imp, lgpp::Stack &stack) {
+  inline const Op *eval(const Op &op, const BranchEq &imp, lgpp::VM &vm, lgpp::Stack &stack) {
     return (imp.x == *(stack.end()-imp.y_offs-1)) ? &op-op.pc+imp.target.pc : &op+1;
   }
 
