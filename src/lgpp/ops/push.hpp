@@ -9,6 +9,10 @@ namespace lgpp::ops {
 
   struct Push {
     Push(lgpp::Val val);
+
+    template <typename T>
+    Push(lgpp::Type<T> &type, T data): val(type, data) {}
+      
     lgpp::Val val;
   };
 

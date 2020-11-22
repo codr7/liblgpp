@@ -1,5 +1,2 @@
-* add additional Push ctor
-** (Type<T> &, T)
-** update tests/blog
 * add ops from liblg
 * arrays

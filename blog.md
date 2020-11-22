@@ -21,9 +21,8 @@ int main() {
   VM vm;
   Stack s;
   Type<int> t("Int");
-  Val v(t, 42);
 
-  vm.emit<ops::Push>(v);
+  vm.emit<ops::Push>(t, 42);
   // Using a separate Stop op simplifies the critical eval loop
   vm.emit<ops::Stop>();
   // Emitted operations are stored in a vector
@@ -34,7 +33,7 @@ int main() {
   assert(&vm.eval(0, s) == &stop);
   // Check the push result
   assert(s.size() == 1);
-  assert(s.back() == v);
+  assert(s.back().as(t) == 42);
   return 0;
 }
 ```
