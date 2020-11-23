@@ -2,7 +2,7 @@
 #define LGPP_VM_HPP
 
 #include <map>
-#include <mutex>
+#include <shared_mutex>
 #include <vector>
 
 #include "op.hpp"
@@ -14,7 +14,7 @@ namespace lgpp {
   using namespace std;
 
   struct VM {
-    using lock_t = lock_guard<mutex>;
+    using shared_lock_t = shared_lock<shared_mutex>;
 
     VM() { threads.insert(make_pair(this_thread::get_id(), Thread())); }
     
@@ -36,7 +36,7 @@ namespace lgpp {
     }
 
     Thread &thread() {
-      lock_t lock(thread_mutex);
+      shared_lock_t lock(thread_mutex);
       auto found = threads.find(this_thread::get_id());
       if (found == threads.end()) { throw runtime_error("Thread not found"); }
       return found->second;
@@ -49,7 +49,7 @@ namespace lgpp {
     PC pop_ret() { return thread().pop_ret(); }
 
     map<Thread::Id, Thread> threads;
-    mutex thread_mutex;
+    shared_mutex thread_mutex;
   };
 
 }

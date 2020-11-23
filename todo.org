@@ -1,7 +1,7 @@
 * add Spawn op
 ** start new thread
 *** add to threads map
-**** protect access with lock
+**** protect access with exclusive lock
 ** push thread on stack
 ** add Join op
 *** join thread on stack
