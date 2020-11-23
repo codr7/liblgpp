@@ -1,4 +1,4 @@
-This project implements a simple but practical stack based VM for interpreters in the form of a C++17 library.
+This project implements a simple but flexible multi-threaded stack based VM for interpreters in the form of a C++17 library.
 
 ```
 #include <cassert>
