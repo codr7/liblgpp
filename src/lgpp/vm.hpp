@@ -15,8 +15,9 @@ namespace lgpp {
 
   struct VM {
     using shared_lock_t = shared_lock<shared_mutex>;
+    using lock_t = unique_lock<shared_mutex>;
 
-    VM() { threads.insert(make_pair(this_thread::get_id(), Thread())); }
+    VM() { spawn(this_thread::get_id()); }
     
     template <typename T, typename...Args>
     const T& emit(Args&&...args) { return thread().emit<T, Args...>(forward<Args>(args)...); }
@@ -35,9 +36,9 @@ namespace lgpp {
       return *pop;    
     }
 
-    Thread &thread() {
+    Thread &thread(Thread::Id id = this_thread::get_id()) {
       shared_lock_t lock(thread_mutex);
-      auto found = threads.find(this_thread::get_id());
+      auto found = threads.find(id);
       if (found == threads.end()) { throw runtime_error("Thread not found"); }
       return found->second;
     }
@@ -47,6 +48,24 @@ namespace lgpp {
     void push_ret(PC pc) { thread().push_ret(pc); }
     
     PC pop_ret() { return thread().pop_ret(); }
+
+    template <typename...Args>
+    Thread &spawn(Args &&...args) {
+      Thread t(forward<Args>(args)...);
+      lock_t lock(thread_mutex);
+      return threads.insert(make_pair(t.id, move(t))).first->second;
+    }
+
+    void join(Thread::Id id, Stack &stack) {
+      Thread &t = thread(id);
+      t.imp.join();
+      move(t.stack.begin(), t.stack.end(), back_inserter(stack));
+      
+      lock_t lock(thread_mutex);
+      auto found = threads.find(id);
+      if (found == threads.end()) { throw runtime_error("Thread not found"); }
+      threads.erase(found);
+    }
 
     map<Thread::Id, Thread> threads;
     shared_mutex thread_mutex;

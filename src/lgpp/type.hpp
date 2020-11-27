@@ -3,6 +3,8 @@
 
 #include <string>
 
+#include "lgpp/thread.hpp"
+
 namespace lgpp {
   using namespace std;
   

@@ -1,9 +1,4 @@
-* add Spawn op
-** start new thread
-*** add to threads map
-**** protect access with exclusive lock
-** push thread on stack
-** add Join op
-*** join thread on stack
-**** move thread stack to joiners stack
-* arrays bookmark
+* add Coro
+** add CoroCall op
+** add CoroYield op
+*** optional val

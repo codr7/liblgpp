@@ -10,8 +10,11 @@
 #include "lgpp/ops/dec.hpp"
 #include "lgpp/ops/drop.hpp"
 #include "lgpp/ops/inc.hpp"
+#include "lgpp/ops/jmp.hpp"
+#include "lgpp/ops/join.hpp"
 #include "lgpp/ops/push.hpp"
 #include "lgpp/ops/ret.hpp"
+#include "lgpp/ops/spawn.hpp"
 #include "lgpp/ops/stop.hpp"
 #include "lgpp/ops/sub.hpp"
 #include "lgpp/ops/swap.hpp"
@@ -176,6 +179,26 @@ void vm_stack_tests(VM &vm) {
   vm_stack_swap_tests(vm);
 }
 
+void vm_thread_tests(VM &vm) {
+  Stack s;
+
+  Label thread;
+  vm.emit<ops::Spawn>(thread);
+  Label skip;
+  vm.emit<ops::Jmp>(skip);
+  thread.pc = vm.emit_pc();
+  vm.emit<ops::Push>(Int, 42);
+  vm.emit<ops::Stop>();
+  skip.pc = vm.emit_pc();
+  vm.emit<ops::Join>();
+  vm.emit<ops::Stop>();
+  
+  vm.eval(0, s);
+  assert(s.size() == 1);
+  assert(pop(s).as(Int) == 42);
+  vm.clear_ops();
+}
+
 void vm_fibrec_tests(VM &vm) {
   Stack s;
   Label exit;
@@ -217,6 +240,7 @@ void vm_tests() {
   vm_call_tests(vm);
   vm_math_tests(vm);
   vm_stack_tests(vm);
+  vm_thread_tests(vm);
   vm_fibrec_tests(vm);
 }
 

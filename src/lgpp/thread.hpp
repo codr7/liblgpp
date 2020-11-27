@@ -3,13 +3,19 @@
 
 #include <thread>
 
+#include "op.hpp"
 #include "pc.hpp"
+#include "stack.hpp"
 
 namespace lgpp {
   using namespace std;
   
   struct Thread {
     using Id = thread::id;
+    
+    Thread(Id id): id(id) {}
+
+    Thread(const Thread &owner, function<void ()> body): ops(owner.ops), imp(body), id(imp.get_id()) {}
 
     template <typename T, typename...Args>
     const T& emit(Args&&...args) { return ops.emplace_back(ops.size(), T(forward<Args>(args)...)).template as<T>(); }
@@ -24,9 +30,16 @@ namespace lgpp {
       ret.pop_back();
       return pc;
     }
+
+    void join() {
+      if (imp.joinable()) { imp.join(); }
+    }
     
     vector<Op> ops;
     vector<PC> ret;
+    Stack stack;
+    thread imp;
+    const Id id;
   };
 }
 

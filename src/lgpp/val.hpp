@@ -60,9 +60,9 @@ namespace lgpp {
     template <typename T>
     Val(Type<T> &type, T imp): imp(make_shared<TImp<T>>(type, move(imp))) {} 
 
-    Val(const Val &) noexcept = default;
+    Val(const Val &) = default;
 
-    Val(Val &&) noexcept = default;
+    Val(Val &&) = default;
 
     Val &operator =(const Val &) = default;
     
@@ -87,10 +87,10 @@ namespace lgpp {
     bool lt(Type<T> &type, const T &x, Val y) { return x < y.as(type); }
 
     template <typename T>
-    Val add(Type<T> &type, const T &x, Val y) { return Val(type, x + y.as(type)); }
+    Val add(Type<T> &type, const T &x, Val y) { throw runtime_error("Not implemented"); }
 
     template <typename T>
-    Val sub(Type<T> &type, const T &x, Val y) { return Val(type, x - y.as(type)); }
+    Val sub(Type<T> &type, const T &x, Val y) { throw runtime_error("Not implemented"); }
   }
 
   constexpr bool operator==(const Val &x, const Val &y) { return x.imp->eq(y); }
