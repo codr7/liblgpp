@@ -7,15 +7,13 @@
 
 namespace lgpp::ops {
 
-  struct Ret {
-    enum class Opts {EMPTY = 0, CORO = 1};
-    Ret(Opts opts = Opts::EMPTY): opts(opts) {}
-    Opts opts;
-  };
+  struct Ret {};
 
   template <>
   inline const Op *eval(const Op &op, const Ret &imp, lgpp::VM &vm, lgpp::Stack &stack) {
-    if ((int)imp.opts & (int)Ret::Opts::CORO) {
+    auto ret = vm.pop_ret();
+    
+    if ((int)ret.opts & (int)lgpp::Ret::Opts::CORO) {
       auto c = vm.thread().pop_coro();
       if (!c) { throw runtime_error("Missing coro"); }
       if (c->done) { throw runtime_error("Coro is done"); }
@@ -24,7 +22,7 @@ namespace lgpp::ops {
       push(stack, lgpp::types::Coro, *c);
     }
     
-    return &op - op.pc + vm.pop_ret();
+    return &op - op.pc + ret.pc;
   }
 
 }

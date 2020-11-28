@@ -1,7 +1,3 @@
-* add lgpp::Ret type
-** use for rets
-** move Opts
-** pass CORO coro push_ret calls (yield)
 * add coro benchmark
 ** create loop with label/push/branchGt 0/dec
 ** compare to python generator

@@ -14,7 +14,7 @@ namespace lgpp::ops {
     auto c = pop(stack).as(lgpp::types::Coro);
     if (c.done) { throw runtime_error("Coro is done"); }
     vm.thread().push_coro(c);
-    vm.push_ret(op.pc+1);
+    vm.push_ret(op.pc+1, lgpp::Ret::Opts::CORO);
     return &op - op.pc + c.pc;
   }
 

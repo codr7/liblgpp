@@ -209,7 +209,7 @@ void vm_coro_tests(VM &vm) {
   vm.emit<ops::Push>(Int, 2);
   vm.emit<ops::Yield>(1);
   vm.emit<ops::Push>(Int, 1);
-  vm.emit<ops::Ret>(ops::Ret::Opts::CORO);
+  vm.emit<ops::Ret>();
   
   auto start_pc = vm.emit_pc();
   vm.emit<ops::Call>(target);

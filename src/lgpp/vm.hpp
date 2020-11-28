@@ -45,9 +45,9 @@ namespace lgpp {
 
     const Thread& thread() const { return const_cast<VM*>(this)->thread(); }
 
-    void push_ret(PC pc) { thread().push_ret(pc); }
+    void push_ret(PC pc, Ret::Opts opts = Ret::Opts::NONE) { thread().push_ret(pc, opts); }
     
-    PC pop_ret() { return thread().pop_ret(); }
+    Ret pop_ret() { return thread().pop_ret(); }
 
     template <typename...Args>
     Thread &spawn(Args&&...args) {

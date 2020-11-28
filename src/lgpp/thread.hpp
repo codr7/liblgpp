@@ -6,7 +6,7 @@
 
 #include "coro.hpp"
 #include "op.hpp"
-#include "pc.hpp"
+#include "ret.hpp"
 #include "stack.hpp"
 
 namespace lgpp {
@@ -24,13 +24,13 @@ namespace lgpp {
 
     PC emit_pc() const { return ops.size(); }
     
-    void push_ret(PC pc) { ret.push_back(pc); }
+    void push_ret(PC pc, Ret::Opts opts = Ret::Opts::NONE) { rets.emplace_back(pc, opts); }
 
-    PC pop_ret() {
-      if (!ret.size()) { throw runtime_error("Return stack is empty"); }
-      PC pc = ret.back();
-      ret.pop_back();
-      return pc;
+    Ret pop_ret() {
+      if (!rets.size()) { throw runtime_error("Return stack is empty"); }
+      auto r = rets.back();
+      rets.pop_back();
+      return r;
     }
 
     void join() {
@@ -47,7 +47,7 @@ namespace lgpp {
     }
     
     vector<Op> ops;
-    vector<PC> ret;
+    vector<Ret> rets;
     Stack stack;
     thread imp;
     const Id id;
