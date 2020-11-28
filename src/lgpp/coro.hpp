@@ -2,7 +2,6 @@
 #define LGPP_CORO_HPP
 
 #include "lgpp/pc.hpp"
-#include "lgpp/stack.hpp"
 
 namespace lgpp {
   struct Coro {
@@ -10,7 +9,6 @@ namespace lgpp {
     
     PC pc;
     bool done;
-    Stack stack;
   };
 
   constexpr bool operator==(const Coro& x, const Coro& y) { return x.pc == y.pc; }

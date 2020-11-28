@@ -21,7 +21,6 @@ namespace lgpp::ops {
       if (c->done) { throw runtime_error("Coro is done"); }
       c->pc = op.pc;
       c->done = true;
-      move(c->stack.begin(), c->stack.end(), back_inserter(stack));
       push(stack, lgpp::types::Coro, *c);
     }
     

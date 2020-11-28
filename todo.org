@@ -1,2 +1,16 @@
+* add lgpp::Ret type
+** use for rets
+** move Opts
+** pass CORO coro push_ret calls (yield)
+* add coro benchmark
+** create loop with label/push/branchGt 0/dec
+** compare to python generator
+* add mt benchmark
+** add Sleep op
 * add coro/thread to readme
-* add fibers
+* add tasks
+** add Snooze op
+* add Def/Get ops
+** add op compile stage
+*** add env type map<string, Val>
+*** add env arg

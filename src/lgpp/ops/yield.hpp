@@ -19,11 +19,11 @@ namespace lgpp::ops {
     
     if (c) {
       if (c->done) { throw runtime_error("Coro is done"); }
-      move(c->stack.end(), c->stack.end()-imp.n, back_inserter(stack));
       c->pc = op.pc+1;
       push(stack, lgpp::types::Coro, *c);
     } else {
-      push(stack, lgpp::types::Coro, Coro(op.pc+1));
+      Coro c(op.pc+1);
+      push(stack, lgpp::types::Coro, c);
     }
     
     return &op - op.pc + ret_pc;
