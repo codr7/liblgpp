@@ -28,36 +28,36 @@ namespace lgpp {
     
     void clear_ops() { thread().ops.clear(); }
 
-    const Op &eval(PC start_pc, Stack &stack) { return eval(*(thread().ops.data()+start_pc), stack); }
+    const Op& eval(PC start_pc, Stack &stack) { return eval(*(thread().ops.data()+start_pc), stack); }
   
-    const Op &eval(const Op &start_op, Stack &stack) {
+    const Op& eval(const Op &start_op, Stack &stack) {
       const Op *pop = nullptr;
       for (const Op *op = &start_op; op; pop = op, op = op->eval(*this, stack));
       return *pop;    
     }
 
-    Thread &thread(Thread::Id id = this_thread::get_id()) {
+    Thread& thread(Thread::Id id = this_thread::get_id()) {
       shared_lock_t lock(thread_mutex);
       auto found = threads.find(id);
       if (found == threads.end()) { throw runtime_error("Thread not found"); }
       return found->second;
     }
 
-    const Thread &thread() const { return const_cast<VM *>(this)->thread(); }
+    const Thread& thread() const { return const_cast<VM*>(this)->thread(); }
 
     void push_ret(PC pc) { thread().push_ret(pc); }
     
     PC pop_ret() { return thread().pop_ret(); }
 
     template <typename...Args>
-    Thread &spawn(Args &&...args) {
+    Thread &spawn(Args&&...args) {
       Thread t(forward<Args>(args)...);
       lock_t lock(thread_mutex);
       return threads.insert(make_pair(t.id, move(t))).first->second;
     }
 
-    void join(Thread::Id id, Stack &stack) {
-      Thread &t = thread(id);
+    void join(Thread::Id id, Stack& stack) {
+      Thread& t = thread(id);
       t.imp.join();
       move(t.stack.begin(), t.stack.end(), back_inserter(stack));
       

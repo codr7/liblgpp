@@ -1,4 +1,2 @@
-* add Coro
-** add CoroCall op
-** add CoroYield op
-*** optional val
+* add coro/thread to readme
+* add fibers

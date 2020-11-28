@@ -10,9 +10,9 @@ namespace lgpp::ops {
   struct Add {};
 
   template <>
-  inline const Op *eval(const Op &op, const Add &imp, lgpp::VM &vm, lgpp::Stack &stack) {
+  inline const Op *eval(const Op& op, const Add& imp, lgpp::VM& vm, lgpp::Stack& stack) {
     Val y(pop(stack)), x(pop(stack));
-    push(stack, x + y);
+    push(stack, x+y);
     return &op+1;
   }
 

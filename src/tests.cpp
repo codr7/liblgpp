@@ -13,11 +13,13 @@
 #include "lgpp/ops/jmp.hpp"
 #include "lgpp/ops/join.hpp"
 #include "lgpp/ops/push.hpp"
+#include "lgpp/ops/recall.hpp"
 #include "lgpp/ops/ret.hpp"
 #include "lgpp/ops/spawn.hpp"
 #include "lgpp/ops/stop.hpp"
 #include "lgpp/ops/sub.hpp"
 #include "lgpp/ops/swap.hpp"
+#include "lgpp/ops/yield.hpp"
 #include "lgpp/stack.hpp"
 #include "lgpp/thread.hpp"
 #include "lgpp/timer.hpp"
@@ -199,6 +201,30 @@ void vm_thread_tests(VM &vm) {
   vm.clear_ops();
 }
 
+void vm_coro_tests(VM &vm) {
+  Stack s;
+
+  Label target(vm.emit_pc());
+  vm.emit<ops::Push>(Int, 3);
+  vm.emit<ops::Push>(Int, 2);
+  vm.emit<ops::Yield>(1);
+  vm.emit<ops::Push>(Int, 1);
+  vm.emit<ops::Ret>(ops::Ret::Opts::CORO);
+  
+  auto start_pc = vm.emit_pc();
+  vm.emit<ops::Call>(target);
+  vm.emit<ops::Recall>();
+  vm.emit<ops::Drop>();
+  vm.emit<ops::Sub>();
+  vm.emit<ops::Add>();
+  vm.emit<ops::Stop>();
+  
+  vm.eval(start_pc, s);
+  assert(s.size() == 1);
+  assert(pop(s).as(Int) == 4);
+  vm.clear_ops();
+}
+
 void vm_fibrec_tests(VM &vm) {
   Stack s;
   Label exit;
@@ -241,6 +267,7 @@ void vm_tests() {
   vm_math_tests(vm);
   vm_stack_tests(vm);
   vm_thread_tests(vm);
+  vm_coro_tests(vm);
   vm_fibrec_tests(vm);
 }
 

@@ -1,8 +1,10 @@
 #ifndef LGPP_THREAD_HPP
 #define LGPP_THREAD_HPP
 
+#include <optional>
 #include <thread>
 
+#include "coro.hpp"
 #include "op.hpp"
 #include "pc.hpp"
 #include "stack.hpp"
@@ -34,12 +36,22 @@ namespace lgpp {
     void join() {
       if (imp.joinable()) { imp.join(); }
     }
+
+    void push_coro(Coro coro) { coros.emplace_back(coro); }
+      
+    optional<Coro> pop_coro() {
+      if (coros.empty()) { return nullopt; }
+      auto c(coros.back());
+      coros.pop_back();
+      return c;
+    }
     
     vector<Op> ops;
     vector<PC> ret;
     Stack stack;
     thread imp;
     const Id id;
+    vector<Coro> coros;
   };
 }
 
