@@ -15,7 +15,7 @@
 #include "lgpp/ops/push.hpp"
 #include "lgpp/ops/recall.hpp"
 #include "lgpp/ops/ret.hpp"
-#include "lgpp/ops/spawn.hpp"
+#include "lgpp/ops/start_thread.hpp"
 #include "lgpp/ops/stop.hpp"
 #include "lgpp/ops/sub.hpp"
 #include "lgpp/ops/swap.hpp"
@@ -185,7 +185,7 @@ void vm_thread_tests(VM &vm) {
   Stack s;
 
   Label thread;
-  vm.emit<ops::Spawn>(thread);
+  vm.emit<ops::StartThread>(thread);
   Label skip;
   vm.emit<ops::Jmp>(skip);
   thread.pc = vm.emit_pc();
@@ -207,7 +207,7 @@ void vm_coro_tests(VM &vm) {
   Label target(vm.emit_pc());
   vm.emit<ops::Push>(Int, 3);
   vm.emit<ops::Push>(Int, 2);
-  vm.emit<ops::Yield>(1);
+  vm.emit<ops::Yield>();
   vm.emit<ops::Push>(Int, 1);
   vm.emit<ops::Ret>();
   
@@ -225,7 +225,7 @@ void vm_coro_tests(VM &vm) {
   vm.clear_ops();
 }
 
-void vm_fibrec_tests(VM &vm) {
+void fibrec_bench(VM &vm) {
   Stack s;
   Label exit;
   
@@ -268,7 +268,8 @@ void vm_tests() {
   vm_stack_tests(vm);
   vm_thread_tests(vm);
   vm_coro_tests(vm);
-  vm_fibrec_tests(vm);
+  
+  fibrec_bench(vm);
 }
 
 int main() {

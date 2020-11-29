@@ -17,7 +17,7 @@ namespace lgpp {
     using shared_lock_t = shared_lock<shared_mutex>;
     using lock_t = unique_lock<shared_mutex>;
 
-    VM() { spawn(this_thread::get_id()); }
+    VM() { start_thread(this_thread::get_id()); }
     
     template <typename T, typename...Args>
     const T& emit(Args&&...args) { return thread().emit<T, Args...>(forward<Args>(args)...); }
@@ -50,7 +50,7 @@ namespace lgpp {
     Ret pop_ret() { return thread().pop_ret(); }
 
     template <typename...Args>
-    Thread &spawn(Args&&...args) {
+    Thread &start_thread(Args&&...args) {
       Thread t(forward<Args>(args)...);
       lock_t lock(thread_mutex);
       return threads.insert(make_pair(t.id, move(t))).first->second;

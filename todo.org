@@ -1,10 +1,15 @@
-* add coro benchmark
+* add start_coro op
+** extract init from yield & simplify
+* add coro_bench
 ** create loop with label/push/branchGt 0/dec
-** compare to python generator
-* add mt benchmark
+* add thread_bench
+** simplify thread.py
+*** only start one thread & sleep
 ** add Sleep op
 * add coro/thread to readme
 * add tasks
+** separate stacks
+** add StartTaskOp
 ** add Snooze op
 * add Def/Get ops
 ** add op compile stage

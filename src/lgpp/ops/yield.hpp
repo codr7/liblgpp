@@ -8,8 +8,6 @@
 namespace lgpp::ops {
 
   struct Yield {
-    Yield(unsigned n): n(n) {}
-    unsigned n;
   };
 
   template <>
