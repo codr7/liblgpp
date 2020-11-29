@@ -68,7 +68,7 @@ The [eval loop](https://github.com/codr7/liblgpp/blob/f5eba0b60a65da2c6c7eea60e4
 Stacks are passed by value. The following set of operations is provided for stack manipulation.
 
 #### cp
-Copies a number of values (default 1) from the stack starting at an offset (default 0).
+Copies a number of values (default 1) from the stack starting at an offset from the end (default 0).
 
 ```
 emit<ops::Push>(vm, types::Int, 1);
@@ -87,7 +87,7 @@ assert(pop(s, types::Int) == 1);
 ```
 
 #### drop
-Drops a number of values (default 1) from the stack starting at an offset (default 0).
+Drops a number of values (default 1) from the stack starting at an offset from the end (default 0).
 ```
 emit<ops::Push>(vm, types::Int, 1);
 emit<ops::Push>(vm, types::Int, 2);
@@ -101,7 +101,7 @@ assert(pop(s, types::Int) == 1);
 ```
 
 #### swap
-Swaps the value on the stack at one offset (default 0) with another (default 1).
+Swaps the value on the stack at one offset from the end (default 0) with another (default 1).
 
 ```
 emit<ops::Push>(vm, types::Int, 1);
