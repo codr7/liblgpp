@@ -47,7 +47,7 @@ thread: 1002093us
 ```
 
 ### performance
-Single threaded performance is around 3-5 times slower than [Python3](https://github.com/codr7/liblgpp/blob/main/bench/fibrec.py). While I believe that's possible to improve significantly within the constraints imposed by the current design, in the end [computed goto](https://github.com/codr7/liblg) is going to outperform function calls for the [core evaluation loop](https://github.com/codr7/liblgpp/blob/f5eba0b60a65da2c6c7eea60e42a752b1843999f/src/lgpp/vm.hpp#L33).
+Single threaded performance is around 3-5 times slower than [Python3](https://github.com/codr7/liblgpp/blob/main/bench/fibrec.py). While I believe that's possible to improve significantly within the constraints imposed by the current design, in the end [computed goto](https://github.com/codr7/liblg) is going to outperform function calls for the [eval loop](https://github.com/codr7/liblgpp/blob/f5eba0b60a65da2c6c7eea60e42a752b1843999f/src/lgpp/vm.hpp#L33).
 
 ```
 $ cd bench
@@ -62,7 +62,7 @@ Modern C++ is a fairly complex language, but it is unique in the way it allows d
 
 One somewhat unusual aspect of the design is that it doesn't use inheritance for [polymorphism](https://github.com/codr7/liblgpp/blob/main/src/lgpp/op.hpp), [this](https://www.youtube.com/watch?v=QGcVXgEVMJg) allows more flexibility in extending the library and simplifies usage.
 
-The [core evaluation loop](https://github.com/codr7/liblgpp/blob/f5eba0b60a65da2c6c7eea60e42a752b1843999f/src/lgpp/vm.hpp#L33) trades speed for simplicity, extensibility, portability and maintainability by dispatching to functions rather than using computed goto and representing operations as structs rather than packed bytecode.
+The [eval loop](https://github.com/codr7/liblgpp/blob/f5eba0b60a65da2c6c7eea60e42a752b1843999f/src/lgpp/vm.hpp#L33) trades speed for simplicity, extensibility, portability and maintainability by dispatching to functions rather than using computed goto and representing operations as structs rather than packed bytecode.
 
 ### coroutines
 Coroutines are labels that support pausing/resuming calls. Since they are passed by value, copying results in a separate call chain starting at the same position.
