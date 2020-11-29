@@ -1,3 +1,4 @@
+* move eval out of vm/thread
 * add tasks
 ** use Yield to switch
 ** separate stacks
