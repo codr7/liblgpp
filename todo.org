@@ -1,5 +1,8 @@
 * add Splat op
 * add Squash op
+* add Stack op
+** push copy of current stack
+* add stack section to readme
 * move eval out of vm/thread
 ** move emit
 ** move emit_pc
@@ -22,5 +25,4 @@
 ** implement for existing typs
 ** add Dump op
 *** dump val on stack to specified stream
-** add Dumps op
-*** dump stack to specified stream
+

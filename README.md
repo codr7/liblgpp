@@ -24,7 +24,7 @@ int main() {
 }
 ```
 
-Custom interpreters are powerful and flexible tools that allow solving thorny problems with grace.
+Custom interpreters are powerful and flexible tools that allow solving thorny problems with grace. Configurations, querys, templates, formats, formulas and scripts are some problem classes that interpreters excel in.
 
 The general idea is that distilling the fundamental building blocks in library form makes it possible to reduce needed effort to the point where more problems start to look like custom languages, and where it's affordable to try out new ideas and throw some away.
 
@@ -89,7 +89,7 @@ assert(pop(s, types::Int) == 1);
 ```
 
 ### threads
-The VM supports preemptive multithreading. Each thread runs in complete isolation on its own stack, which is pushed to the calling stack when joining.
+The VM supports preemptive multithreading and has been carefully designed to minimize locking. Each thread runs in complete isolation on its own stack, which is pushed to the calling stack on join.
 
 ```
 Label target("target", vm.emit_pc());
