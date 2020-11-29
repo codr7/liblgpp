@@ -185,18 +185,16 @@ void vm_stack_tests(VM &vm) {
 void vm_thread_tests(VM &vm) {
   Stack s;
 
-  Label thread;
-  vm.emit<ops::StartThread>(thread);
-  Label skip;
-  vm.emit<ops::Jmp>(skip);
-  thread.pc = vm.emit_pc();
+  Label target(vm.emit_pc());
   vm.emit<ops::Push>(types::Int, 42);
   vm.emit<ops::Stop>();
-  skip.pc = vm.emit_pc();
+
+  auto start_pc = vm.emit_pc();
+  vm.emit<ops::StartThread>(target);
   vm.emit<ops::Join>();
   vm.emit<ops::Stop>();
   
-  vm.eval(0, s);
+  vm.eval(start_pc, s);
   assert(s.size() == 1);
   assert(pop(s).as(types::Int) == 42);
   vm.clear_ops();
@@ -206,10 +204,10 @@ void vm_coro_tests(VM &vm) {
   Stack s;
 
   Label target(vm.emit_pc());
-  vm.emit<ops::Push>(types::Int, 3);
+  vm.emit<ops::Push>(types::Int, 1);
   vm.emit<ops::Push>(types::Int, 2);
   vm.emit<ops::Yield>();
-  vm.emit<ops::Push>(types::Int, 1);
+  vm.emit<ops::Push>(types::Int, 3);
   vm.emit<ops::Ret>();
   
   auto start_pc = vm.emit_pc();
@@ -217,13 +215,13 @@ void vm_coro_tests(VM &vm) {
   vm.emit<ops::Recall>();
   vm.emit<ops::Recall>();
   vm.emit<ops::Drop>();
-  vm.emit<ops::Sub>();
-  vm.emit<ops::Add>();
   vm.emit<ops::Stop>();
   
   vm.eval(start_pc, s);
-  assert(s.size() == 1);
-  assert(pop(s).as(types::Int) == 4);
+  assert(s.size() == 3);
+  assert(pop(s).as(types::Int) == 3);
+  assert(pop(s).as(types::Int) == 2);
+  assert(pop(s).as(types::Int) == 1);
   vm.clear_ops();
 }
 
