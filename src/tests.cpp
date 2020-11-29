@@ -15,6 +15,7 @@
 #include "lgpp/ops/push.hpp"
 #include "lgpp/ops/recall.hpp"
 #include "lgpp/ops/ret.hpp"
+#include "lgpp/ops/start_coro.hpp"
 #include "lgpp/ops/start_thread.hpp"
 #include "lgpp/ops/stop.hpp"
 #include "lgpp/ops/sub.hpp"
@@ -212,7 +213,8 @@ void vm_coro_tests(VM &vm) {
   vm.emit<ops::Ret>();
   
   auto start_pc = vm.emit_pc();
-  vm.emit<ops::Call>(target);
+  vm.emit<ops::StartCoro>(target);
+  vm.emit<ops::Recall>();
   vm.emit<ops::Recall>();
   vm.emit<ops::Drop>();
   vm.emit<ops::Sub>();

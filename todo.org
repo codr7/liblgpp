@@ -1,5 +1,3 @@
-* add start_coro op
-** extract init from yield & simplify
 * add coro_bench
 ** create loop with label/push/branchGt 0/dec
 * add thread_bench
