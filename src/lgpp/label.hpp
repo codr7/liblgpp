@@ -2,11 +2,14 @@
 #define LGPP_LABEL_HPP
 
 #include <cstddef>
+#include <optional>
 
 namespace lgpp {
+  using namespace std;
+  
   struct Label {
-    Label(size_t pc = 0): pc(pc) {}
-    size_t pc;
+    Label(optional<size_t> pc = nullopt): pc(pc) {}
+    optional<size_t> pc;
   };
 }
 
