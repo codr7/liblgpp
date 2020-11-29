@@ -5,7 +5,7 @@ This project implements an extensible stack based VM for interpreters in the for
 
 #include "lgpp/ops/push.hpp"
 #include "lgpp/ops/stop.hpp"
-#include "lgpp/stack.hpp"
+#include "lgpp/types.hpp"
 #include "lgpp/vm.hpp"
 
 using namespace lgpp;
