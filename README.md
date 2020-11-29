@@ -100,8 +100,8 @@ vm.emit<ops::Stop>();
 auto start_pc = vm.emit_pc();
 vm.emit<ops::StartThread>(target);
 vm.emit<ops::Join>();
-assert(pop(s, types::Stack).size() == 0);
 vm.emit<ops::Stop>();
   
 vm.eval(start_pc, s);
+assert(pop(s, types::Stack).size() == 0);
 ```
