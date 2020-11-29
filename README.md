@@ -71,14 +71,14 @@ Coroutines are labels that support pausing/resuming calls. Since they are passed
 Label target("target", vm.emit_pc());
 vm.emit<ops::Push>(types::Int, 1);
 vm.emit<ops::Push>(types::Int, 2);
-vm.emit<ops::Yield>();
+vm.emit<ops::Pause>();
 vm.emit<ops::Push>(types::Int, 3);
 vm.emit<ops::Ret>();
   
 auto start_pc = vm.emit_pc();
 vm.emit<ops::StartCoro>(target);
-vm.emit<ops::Recall>();
-vm.emit<ops::Recall>();
+vm.emit<ops::Resume>();
+vm.emit<ops::Resume>();
 vm.emit<ops::Drop>();
 vm.emit<ops::Stop>();
   

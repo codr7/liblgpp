@@ -1,5 +1,3 @@
-* rename Jmp to Goto
-* rename Recall to Resume
 * add Splat op
 * add Squash op
 * move eval out of vm/thread

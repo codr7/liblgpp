@@ -11,10 +11,11 @@
 #include "lgpp/ops/dec.hpp"
 #include "lgpp/ops/drop.hpp"
 #include "lgpp/ops/inc.hpp"
-#include "lgpp/ops/jmp.hpp"
+#include "lgpp/ops/goto.hpp"
 #include "lgpp/ops/join.hpp"
+#include "lgpp/ops/pause.hpp"
 #include "lgpp/ops/push.hpp"
-#include "lgpp/ops/recall.hpp"
+#include "lgpp/ops/resume.hpp"
 #include "lgpp/ops/ret.hpp"
 #include "lgpp/ops/sleep.hpp"
 #include "lgpp/ops/start_coro.hpp"
@@ -22,7 +23,6 @@
 #include "lgpp/ops/stop.hpp"
 #include "lgpp/ops/sub.hpp"
 #include "lgpp/ops/swap.hpp"
-#include "lgpp/ops/yield.hpp"
 #include "lgpp/stack.hpp"
 #include "lgpp/thread.hpp"
 #include "lgpp/timer.hpp"
@@ -206,14 +206,14 @@ void vm_coro_tests(VM& vm) {
   Label target("target", vm.emit_pc());
   vm.emit<ops::Push>(types::Int, 1);
   vm.emit<ops::Push>(types::Int, 2);
-  vm.emit<ops::Yield>();
+  vm.emit<ops::Pause>();
   vm.emit<ops::Push>(types::Int, 3);
   vm.emit<ops::Ret>();
   
   auto start_pc = vm.emit_pc();
   vm.emit<ops::StartCoro>(target);
-  vm.emit<ops::Recall>();
-  vm.emit<ops::Recall>();
+  vm.emit<ops::Resume>();
+  vm.emit<ops::Resume>();
   vm.emit<ops::Drop>();
   vm.emit<ops::Stop>();
   
@@ -266,8 +266,8 @@ void coro_bench(VM& vm) {
   Label target("target", vm.emit_pc());
   vm.emit<ops::BranchEq>(exit, 0, types::Int, 0);
   vm.emit<ops::Dec>(types::Int, 1);
-  vm.emit<ops::Yield>();
-  vm.emit<ops::Jmp>(target);
+  vm.emit<ops::Pause>();
+  vm.emit<ops::Goto>(target);
   exit.pc = vm.emit_pc();
   vm.emit<ops::Ret>();
 
@@ -276,7 +276,7 @@ void coro_bench(VM& vm) {
   vm.emit<ops::StartCoro>(target);
   
   Label loop("loop", vm.emit_pc());
-  vm.emit<ops::Recall>();
+  vm.emit<ops::Resume>();
   vm.emit<ops::BranchGt>(loop, 1, types::Int, 0);
   vm.emit<ops::Stop>();
 

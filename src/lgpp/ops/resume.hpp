@@ -1,5 +1,5 @@
-#ifndef LGPP_OPS_RECALL_HPP
-#define LGPP_OPS_RECALL_HPP
+#ifndef LGPP_OPS_RESUME_HPP
+#define LGPP_OPS_RESUME_HPP
 
 #include "../op.hpp"
 #include "../val.hpp"
@@ -7,10 +7,10 @@
 
 namespace lgpp::ops {
 
-  struct Recall {};
+  struct Resume {};
 
   template <>
-  inline const Op* eval(const Op& op, const Recall& imp, lgpp::VM& vm, lgpp::Stack& stack) {
+  inline const Op* eval(const Op& op, const Resume& imp, lgpp::VM& vm, lgpp::Stack& stack) {
     auto c = pop(stack, lgpp::types::Coro);
     if (c.done) { throw runtime_error("Coro is done"); }
     vm.thread().push_coro(c);
