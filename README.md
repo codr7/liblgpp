@@ -64,6 +64,96 @@ One somewhat unusual aspect of the design is that it doesn't use inheritance for
 
 The [eval loop](https://github.com/codr7/liblgpp/blob/f5eba0b60a65da2c6c7eea60e42a752b1843999f/src/lgpp/vm.hpp#L33) trades speed for simplicity, extensibility, portability and maintainability by dispatching to functions rather than using computed goto and representing operations as structs rather than packed bytecode.
 
+### stacks
+Stacks are passed by value. The following set of operations is provided for stack manipulation.
+
+#### cp
+Copies a number of values (default 1) from the stack starting at an offset (default 0).
+
+```
+vm.emit<ops::Push>(types::Int, 1);
+vm.emit<ops::Push>(types::Int, 2);
+vm.emit<ops::Push>(types::Int, 3);
+vm.emit<ops::Cp>(2, 2);
+vm.emit<ops::Stop>();
+vm.eval(0, s);
+  
+assert(s.size() == 5);
+assert(pop(s, types::Int) == 2);
+assert(pop(s, types::Int) == 1);
+assert(pop(s, types::Int) == 3);
+assert(pop(s, types::Int) == 2);
+assert(pop(s, types::Int) == 1);
+```
+
+#### drop
+Drops a number of values (default 1) from the stack starting at an offset (default 0).
+```
+vm.emit<ops::Push>(types::Int, 1);
+vm.emit<ops::Push>(types::Int, 2);
+vm.emit<ops::Push>(types::Int, 3);
+vm.emit<ops::Drop>(1, 2);
+vm.emit<ops::Stop>();
+vm.eval(0, s); 
+
+assert(s.size() == 1);
+assert(pop(s, types::Int) == 1);
+```
+
+#### swap
+Swaps the value on the stack at one offset (default 0) with another (default 1).
+
+```
+vm.emit<ops::Push>(types::Int, 1);
+vm.emit<ops::Push>(types::Int, 2);
+vm.emit<ops::Swap>();
+vm.emit<ops::Stop>();
+
+vm.eval(0, s);
+assert(s.size() == 2);
+assert(pop(s, types::Int) == 1);
+assert(pop(s, types::Int) == 2);
+```
+
+#### splat
+Replaces the top stack value with its contents.
+
+```
+Stack s;
+Stack v{{types::Int, 1}, {types::Int, 2}, {types::Int, 3}};
+
+vm.emit<ops::Push>(types::Stack, v);
+vm.emit<ops::Splat>();
+vm.emit<ops::Stop>();
+
+vm.eval(0, s); 
+assert(s.size() == 3);
+assert(pop(s, types::Int) == 3);
+assert(pop(s, types::Int) == 2);
+assert(pop(s, types::Int) == 1);
+```
+
+#### squash
+Replaces the current stack with a single value holding its contents.
+
+```
+Stack s;
+
+vm.emit<ops::Push>(types::Int, 1);
+vm.emit<ops::Push>(types::Int, 2);
+vm.emit<ops::Push>(types::Int, 3);
+vm.emit<ops::Squash>();
+vm.emit<ops::Stop>();
+
+vm.eval(0, s); 
+assert(s.size() == 1);
+s = pop(s, types::Stack);
+assert(s.size() == 3);
+assert(pop(s, types::Int) == 3);
+assert(pop(s, types::Int) == 2);
+assert(pop(s, types::Int) == 1);
+```
+
 ### coroutines
 Coroutines are labels that support pausing/resuming calls. Since they are passed by value, copying results in a separate call chain starting at the same position.
 

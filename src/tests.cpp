@@ -18,6 +18,8 @@
 #include "lgpp/ops/resume.hpp"
 #include "lgpp/ops/ret.hpp"
 #include "lgpp/ops/sleep.hpp"
+#include "lgpp/ops/splat.hpp"
+#include "lgpp/ops/squash.hpp"
 #include "lgpp/ops/start_coro.hpp"
 #include "lgpp/ops/start_thread.hpp"
 #include "lgpp/ops/stop.hpp"
@@ -159,6 +161,40 @@ void vm_stack_drop_tests(VM& vm) {
   vm.clear_ops();  
 }
 
+void vm_stack_splat_tests(VM& vm) {
+  Stack s;
+  Stack v{{types::Int, 1}, {types::Int, 2}, {types::Int, 3}};
+  vm.emit<ops::Push>(types::Stack, v);
+  vm.emit<ops::Splat>();
+  vm.emit<ops::Stop>();
+
+  vm.eval(0, s); 
+  assert(s.size() == 3);
+  assert(pop(s, types::Int) == 3);
+  assert(pop(s, types::Int) == 2);
+  assert(pop(s, types::Int) == 1);
+  vm.clear_ops();  
+}
+
+void vm_stack_squash_tests(VM& vm) {
+  Stack s;
+
+  vm.emit<ops::Push>(types::Int, 1);
+  vm.emit<ops::Push>(types::Int, 2);
+  vm.emit<ops::Push>(types::Int, 3);
+  vm.emit<ops::Squash>();
+  vm.emit<ops::Stop>();
+
+  vm.eval(0, s); 
+  assert(s.size() == 1);
+  s = pop(s, types::Stack);
+  assert(s.size() == 3);
+  assert(pop(s, types::Int) == 3);
+  assert(pop(s, types::Int) == 2);
+  assert(pop(s, types::Int) == 1);
+  vm.clear_ops();  
+}
+
 void vm_stack_swap_tests(VM& vm) {
   Stack s;
 
@@ -177,6 +213,8 @@ void vm_stack_swap_tests(VM& vm) {
 void vm_stack_tests(VM& vm) {
   vm_stack_cp_tests(vm);
   vm_stack_drop_tests(vm);
+  vm_stack_splat_tests(vm);
+  vm_stack_squash_tests(vm);
   vm_stack_swap_tests(vm);
 }
 

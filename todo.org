@@ -1,8 +1,3 @@
-* add Splat op
-* add Squash op
-* add Stack op
-** push copy of current stack
-* add stack section to readme
 * move eval out of vm/thread
 ** move emit
 ** move emit_pc
@@ -21,6 +16,8 @@
 ** add Tok type
 *** add Pos
 * add repl template
+* add Stack op
+** push copy of current stack
 * add Val dump method
 ** implement for existing typs
 ** add Dump op
