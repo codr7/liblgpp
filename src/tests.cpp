@@ -43,7 +43,7 @@ void vm_branch_tests(VM& vm) {
   vm.emit<ops::Push>(types::Int, 2);
   target.pc = vm.emit_pc();
   vm.emit<ops::Stop>();
-  vm.eval(0, s);
+  eval(vm, 0, s);
   
   assert(s.size() == 1);
   assert(s.back().as(types::Int) == 1);
@@ -59,7 +59,7 @@ void vm_call_tests(VM& vm) {
   target.pc = vm.emit_pc();
   vm.emit<ops::Push>(types::Int, 42);
   vm.emit<ops::Ret>();
-  vm.eval(0, s);
+  eval(vm, 0, s);
   
   assert(s.size() == 1);
   assert(s.back().as(types::Int) == 42);
@@ -72,7 +72,7 @@ void vm_inc_tests(VM& vm) {
   vm.emit<ops::Push>(types::Int, 35);
   vm.emit<ops::Inc>(types::Int, 7);
   vm.emit<ops::Stop>();
-  vm.eval(0, s); 
+  eval(vm, 0, s); 
 
   assert(s.size() == 1);
   assert(s.back().as(types::Int) == 42);
@@ -85,7 +85,7 @@ void vm_dec_tests(VM& vm) {
   vm.emit<ops::Push>(types::Int, 49);
   vm.emit<ops::Dec>(types::Int, 7);
   vm.emit<ops::Stop>();
-  vm.eval(0, s); 
+  eval(vm, 0, s); 
 
   assert(s.size() == 1);
   assert(s.back().as(types::Int) == 42);
@@ -99,7 +99,7 @@ void vm_add_tests(VM& vm) {
   vm.emit<ops::Push>(types::Int, 7);
   vm.emit<ops::Add>();
   vm.emit<ops::Stop>();
-  vm.eval(0, s); 
+  eval(vm, 0, s); 
 
   assert(s.size() == 1);
   assert(s.back().as(types::Int) == 42);
@@ -113,7 +113,7 @@ void vm_sub_tests(VM& vm) {
   vm.emit<ops::Push>(types::Int, 7);
   vm.emit<ops::Sub>();
   vm.emit<ops::Stop>();
-  vm.eval(0, s); 
+  eval(vm, 0, s); 
 
   assert(s.size() == 1);
   assert(s.back().as(types::Int) == 42);
@@ -135,7 +135,7 @@ void vm_stack_cp_tests(VM& vm) {
   vm.emit<ops::Push>(types::Int, 3);
   vm.emit<ops::Cp>(2, 2);
   vm.emit<ops::Stop>();
-  vm.eval(0, s);
+  eval(vm, 0, s);
   
   assert(s.size() == 5);
   assert(pop(s, types::Int) == 2);
@@ -154,7 +154,7 @@ void vm_stack_drop_tests(VM& vm) {
   vm.emit<ops::Push>(types::Int, 3);
   vm.emit<ops::Drop>(1, 2);
   vm.emit<ops::Stop>();
-  vm.eval(0, s); 
+  eval(vm, 0, s); 
 
   assert(s.size() == 1);
   assert(pop(s, types::Int) == 1);
@@ -168,7 +168,7 @@ void vm_stack_splat_tests(VM& vm) {
   vm.emit<ops::Splat>();
   vm.emit<ops::Stop>();
 
-  vm.eval(0, s); 
+  eval(vm, 0, s); 
   assert(s.size() == 3);
   assert(pop(s, types::Int) == 3);
   assert(pop(s, types::Int) == 2);
@@ -185,7 +185,7 @@ void vm_stack_squash_tests(VM& vm) {
   vm.emit<ops::Squash>();
   vm.emit<ops::Stop>();
 
-  vm.eval(0, s); 
+  eval(vm, 0, s); 
   assert(s.size() == 1);
   s = pop(s, types::Stack);
   assert(s.size() == 3);
@@ -203,7 +203,7 @@ void vm_stack_swap_tests(VM& vm) {
   vm.emit<ops::Swap>();
   vm.emit<ops::Stop>();
 
-  vm.eval(0, s);
+  eval(vm, 0, s);
   assert(s.size() == 2);
   assert(pop(s, types::Int) == 1);
   assert(pop(s, types::Int) == 2);
@@ -230,7 +230,7 @@ void vm_thread_tests(VM& vm) {
   vm.emit<ops::Join>();
   vm.emit<ops::Stop>();
   
-  vm.eval(start_pc, s);
+  eval(vm, start_pc, s);
   assert(s.size() == 1);
   s = pop(s, types::Stack);
   assert(s.size() == 1);
@@ -255,7 +255,7 @@ void vm_coro_tests(VM& vm) {
   vm.emit<ops::Drop>();
   vm.emit<ops::Stop>();
   
-  vm.eval(start_pc, s);
+  eval(vm, start_pc, s);
   assert(s.size() == 3);
   assert(pop(s, types::Int) == 3);
   assert(pop(s, types::Int) == 2);
@@ -289,7 +289,7 @@ void fibrec_bench(VM& vm) {
   timer.reset();
   
   for (auto i = 0; i < 100; i++) {
-    vm.eval(start_pc, s);
+    eval(vm, start_pc, s);
     assert(pop(s, types::Int) == 6765);
   }
 
@@ -320,7 +320,7 @@ void coro_bench(VM& vm) {
 
   Timer timer;
   timer.reset();
-  vm.eval(start_pc, s);
+  eval(vm, start_pc, s);
   cout << "coro: " << timer.us() << "us" << endl;
   vm.clear_ops();
 }
@@ -343,7 +343,7 @@ void thread_bench(VM& vm) {
 
   Timer timer;
   timer.reset();
-  vm.eval(start_pc, s);
+  eval(vm, start_pc, s);
   cout << "thread: " << timer.us() << "us" << endl;
   vm.clear_ops();
 }

@@ -17,7 +17,7 @@ int main() {
   vm.emit<ops::Push>(types::Int, 42);
   vm.emit<ops::Stop>();
 
-  vm.eval(0, s);
+  eval(vm, 0, s);
   assert(pop(s, types::Int) == 42);
 
   return 0;
@@ -76,7 +76,7 @@ vm.emit<ops::Push>(types::Int, 2);
 vm.emit<ops::Push>(types::Int, 3);
 vm.emit<ops::Cp>(2, 2);
 vm.emit<ops::Stop>();
-vm.eval(0, s);
+eval(vm, 0, s);
   
 assert(s.size() == 5);
 assert(pop(s, types::Int) == 2);
@@ -94,7 +94,7 @@ vm.emit<ops::Push>(types::Int, 2);
 vm.emit<ops::Push>(types::Int, 3);
 vm.emit<ops::Drop>(1, 2);
 vm.emit<ops::Stop>();
-vm.eval(0, s); 
+eval(vm, 0, s); 
 
 assert(s.size() == 1);
 assert(pop(s, types::Int) == 1);
@@ -109,7 +109,7 @@ vm.emit<ops::Push>(types::Int, 2);
 vm.emit<ops::Swap>();
 vm.emit<ops::Stop>();
 
-vm.eval(0, s);
+eval(vm, 0, s);
 assert(s.size() == 2);
 assert(pop(s, types::Int) == 1);
 assert(pop(s, types::Int) == 2);
@@ -125,7 +125,7 @@ vm.emit<ops::Push>(types::Stack, v);
 vm.emit<ops::Splat>();
 vm.emit<ops::Stop>();
 
-vm.eval(0, s); 
+eval(vm, 0, s); 
 assert(s.size() == 3);
 assert(pop(s, types::Int) == 3);
 assert(pop(s, types::Int) == 2);
@@ -142,7 +142,7 @@ vm.emit<ops::Push>(types::Int, 3);
 vm.emit<ops::Squash>();
 vm.emit<ops::Stop>();
 
-vm.eval(0, s); 
+eval(vm, 0, s); 
 assert(s.size() == 1);
 s = pop(s, types::Stack);
 assert(s.size() == 3);
@@ -169,7 +169,7 @@ vm.emit<ops::Resume>();
 vm.emit<ops::Drop>();
 vm.emit<ops::Stop>();
   
-vm.eval(start_pc, s);
+eval(vm, start_pc, s);
 assert(pop(s, types::Int) == 3);
 assert(pop(s, types::Int) == 2);
 assert(pop(s, types::Int) == 1);
@@ -189,6 +189,6 @@ vm.emit<ops::StartThread>(target);
 vm.emit<ops::Join>();
 vm.emit<ops::Stop>();
   
-vm.eval(start_pc, s);
+eval(vm, start_pc, s);
 assert(pop(s, types::Stack).size() == 0);
 ```

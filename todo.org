@@ -1,6 +1,5 @@
-* move eval out of vm/thread
-** move emit
-** move emit_pc
+* move emit out of vm/thread
+* move emit_pc out of vm/thread
 * --
 * add eval trace support
 * add tasks

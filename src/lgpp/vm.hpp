@@ -27,14 +27,6 @@ namespace lgpp {
     
     void clear_ops() { thread().ops.clear(); }
 
-    const Op& eval(PC start_pc, Stack& stack) { return eval(*(thread().ops.data()+start_pc), stack); }
-  
-    const Op& eval(const Op& start_op, Stack &stack) {
-      const Op* pop = nullptr;
-      for (const Op* op = &start_op; op; pop = op, op = op->eval(*this, stack));
-      return *pop;    
-    }
-
     Thread& thread(Thread::Id id = this_thread::get_id()) {
       shared_lock_t lock(thread_mutex);
       auto found = threads.find(id);
@@ -70,6 +62,14 @@ namespace lgpp {
     shared_mutex thread_mutex;
   };
 
+  inline const Op& eval(VM &vm, const Op& start_op, Stack &stack) {
+    const Op* pop = nullptr;
+    for (const Op* op = &start_op; op; pop = op, op = op->eval(vm, stack));
+    return *pop;
+  }
+
+  inline const Op& eval(VM &vm, PC start_pc, Stack& stack) { return eval(vm, *(vm.thread().ops.data()+start_pc), stack); }
+  
 }
 
 #endif
