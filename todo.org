@@ -1,13 +1,7 @@
-* add coro_bench
-** create loop with label/push/branchGt 0/dec
-* add thread_bench
-** simplify thread.py
-*** only start one thread & sleep
-** add Sleep op
 * add coro/thread to readme
 * add tasks
 ** separate stacks
-** add StartTaskOp
+** add StartTask op
 ** add Snooze op
 * add Def/Get ops
 ** add op compile stage
