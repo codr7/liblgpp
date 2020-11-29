@@ -291,16 +291,16 @@ void coro_bench(VM &vm) {
 void thread_bench(VM &vm) {
   Stack s;
   Label exit;
-  auto us = 1000000;
+  auto ms = 1000;
   
   Label f(vm.emit_pc());
-  vm.emit<ops::Push>(types::Int, us);
+  vm.emit<ops::Push>(types::Int, ms);
   vm.emit<ops::Sleep>();
   vm.emit<ops::Stop>();
 
   auto start_pc = vm.emit_pc();
   vm.emit<ops::StartThread>(f);
-  vm.emit<ops::Push>(types::Int, us);
+  vm.emit<ops::Push>(types::Int, ms);
   vm.emit<ops::Sleep>();
   vm.emit<ops::Join>();
   vm.emit<ops::Stop>();
