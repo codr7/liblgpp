@@ -10,6 +10,7 @@
 #include "stack.hpp"
 
 namespace lgpp {
+  
   using namespace std;
   
   struct Thread {
@@ -22,7 +23,7 @@ namespace lgpp {
     void push_ret(PC pc, Ret::Opts opts = Ret::Opts::NONE) { rets.emplace_back(pc, opts); }
 
     Ret pop_ret() {
-      if (!rets.size()) { throw runtime_error("Return stack is empty"); }
+      if (!rets.size()) { throw runtime_error("Ret stack is empty"); }
       auto r = rets.back();
       rets.pop_back();
       return r;

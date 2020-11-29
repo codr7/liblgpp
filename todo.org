@@ -1,7 +1,16 @@
-* move methods out of Thread/VM
+* add Meta type
+** add TypeOf op
+*** push type of value
+** store pointer to type
+** add readme section
+* add type hierarchy support
+** add Isa op
+** add Num type
 * add eval trace support
+* add exception types
+** runtime_error
 * add tasks
-** use Yield to switch
+** use Pause to switch
 ** separate stacks
 ** add StartTask op
 ** add Snooze op
@@ -13,10 +22,11 @@
 ** add Tok type
 *** add Pos
 * add repl template
-* add Stack op
-** push copy of current stack
 * add Val dump method
 ** implement for existing typs
 ** add Dump op
 *** dump val on stack to specified stream
-
+* add Stack op
+** push copy of current stack
+* ---maintainance---
+** move methods out of Thread/VM
