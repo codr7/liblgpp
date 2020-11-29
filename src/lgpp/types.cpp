@@ -6,4 +6,6 @@ namespace lgpp::types {
   Type<int> Int("Int");
 
   Type<lgpp::Thread::Id> Thread("Thread");
+
+  Type<lgpp::Stack> Stack("Stack");
 }

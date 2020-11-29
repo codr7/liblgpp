@@ -194,6 +194,8 @@ void vm_thread_tests(VM& vm) {
   
   vm.eval(start_pc, s);
   assert(s.size() == 1);
+  s = pop(s, types::Stack);
+  assert(s.size() == 1);
   assert(pop(s, types::Int) == 42);
   vm.clear_ops();
 }

@@ -16,6 +16,7 @@ int main() {
 
   vm.emit<ops::Push>(types::Int, 42);
   vm.emit<ops::Stop>();
+
   vm.eval(0, s);
   assert(pop(s, types::Int) == 42);
 
@@ -27,7 +28,7 @@ Custom interpreters are powerful and flexible tools that allow solving thorny pr
 
 The general idea is that distilling the fundamental building blocks in library form makes it possible to reduce needed effort to the point where more problems start to look like custom languages, and where it's affordable to try out new ideas and throw some away.
 
-The provided VM so far supports three [types](https://github.com/codr7/liblgpp/blob/main/src/lgpp/types.hpp) of values: coroutines, threads and integers; and the minimal set of [operations](https://github.com/codr7/liblgpp/tree/main/src/lgpp/ops) needed to write simple algorithms; but it is trivial to extend with additional types and operations.
+The provided VM so far supports four [types](https://github.com/codr7/liblgpp/blob/main/src/lgpp/types.hpp) of values: coroutines, threads, stacks and integers; and the minimal set of [operations](https://github.com/codr7/liblgpp/tree/main/src/lgpp/ops) needed to write simple algorithms; but it is trivial to extend with additional types and operations.
 
 ### setup
 The project requires a C++17 compiler and CMake to build.
@@ -64,11 +65,9 @@ One somewhat unusual aspect of the design is that it doesn't use inheritance for
 The [core evaluation loop](https://github.com/codr7/liblgpp/blob/f5eba0b60a65da2c6c7eea60e42a752b1843999f/src/lgpp/vm.hpp#L33) trades speed for simplicity, extensibility, portability and maintainability by dispatching to functions rather than using computed goto and representing operations as structs rather than packed bytecode.
 
 ### coroutines
-Coroutines are functions that may be paused/resumed.
+Coroutines are labels that support pausing/resuming calls. Since they are passed by value, copying results in a separate call chain starting at the same position.
 
 ```
-Stack s;
-
 Label target("target", vm.emit_pc());
 vm.emit<ops::Push>(types::Int, 1);
 vm.emit<ops::Push>(types::Int, 2);
@@ -90,11 +89,9 @@ assert(pop(s, types::Int) == 1);
 ```
 
 ### threads
-The VM supports preemptive multithreading.
+The VM supports preemptive multithreading. Each thread runs in complete isolation on its own stack, which is pushed to the calling stack when joining.
 
 ```
-Stack s;
-
 Label target("target", vm.emit_pc());
 vm.emit<ops::Push>(types::Int, 1000);
 vm.emit<ops::Sleep>();
@@ -103,6 +100,7 @@ vm.emit<ops::Stop>();
 auto start_pc = vm.emit_pc();
 vm.emit<ops::StartThread>(target);
 vm.emit<ops::Join>();
+assert(pop(s, types::Stack).size() == 0);
 vm.emit<ops::Stop>();
   
 vm.eval(start_pc, s);

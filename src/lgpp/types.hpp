@@ -2,6 +2,7 @@
 #define LGPP_TYPES_HPP
 
 #include "lgpp/coro.hpp"
+#include "lgpp/stack.hpp"
 #include "lgpp/type.hpp"
 
 namespace lgpp::types {
@@ -15,6 +16,8 @@ namespace lgpp::types {
   
   template <>
   inline Val sub(Type<int>& type, const int& x, Val y) { return Val(type, x - y.as(type)); }
+
+  extern Type<lgpp::Stack> Stack;
 
   extern Type<Thread::Id> Thread;
 

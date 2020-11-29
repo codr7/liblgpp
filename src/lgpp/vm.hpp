@@ -8,6 +8,7 @@
 #include "op.hpp"
 #include "stack.hpp"
 #include "thread.hpp"
+#include "types.hpp"
 
 namespace lgpp {
 
@@ -57,7 +58,7 @@ namespace lgpp {
     void join(Thread::Id id, Stack& stack) {
       Thread& t = thread(id);
       t.imp.join();
-      move(t.stack.begin(), t.stack.end(), back_inserter(stack));
+      push(stack, types::Stack, t.stack);
       
       lock_t lock(thread_mutex);
       auto found = threads.find(id);

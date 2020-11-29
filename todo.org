@@ -1,4 +1,12 @@
+* rename Jmp to Goto
+* rename Recall to Resume
+* add Splat op
+* add Squash op
 * move eval out of vm/thread
+** move emit
+** move emit_pc
+* --
+* add eval trace support
 * add tasks
 ** use Yield to switch
 ** separate stacks
@@ -8,3 +16,13 @@
 ** add op compile stage
 *** add env type map<string, Val>
 *** add env arg
+* add parser support
+** add Tok type
+*** add Pos
+* add repl template
+* add Val dump method
+** implement for existing typs
+** add Dump op
+*** dump val on stack to specified stream
+** add Dumps op
+*** dump stack to specified stream
