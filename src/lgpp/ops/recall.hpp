@@ -11,7 +11,7 @@ namespace lgpp::ops {
 
   template <>
   inline const Op *eval(const Op &op, const Recall &imp, lgpp::VM &vm, lgpp::Stack &stack) {
-    auto c = pop(stack).as(lgpp::types::Coro);
+    auto c = pop(stack, lgpp::types::Coro);
     if (c.done) { throw runtime_error("Coro is done"); }
     vm.thread().push_coro(c);
     vm.push_ret(op.pc+1, lgpp::Ret::Opts::CORO);
