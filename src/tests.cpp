@@ -36,11 +36,11 @@ void vm_branch_tests(VM &vm) {
 
   vm.thread().ops.reserve(10);
   vm.emit<ops::Push>(types::Int, 1);
-  Label b;
-  vm.emit<ops::BranchEq>(b, types::Int, 1);
+  Label target("target");
+  vm.emit<ops::BranchEq>(target, types::Int, 1);
   vm.emit<ops::Push>(types::Int, 2);
+  target.pc = vm.emit_pc();
   vm.emit<ops::Stop>();
-  b.pc = vm.last_op().pc;
   vm.eval(0, s);
   
   assert(s.size() == 1);
@@ -51,11 +51,11 @@ void vm_branch_tests(VM &vm) {
 void vm_call_tests(VM &vm) {
   Stack s;
 
-  Label f;
-  vm.emit<ops::Call>(f);
+  Label target("target");
+  vm.emit<ops::Call>(target);
   vm.emit<ops::Stop>();
+  target.pc = vm.emit_pc();
   vm.emit<ops::Push>(types::Int, 42);
-  f.pc = vm.last_op().pc;
   vm.emit<ops::Ret>();
   vm.eval(0, s);
   
@@ -166,10 +166,8 @@ void vm_stack_swap_tests(VM &vm) {
   vm.emit<ops::Push>(types::Int, 2);
   vm.emit<ops::Swap>();
   vm.emit<ops::Stop>();
-  auto &stop(vm.last_op());
 
-  assert(stop.pc == 3);
-  assert(&vm.eval(0, s) == &stop); 
+  vm.eval(0, s);
   assert(s.size() == 2);
   assert(pop(s).as(types::Int) == 1);
   assert(pop(s).as(types::Int) == 2);
@@ -185,7 +183,7 @@ void vm_stack_tests(VM &vm) {
 void vm_thread_tests(VM &vm) {
   Stack s;
 
-  Label target(vm.emit_pc());
+  Label target("target", vm.emit_pc());
   vm.emit<ops::Push>(types::Int, 42);
   vm.emit<ops::Stop>();
 
@@ -203,7 +201,7 @@ void vm_thread_tests(VM &vm) {
 void vm_coro_tests(VM &vm) {
   Stack s;
 
-  Label target(vm.emit_pc());
+  Label target("target", vm.emit_pc());
   vm.emit<ops::Push>(types::Int, 1);
   vm.emit<ops::Push>(types::Int, 2);
   vm.emit<ops::Yield>();
@@ -227,9 +225,9 @@ void vm_coro_tests(VM &vm) {
 
 void fibrec_bench(VM &vm) {
   Stack s;
-  Label exit;
+  Label exit("exit");
   
-  Label fib(vm.emit_pc());
+  Label fib("fib", vm.emit_pc());
   vm.emit<ops::BranchLt>(exit, types::Int, 2);
   vm.emit<ops::Dec>(types::Int, 1);
   vm.emit<ops::Cp>();
@@ -261,20 +259,21 @@ void fibrec_bench(VM &vm) {
 
 void coro_bench(VM &vm) {
   Stack s;
-  Label exit;
+  Label exit("exit");
   
-  Label f(vm.emit_pc());
+  Label target("target", vm.emit_pc());
   vm.emit<ops::BranchEq>(exit, types::Int, 0);
   vm.emit<ops::Dec>(types::Int, 1);
   vm.emit<ops::Yield>();
-  vm.emit<ops::Jmp>(f);
+  vm.emit<ops::Jmp>(target);
   exit.pc = vm.emit_pc();
   vm.emit<ops::Ret>();
 
   auto start_pc = vm.emit_pc();
   vm.emit<ops::Push>(types::Int, 1000000);
-  vm.emit<ops::StartCoro>(f);
-  Label loop(vm.emit_pc());
+  vm.emit<ops::StartCoro>(target);
+  
+  Label loop("loop", vm.emit_pc());
   vm.emit<ops::Recall>();
   vm.emit<ops::BranchGt>(loop, types::Int, 0, 1);
   vm.emit<ops::Stop>();
@@ -288,16 +287,15 @@ void coro_bench(VM &vm) {
 
 void thread_bench(VM &vm) {
   Stack s;
-  Label exit;
   auto ms = 1000;
   
-  Label f(vm.emit_pc());
+  Label main("main", vm.emit_pc());
   vm.emit<ops::Push>(types::Int, ms);
   vm.emit<ops::Sleep>();
   vm.emit<ops::Stop>();
 
   auto start_pc = vm.emit_pc();
-  vm.emit<ops::StartThread>(f);
+  vm.emit<ops::StartThread>(main);
   vm.emit<ops::Push>(types::Int, ms);
   vm.emit<ops::Sleep>();
   vm.emit<ops::Join>();

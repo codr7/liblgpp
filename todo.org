@@ -1,5 +1,5 @@
-* add coro/thread to readme
 * add tasks
+** use Yield to switch
 ** separate stacks
 ** add StartTask op
 ** add Snooze op

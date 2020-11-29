@@ -69,7 +69,7 @@ Coroutines are functions that may be paused/resumed.
 ```
 Stack s;
 
-Label target(vm.emit_pc());
+Label target("target", vm.emit_pc());
 vm.emit<ops::Push>(types::Int, 1);
 vm.emit<ops::Push>(types::Int, 2);
 vm.emit<ops::Yield>();
@@ -95,7 +95,7 @@ The VM supports preemptive multithreading.
 ```
 Stack s;
 
-Label target(vm.emit_pc());
+Label target("target", vm.emit_pc());
 vm.emit<ops::Push>(types::Int, 1000);
 vm.emit<ops::Sleep>();
 vm.emit<ops::Stop>();
