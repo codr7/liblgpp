@@ -19,12 +19,7 @@ namespace lgpp {
     using lock_t = unique_lock<shared_mutex>;
 
     VM() { start_thread(this_thread::get_id()); }
-    
-    template <typename T, typename...Args>
-    const T& emit(Args&&...args) { return thread().emit<T, Args...>(forward<Args>(args)...); }
-
-    PC emit_pc() const { return thread().emit_pc(); }
-    
+        
     void clear_ops() { thread().ops.clear(); }
 
     Thread& thread(Thread::Id id = this_thread::get_id()) {
@@ -69,7 +64,11 @@ namespace lgpp {
   }
 
   inline const Op& eval(VM &vm, PC start_pc, Stack& stack) { return eval(vm, *(vm.thread().ops.data()+start_pc), stack); }
+
+  template <typename T, typename...Args>
+  const T& emit(VM &vm, Args&&...args) { return emit<T, Args...>(vm.thread(), forward<Args>(args)...); }
   
+  inline PC emit_pc(const VM &vm) { return emit_pc(vm.thread()); }
 }
 
 #endif

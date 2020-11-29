@@ -1,6 +1,4 @@
-* move emit out of vm/thread
-* move emit_pc out of vm/thread
-* --
+* move methods out of Thread/VM
 * add eval trace support
 * add tasks
 ** use Yield to switch

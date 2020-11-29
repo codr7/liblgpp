@@ -37,12 +37,12 @@ void vm_branch_tests(VM& vm) {
   Stack s;
 
   vm.thread().ops.reserve(10);
-  vm.emit<ops::Push>(types::Int, 1);
+  emit<ops::Push>(vm, types::Int, 1);
   Label target("target");
-  vm.emit<ops::BranchEq>(target, 0, types::Int, 1);
-  vm.emit<ops::Push>(types::Int, 2);
-  target.pc = vm.emit_pc();
-  vm.emit<ops::Stop>();
+  emit<ops::BranchEq>(vm, target, 0, types::Int, 1);
+  emit<ops::Push>(vm, types::Int, 2);
+  target.pc = emit_pc(vm);
+  emit<ops::Stop>(vm);
   eval(vm, 0, s);
   
   assert(s.size() == 1);
@@ -54,11 +54,11 @@ void vm_call_tests(VM& vm) {
   Stack s;
 
   Label target("target");
-  vm.emit<ops::Call>(target);
-  vm.emit<ops::Stop>();
-  target.pc = vm.emit_pc();
-  vm.emit<ops::Push>(types::Int, 42);
-  vm.emit<ops::Ret>();
+  emit<ops::Call>(vm, target);
+  emit<ops::Stop>(vm);
+  target.pc = emit_pc(vm);
+  emit<ops::Push>(vm, types::Int, 42);
+  emit<ops::Ret>(vm);
   eval(vm, 0, s);
   
   assert(s.size() == 1);
@@ -69,9 +69,9 @@ void vm_call_tests(VM& vm) {
 void vm_inc_tests(VM& vm) {
   Stack s;
 
-  vm.emit<ops::Push>(types::Int, 35);
-  vm.emit<ops::Inc>(types::Int, 7);
-  vm.emit<ops::Stop>();
+  emit<ops::Push>(vm, types::Int, 35);
+  emit<ops::Inc>(vm, types::Int, 7);
+  emit<ops::Stop>(vm);
   eval(vm, 0, s); 
 
   assert(s.size() == 1);
@@ -82,9 +82,9 @@ void vm_inc_tests(VM& vm) {
 void vm_dec_tests(VM& vm) {
   Stack s;
 
-  vm.emit<ops::Push>(types::Int, 49);
-  vm.emit<ops::Dec>(types::Int, 7);
-  vm.emit<ops::Stop>();
+  emit<ops::Push>(vm, types::Int, 49);
+  emit<ops::Dec>(vm, types::Int, 7);
+  emit<ops::Stop>(vm);
   eval(vm, 0, s); 
 
   assert(s.size() == 1);
@@ -95,10 +95,10 @@ void vm_dec_tests(VM& vm) {
 void vm_add_tests(VM& vm) {
   Stack s;
 
-  vm.emit<ops::Push>(types::Int, 35);
-  vm.emit<ops::Push>(types::Int, 7);
-  vm.emit<ops::Add>();
-  vm.emit<ops::Stop>();
+  emit<ops::Push>(vm, types::Int, 35);
+  emit<ops::Push>(vm, types::Int, 7);
+  emit<ops::Add>(vm);
+  emit<ops::Stop>(vm);
   eval(vm, 0, s); 
 
   assert(s.size() == 1);
@@ -109,10 +109,10 @@ void vm_add_tests(VM& vm) {
 void vm_sub_tests(VM& vm) {
   Stack s;
 
-  vm.emit<ops::Push>(types::Int, 49);
-  vm.emit<ops::Push>(types::Int, 7);
-  vm.emit<ops::Sub>();
-  vm.emit<ops::Stop>();
+  emit<ops::Push>(vm, types::Int, 49);
+  emit<ops::Push>(vm, types::Int, 7);
+  emit<ops::Sub>(vm);
+  emit<ops::Stop>(vm);
   eval(vm, 0, s); 
 
   assert(s.size() == 1);
@@ -130,11 +130,11 @@ void vm_math_tests(VM& vm) {
 void vm_stack_cp_tests(VM& vm) {
   Stack s;
 
-  vm.emit<ops::Push>(types::Int, 1);
-  vm.emit<ops::Push>(types::Int, 2);
-  vm.emit<ops::Push>(types::Int, 3);
-  vm.emit<ops::Cp>(2, 2);
-  vm.emit<ops::Stop>();
+  emit<ops::Push>(vm, types::Int, 1);
+  emit<ops::Push>(vm, types::Int, 2);
+  emit<ops::Push>(vm, types::Int, 3);
+  emit<ops::Cp>(vm, 2, 2);
+  emit<ops::Stop>(vm);
   eval(vm, 0, s);
   
   assert(s.size() == 5);
@@ -149,11 +149,11 @@ void vm_stack_cp_tests(VM& vm) {
 void vm_stack_drop_tests(VM& vm) {
   Stack s;
 
-  vm.emit<ops::Push>(types::Int, 1);
-  vm.emit<ops::Push>(types::Int, 2);
-  vm.emit<ops::Push>(types::Int, 3);
-  vm.emit<ops::Drop>(1, 2);
-  vm.emit<ops::Stop>();
+  emit<ops::Push>(vm, types::Int, 1);
+  emit<ops::Push>(vm, types::Int, 2);
+  emit<ops::Push>(vm, types::Int, 3);
+  emit<ops::Drop>(vm, 1, 2);
+  emit<ops::Stop>(vm);
   eval(vm, 0, s); 
 
   assert(s.size() == 1);
@@ -164,9 +164,9 @@ void vm_stack_drop_tests(VM& vm) {
 void vm_stack_splat_tests(VM& vm) {
   Stack s;
   Stack v{{types::Int, 1}, {types::Int, 2}, {types::Int, 3}};
-  vm.emit<ops::Push>(types::Stack, v);
-  vm.emit<ops::Splat>();
-  vm.emit<ops::Stop>();
+  emit<ops::Push>(vm, types::Stack, v);
+  emit<ops::Splat>(vm);
+  emit<ops::Stop>(vm);
 
   eval(vm, 0, s); 
   assert(s.size() == 3);
@@ -179,11 +179,11 @@ void vm_stack_splat_tests(VM& vm) {
 void vm_stack_squash_tests(VM& vm) {
   Stack s;
 
-  vm.emit<ops::Push>(types::Int, 1);
-  vm.emit<ops::Push>(types::Int, 2);
-  vm.emit<ops::Push>(types::Int, 3);
-  vm.emit<ops::Squash>();
-  vm.emit<ops::Stop>();
+  emit<ops::Push>(vm, types::Int, 1);
+  emit<ops::Push>(vm, types::Int, 2);
+  emit<ops::Push>(vm, types::Int, 3);
+  emit<ops::Squash>(vm);
+  emit<ops::Stop>(vm);
 
   eval(vm, 0, s); 
   assert(s.size() == 1);
@@ -198,10 +198,10 @@ void vm_stack_squash_tests(VM& vm) {
 void vm_stack_swap_tests(VM& vm) {
   Stack s;
 
-  vm.emit<ops::Push>(types::Int, 1);
-  vm.emit<ops::Push>(types::Int, 2);
-  vm.emit<ops::Swap>();
-  vm.emit<ops::Stop>();
+  emit<ops::Push>(vm, types::Int, 1);
+  emit<ops::Push>(vm, types::Int, 2);
+  emit<ops::Swap>(vm);
+  emit<ops::Stop>(vm);
 
   eval(vm, 0, s);
   assert(s.size() == 2);
@@ -221,14 +221,14 @@ void vm_stack_tests(VM& vm) {
 void vm_thread_tests(VM& vm) {
   Stack s;
 
-  Label target("target", vm.emit_pc());
-  vm.emit<ops::Push>(types::Int, 42);
-  vm.emit<ops::Stop>();
+  Label target("target", emit_pc(vm));
+  emit<ops::Push>(vm, types::Int, 42);
+  emit<ops::Stop>(vm);
 
-  auto start_pc = vm.emit_pc();
-  vm.emit<ops::StartThread>(target);
-  vm.emit<ops::Join>();
-  vm.emit<ops::Stop>();
+  auto start_pc = emit_pc(vm);
+  emit<ops::StartThread>(vm, target);
+  emit<ops::Join>(vm);
+  emit<ops::Stop>(vm);
   
   eval(vm, start_pc, s);
   assert(s.size() == 1);
@@ -241,19 +241,19 @@ void vm_thread_tests(VM& vm) {
 void vm_coro_tests(VM& vm) {
   Stack s;
 
-  Label target("target", vm.emit_pc());
-  vm.emit<ops::Push>(types::Int, 1);
-  vm.emit<ops::Push>(types::Int, 2);
-  vm.emit<ops::Pause>();
-  vm.emit<ops::Push>(types::Int, 3);
-  vm.emit<ops::Ret>();
+  Label target("target", emit_pc(vm));
+  emit<ops::Push>(vm, types::Int, 1);
+  emit<ops::Push>(vm, types::Int, 2);
+  emit<ops::Pause>(vm);
+  emit<ops::Push>(vm, types::Int, 3);
+  emit<ops::Ret>(vm);
   
-  auto start_pc = vm.emit_pc();
-  vm.emit<ops::StartCoro>(target);
-  vm.emit<ops::Resume>();
-  vm.emit<ops::Resume>();
-  vm.emit<ops::Drop>();
-  vm.emit<ops::Stop>();
+  auto start_pc = emit_pc(vm);
+  emit<ops::StartCoro>(vm, target);
+  emit<ops::Resume>(vm);
+  emit<ops::Resume>(vm);
+  emit<ops::Drop>(vm);
+  emit<ops::Stop>(vm);
   
   eval(vm, start_pc, s);
   assert(s.size() == 3);
@@ -267,23 +267,23 @@ void fibrec_bench(VM& vm) {
   Stack s;
   Label exit("exit");
   
-  Label fib("fib", vm.emit_pc());
-  vm.emit<ops::BranchLt>(exit, 0, types::Int, 2);
-  vm.emit<ops::Dec>(types::Int, 1);
-  vm.emit<ops::Cp>();
-  vm.emit<ops::Call>(fib);
-  vm.emit<ops::Swap>();
-  vm.emit<ops::Dec>(types::Int, 1);
-  vm.emit<ops::Call>(fib);
-  vm.emit<ops::Add>();
+  Label fib("fib", emit_pc(vm));
+  emit<ops::BranchLt>(vm, exit, 0, types::Int, 2);
+  emit<ops::Dec>(vm, types::Int, 1);
+  emit<ops::Cp>(vm);
+  emit<ops::Call>(vm, fib);
+  emit<ops::Swap>(vm);
+  emit<ops::Dec>(vm, types::Int, 1);
+  emit<ops::Call>(vm, fib);
+  emit<ops::Add>(vm);
 
-  exit.pc = vm.emit_pc();
-  vm.emit<ops::Ret>();
+  exit.pc = emit_pc(vm);
+  emit<ops::Ret>(vm);
 
-  PC start_pc = vm.emit_pc();
-  vm.emit<ops::Push>(types::Int, 20);
-  vm.emit<ops::Call>(fib);
-  vm.emit<ops::Stop>();
+  PC start_pc = emit_pc(vm);
+  emit<ops::Push>(vm, types::Int, 20);
+  emit<ops::Call>(vm, fib);
+  emit<ops::Stop>(vm);
 
   Timer timer;
   timer.reset();
@@ -301,22 +301,22 @@ void coro_bench(VM& vm) {
   Stack s;
   Label exit("exit");
   
-  Label target("target", vm.emit_pc());
-  vm.emit<ops::BranchEq>(exit, 0, types::Int, 0);
-  vm.emit<ops::Dec>(types::Int, 1);
-  vm.emit<ops::Pause>();
-  vm.emit<ops::Goto>(target);
-  exit.pc = vm.emit_pc();
-  vm.emit<ops::Ret>();
+  Label target("target", emit_pc(vm));
+  emit<ops::BranchEq>(vm, exit, 0, types::Int, 0);
+  emit<ops::Dec>(vm, types::Int, 1);
+  emit<ops::Pause>(vm);
+  emit<ops::Goto>(vm, target);
+  exit.pc = emit_pc(vm);
+  emit<ops::Ret>(vm);
 
-  auto start_pc = vm.emit_pc();
-  vm.emit<ops::Push>(types::Int, 1000000);
-  vm.emit<ops::StartCoro>(target);
+  auto start_pc = emit_pc(vm);
+  emit<ops::Push>(vm, types::Int, 1000000);
+  emit<ops::StartCoro>(vm, target);
   
-  Label loop("loop", vm.emit_pc());
-  vm.emit<ops::Resume>();
-  vm.emit<ops::BranchGt>(loop, 1, types::Int, 0);
-  vm.emit<ops::Stop>();
+  Label loop("loop", emit_pc(vm));
+  emit<ops::Resume>(vm);
+  emit<ops::BranchGt>(vm, loop, 1, types::Int, 0);
+  emit<ops::Stop>(vm);
 
   Timer timer;
   timer.reset();
@@ -329,17 +329,17 @@ void thread_bench(VM& vm) {
   Stack s;
   auto ms = 1000;
   
-  Label main("main", vm.emit_pc());
-  vm.emit<ops::Push>(types::Int, ms);
-  vm.emit<ops::Sleep>();
-  vm.emit<ops::Stop>();
+  Label main("main", emit_pc(vm));
+  emit<ops::Push>(vm, types::Int, ms);
+  emit<ops::Sleep>(vm);
+  emit<ops::Stop>(vm);
 
-  auto start_pc = vm.emit_pc();
-  vm.emit<ops::StartThread>(main);
-  vm.emit<ops::Push>(types::Int, ms);
-  vm.emit<ops::Sleep>();
-  vm.emit<ops::Join>();
-  vm.emit<ops::Stop>();
+  auto start_pc = emit_pc(vm);
+  emit<ops::StartThread>(vm, main);
+  emit<ops::Push>(vm, types::Int, ms);
+  emit<ops::Sleep>(vm);
+  emit<ops::Join>(vm);
+  emit<ops::Stop>(vm);
 
   Timer timer;
   timer.reset();

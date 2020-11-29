@@ -18,11 +18,6 @@ namespace lgpp {
     Thread(Id id): id(id) {}
 
     Thread(const Thread &owner, function<void ()> body): ops(owner.ops), imp(body), id(imp.get_id()) {}
-
-    template <typename T, typename...Args>
-    const T& emit(Args&&...args) { return ops.emplace_back(ops.size(), T(forward<Args>(args)...)).template as<T>(); }
-
-    PC emit_pc() const { return ops.size(); }
     
     void push_ret(PC pc, Ret::Opts opts = Ret::Opts::NONE) { rets.emplace_back(pc, opts); }
 
@@ -53,6 +48,14 @@ namespace lgpp {
     const Id id;
     vector<Coro> coros;
   };
+
+  template <typename T, typename...Args>
+  const T& emit(Thread &thread, Args&&...args) {
+    return thread.ops.emplace_back(thread.ops.size(), T(forward<Args>(args)...)).template as<T>();
+  }
+  
+  inline PC emit_pc(const Thread &t) { return t.ops.size(); }
+
 }
 
 #endif
