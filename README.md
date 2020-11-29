@@ -119,7 +119,6 @@ assert(pop(s, types::Int) == 2);
 Replaces the top stack value with its contents.
 
 ```
-Stack s;
 Stack v{{types::Int, 1}, {types::Int, 2}, {types::Int, 3}};
 
 vm.emit<ops::Push>(types::Stack, v);
@@ -137,8 +136,6 @@ assert(pop(s, types::Int) == 1);
 Replaces the current stack with a single value holding its contents.
 
 ```
-Stack s;
-
 vm.emit<ops::Push>(types::Int, 1);
 vm.emit<ops::Push>(types::Int, 2);
 vm.emit<ops::Push>(types::Int, 3);
