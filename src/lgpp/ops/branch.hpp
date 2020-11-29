@@ -14,15 +14,13 @@ namespace lgpp {
 namespace lgpp::ops {
   
   struct Branch {
-    Branch(lgpp::Label &target, lgpp::Val y, size_t x_offs = 0): target(target), y(y), x_offs(x_offs) {}
-
-    template <typename T>
-    Branch(lgpp::Label &target, lgpp::Type<T> &type, T data, size_t x_offs = 0):
-      target(target), y(type, data), x_offs(x_offs) {}
+    template <typename...Args>
+    Branch(lgpp::Label& target, size_t x_offs, Args&&...args):
+      target(target), x_offs(x_offs), y(forward<Args>(args)...) {}
     
-    lgpp::Label &target;
-    lgpp::Val y;
+    lgpp::Label& target;
     size_t x_offs;
+    lgpp::Val y;
   };
 
 }

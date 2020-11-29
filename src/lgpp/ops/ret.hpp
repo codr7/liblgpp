@@ -10,7 +10,7 @@ namespace lgpp::ops {
   struct Ret {};
 
   template <>
-  inline const Op *eval(const Op &op, const Ret &imp, lgpp::VM &vm, lgpp::Stack &stack) {
+  inline const Op* eval(const Op& op, const Ret& imp, lgpp::VM& vm, lgpp::Stack& stack) {
     auto ret = vm.pop_ret();
     
     if ((int)ret.opts & (int)lgpp::Ret::Opts::CORO) {

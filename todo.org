@@ -1,4 +1,3 @@
-* simplify push calls
 * add tasks
 ** use Yield to switch
 ** separate stacks

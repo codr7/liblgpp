@@ -8,16 +8,14 @@
 namespace lgpp::ops {
 
   struct Push {
-    Push(lgpp::Val val): val(val) {}
-
-    template <typename T>
-    Push(lgpp::Type<T> &type, T data): val(type, data) {}
+    template <typename...Args>
+    Push(Args&&...args): val(forward<Args>(args)...) {}
       
     lgpp::Val val;
   };
 
   template <>
-  inline const Op *eval(const Op &op, const Push &imp, lgpp::VM &vm, lgpp::Stack &stack) {
+  inline const Op* eval(const Op& op, const Push& imp, lgpp::VM& vm, lgpp::Stack& stack) {
     stack.push_back(imp.val);
     return &op+1;
   }

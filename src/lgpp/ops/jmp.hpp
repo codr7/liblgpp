@@ -7,12 +7,12 @@
 namespace lgpp::ops {
 
   struct Jmp {
-    Jmp(Label &target): target(target) {}
-    Label &target;
+    Jmp(Label& target): target(target) {}
+    Label& target;
   };
 
   template <>
-  inline const Op *eval(const Op &op, const Jmp &imp, lgpp::VM &vm, lgpp::Stack &stack) {
+  inline const Op* eval(const Op& op, const Jmp& imp, lgpp::VM& vm, lgpp::Stack& stack) {
     return &op - op.pc + *imp.target.pc;
   }
 

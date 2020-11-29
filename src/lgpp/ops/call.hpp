@@ -7,14 +7,13 @@
 
 namespace lgpp::ops {
 
-  struct Call {
-    Label &target;
-    
-    Call(Label &target): target(target) {}
+  struct Call {    
+    Call(Label& target): target(target) {}
+    Label& target;
   };
 
   template <>
-  inline const Op *eval(const Op &op, const Call &imp, lgpp::VM &vm, lgpp::Stack &stack) {
+  inline const Op* eval(const Op& op, const Call& imp, lgpp::VM& vm, lgpp::Stack& stack) {
     vm.push_ret(op.pc+1);
     return &op - op.pc + *imp.target.pc;
   }

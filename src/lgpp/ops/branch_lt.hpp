@@ -11,10 +11,9 @@
 namespace lgpp::ops {
   
   struct BranchLt: Branch {
-    BranchLt(lgpp::Label& target, lgpp::Val y, size_t x_offs = 0): Branch(target, y, x_offs) {}
-
-    template <typename T>
-    BranchLt(lgpp::Label& target, lgpp::Type<T>& type, T data, size_t x_offs = 0): Branch(target, type, data, x_offs) {}
+    template <typename...Args>
+    BranchLt(lgpp::Label& target, size_t x_offs, Args&&...args):
+      Branch(target, x_offs, forward<Args>(args)...) {}
   };
 
   template <>

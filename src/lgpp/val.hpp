@@ -57,8 +57,8 @@ namespace lgpp {
       T data;
     };
 
-    template <typename T>
-    Val(Type<T>& type, T imp): imp(make_shared<TImp<T>>(type, move(imp))) {} 
+    template <typename T, typename...Args>
+    Val(Type<T>& type, Args&&...args): imp(make_shared<TImp<T>>(type, T(forward<Args>(args)...))) {} 
 
     Val(const Val&) = default;
 

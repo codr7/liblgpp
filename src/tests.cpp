@@ -37,7 +37,7 @@ void vm_branch_tests(VM &vm) {
   vm.thread().ops.reserve(10);
   vm.emit<ops::Push>(types::Int, 1);
   Label target("target");
-  vm.emit<ops::BranchEq>(target, types::Int, 1);
+  vm.emit<ops::BranchEq>(target, 0, types::Int, 1);
   vm.emit<ops::Push>(types::Int, 2);
   target.pc = vm.emit_pc();
   vm.emit<ops::Stop>();
@@ -136,11 +136,11 @@ void vm_stack_cp_tests(VM &vm) {
   vm.eval(0, s);
   
   assert(s.size() == 5);
-  assert(pop(s).as(types::Int) == 2);
-  assert(pop(s).as(types::Int) == 1);
-  assert(pop(s).as(types::Int) == 3);
-  assert(pop(s).as(types::Int) == 2);
-  assert(pop(s).as(types::Int) == 1);
+  assert(pop(s, types::Int) == 2);
+  assert(pop(s, types::Int) == 1);
+  assert(pop(s, types::Int) == 3);
+  assert(pop(s, types::Int) == 2);
+  assert(pop(s, types::Int) == 1);
   vm.clear_ops();  
 }
 
@@ -155,7 +155,7 @@ void vm_stack_drop_tests(VM &vm) {
   vm.eval(0, s); 
 
   assert(s.size() == 1);
-  assert(pop(s).as(types::Int) == 1);
+  assert(pop(s, types::Int) == 1);
   vm.clear_ops();  
 }
 
@@ -169,8 +169,8 @@ void vm_stack_swap_tests(VM &vm) {
 
   vm.eval(0, s);
   assert(s.size() == 2);
-  assert(pop(s).as(types::Int) == 1);
-  assert(pop(s).as(types::Int) == 2);
+  assert(pop(s, types::Int) == 1);
+  assert(pop(s, types::Int) == 2);
   vm.clear_ops();
 }
 
@@ -194,7 +194,7 @@ void vm_thread_tests(VM &vm) {
   
   vm.eval(start_pc, s);
   assert(s.size() == 1);
-  assert(pop(s).as(types::Int) == 42);
+  assert(pop(s, types::Int) == 42);
   vm.clear_ops();
 }
 
@@ -217,9 +217,9 @@ void vm_coro_tests(VM &vm) {
   
   vm.eval(start_pc, s);
   assert(s.size() == 3);
-  assert(pop(s).as(types::Int) == 3);
-  assert(pop(s).as(types::Int) == 2);
-  assert(pop(s).as(types::Int) == 1);
+  assert(pop(s, types::Int) == 3);
+  assert(pop(s, types::Int) == 2);
+  assert(pop(s, types::Int) == 1);
   vm.clear_ops();
 }
 
@@ -228,7 +228,7 @@ void fibrec_bench(VM &vm) {
   Label exit("exit");
   
   Label fib("fib", vm.emit_pc());
-  vm.emit<ops::BranchLt>(exit, types::Int, 2);
+  vm.emit<ops::BranchLt>(exit, 0, types::Int, 2);
   vm.emit<ops::Dec>(types::Int, 1);
   vm.emit<ops::Cp>();
   vm.emit<ops::Call>(fib);
@@ -250,7 +250,7 @@ void fibrec_bench(VM &vm) {
   
   for (auto i = 0; i < 100; i++) {
     vm.eval(start_pc, s);
-    assert(pop(s).as(types::Int) == 6765);
+    assert(pop(s, types::Int) == 6765);
   }
 
   cout << "fibrec: " << timer.us() << "us" << endl;
@@ -262,7 +262,7 @@ void coro_bench(VM &vm) {
   Label exit("exit");
   
   Label target("target", vm.emit_pc());
-  vm.emit<ops::BranchEq>(exit, types::Int, 0);
+  vm.emit<ops::BranchEq>(exit, 0, types::Int, 0);
   vm.emit<ops::Dec>(types::Int, 1);
   vm.emit<ops::Yield>();
   vm.emit<ops::Jmp>(target);
@@ -275,7 +275,7 @@ void coro_bench(VM &vm) {
   
   Label loop("loop", vm.emit_pc());
   vm.emit<ops::Recall>();
-  vm.emit<ops::BranchGt>(loop, types::Int, 0, 1);
+  vm.emit<ops::BranchGt>(loop, 1, types::Int, 0);
   vm.emit<ops::Stop>();
 
   Timer timer;

@@ -7,14 +7,12 @@
 
 namespace lgpp::ops {
 
-  struct Yield {
-  };
+  struct Yield {};
 
   template <>
-  inline const Op *eval(const Op &op, const Yield &imp, lgpp::VM &vm, lgpp::Stack &stack) {
+  inline const Op* eval(const Op& op, const Yield& imp, lgpp::VM& vm, lgpp::Stack& stack) {
     auto c = vm.thread().pop_coro();
     auto ret = vm.pop_ret();
-    
     if (!c) { runtime_error("Missing coro"); }
     if (c->done) { throw runtime_error("Coro is done"); }
     if (!((int)ret.opts & (int)lgpp::Ret::Opts::CORO)) { throw runtime_error("Tield from non-coro call"); }

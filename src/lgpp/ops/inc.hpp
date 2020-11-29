@@ -8,10 +8,8 @@
 namespace lgpp::ops {
 
   struct Inc {
-    Inc(Val delta): delta(delta) {}
-    
-    template <typename T>
-    Inc(Type<T> &type, T data): delta(type, data) {}
+    template <typename...Args>
+    Inc(Args&&...args): delta(forward<Args>(args)...) {}
 
     Val delta;
   };

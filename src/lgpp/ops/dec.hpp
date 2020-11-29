@@ -8,16 +8,14 @@
 namespace lgpp::ops {
 
   struct Dec {
-    Dec(Val delta): delta(delta) {}
-    
-    template <typename T>
-    Dec(Type<T> &type, T data): delta(type, data) {}
+    template <typename...Args>
+    Dec(Args&&...args): delta(forward<Args>(args)...) {}
 
     Val delta;
   };
 
   template <>
-  inline const Op *eval(const Op &op, const Dec &imp, lgpp::VM &vm, lgpp::Stack &stack) {
+  inline const Op* eval(const Op& op, const Dec& imp, lgpp::VM& vm, lgpp::Stack& stack) {
     push(stack, pop(stack) - imp.delta);
     return &op+1;
   }

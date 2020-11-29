@@ -12,7 +12,7 @@ namespace lgpp::ops {
   struct Sleep {};
 
   template <>
-  inline const Op *eval(const Op &op, const Sleep &imp, lgpp::VM &vm, lgpp::Stack &stack) {
+  inline const Op* eval(const Op& op, const Sleep& imp, lgpp::VM& vm, lgpp::Stack& stack) {
     auto ms = pop(stack, lgpp::types::Int);
     this_thread::sleep_for(chrono::milliseconds(ms));
     return &op+1;
