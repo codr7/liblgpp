@@ -31,7 +31,7 @@
 
 using namespace lgpp;
 
-void vm_branch_tests(VM &vm) {
+void vm_branch_tests(VM& vm) {
   Stack s;
 
   vm.thread().ops.reserve(10);
@@ -48,7 +48,7 @@ void vm_branch_tests(VM &vm) {
   vm.clear_ops();
 }
 
-void vm_call_tests(VM &vm) {
+void vm_call_tests(VM& vm) {
   Stack s;
 
   Label target("target");
@@ -64,7 +64,7 @@ void vm_call_tests(VM &vm) {
   vm.clear_ops();
 }
 
-void vm_inc_tests(VM &vm) {
+void vm_inc_tests(VM& vm) {
   Stack s;
 
   vm.emit<ops::Push>(types::Int, 35);
@@ -77,7 +77,7 @@ void vm_inc_tests(VM &vm) {
   vm.clear_ops();
 }
 
-void vm_dec_tests(VM &vm) {
+void vm_dec_tests(VM& vm) {
   Stack s;
 
   vm.emit<ops::Push>(types::Int, 49);
@@ -90,7 +90,7 @@ void vm_dec_tests(VM &vm) {
   vm.clear_ops();
 }
 
-void vm_add_tests(VM &vm) {
+void vm_add_tests(VM& vm) {
   Stack s;
 
   vm.emit<ops::Push>(types::Int, 35);
@@ -104,7 +104,7 @@ void vm_add_tests(VM &vm) {
   vm.clear_ops();
 }
 
-void vm_sub_tests(VM &vm) {
+void vm_sub_tests(VM& vm) {
   Stack s;
 
   vm.emit<ops::Push>(types::Int, 49);
@@ -118,14 +118,14 @@ void vm_sub_tests(VM &vm) {
   vm.clear_ops();
 }
 
-void vm_math_tests(VM &vm) {
+void vm_math_tests(VM& vm) {
   vm_inc_tests(vm);
   vm_dec_tests(vm);
   vm_add_tests(vm);
   vm_sub_tests(vm);
 }
 
-void vm_stack_cp_tests(VM &vm) {
+void vm_stack_cp_tests(VM& vm) {
   Stack s;
 
   vm.emit<ops::Push>(types::Int, 1);
@@ -144,7 +144,7 @@ void vm_stack_cp_tests(VM &vm) {
   vm.clear_ops();  
 }
 
-void vm_stack_drop_tests(VM &vm) {
+void vm_stack_drop_tests(VM& vm) {
   Stack s;
 
   vm.emit<ops::Push>(types::Int, 1);
@@ -159,7 +159,7 @@ void vm_stack_drop_tests(VM &vm) {
   vm.clear_ops();  
 }
 
-void vm_stack_swap_tests(VM &vm) {
+void vm_stack_swap_tests(VM& vm) {
   Stack s;
 
   vm.emit<ops::Push>(types::Int, 1);
@@ -174,13 +174,13 @@ void vm_stack_swap_tests(VM &vm) {
   vm.clear_ops();
 }
 
-void vm_stack_tests(VM &vm) {
+void vm_stack_tests(VM& vm) {
   vm_stack_cp_tests(vm);
   vm_stack_drop_tests(vm);
   vm_stack_swap_tests(vm);
 }
 
-void vm_thread_tests(VM &vm) {
+void vm_thread_tests(VM& vm) {
   Stack s;
 
   Label target("target", vm.emit_pc());
@@ -198,7 +198,7 @@ void vm_thread_tests(VM &vm) {
   vm.clear_ops();
 }
 
-void vm_coro_tests(VM &vm) {
+void vm_coro_tests(VM& vm) {
   Stack s;
 
   Label target("target", vm.emit_pc());
@@ -223,7 +223,7 @@ void vm_coro_tests(VM &vm) {
   vm.clear_ops();
 }
 
-void fibrec_bench(VM &vm) {
+void fibrec_bench(VM& vm) {
   Stack s;
   Label exit("exit");
   
@@ -257,7 +257,7 @@ void fibrec_bench(VM &vm) {
   vm.clear_ops();
 }
 
-void coro_bench(VM &vm) {
+void coro_bench(VM& vm) {
   Stack s;
   Label exit("exit");
   
@@ -285,7 +285,7 @@ void coro_bench(VM &vm) {
   vm.clear_ops();
 }
 
-void thread_bench(VM &vm) {
+void thread_bench(VM& vm) {
   Stack s;
   auto ms = 1000;
   

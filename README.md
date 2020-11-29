@@ -17,7 +17,7 @@ int main() {
   vm.emit<ops::Push>(types::Int, 42);
   vm.emit<ops::Stop>();
   vm.eval(0, s);
-  assert(pop(s).as(types::Int) == 42);
+  assert(pop(s, types::Int) == 42);
 
   return 0;
 }
@@ -84,9 +84,9 @@ vm.emit<ops::Drop>();
 vm.emit<ops::Stop>();
   
 vm.eval(start_pc, s);
-assert(pop(s).as(types::Int) == 3);
-assert(pop(s).as(types::Int) == 2);
-assert(pop(s).as(types::Int) == 1);
+assert(pop(s, types::Int) == 3);
+assert(pop(s, types::Int) == 2);
+assert(pop(s, types::Int) == 1);
 ```
 
 ### threads
