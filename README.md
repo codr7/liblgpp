@@ -204,8 +204,6 @@ assert(s.size() == 1);
 assert(pop(s, types::Meta) == &types::Num);
 ```
 
-The provided VM so far supports four [types](https://github.com/codr7/liblgpp/blob/main/src/lgpp/types.hpp) of values: coroutines, threads, stacks and integers; and the minimal set of [operations](https://github.com/codr7/liblgpp/tree/main/src/lgpp/ops) needed to write simple algorithms; but it is trivial to extend with additional types and operations.
-
 ### coroutines
 Coroutines are labels that support pausing/resuming calls. Since they are passed by value, copying results in a separate call chain starting at the same position.
 
