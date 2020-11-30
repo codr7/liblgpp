@@ -1,7 +1,4 @@
 * ---1---
-* add TypeOf op
-*** push type of value
-* add Isa op
 * add types readme section
 * ---2---
 * add Chan
@@ -40,28 +37,3 @@
 * add PushStack op
 ** push copy of current stack
 * ---N---
-
-sök nyckel eller 'application'
-
-gallery
-  application
-    title
-    image
-
-kiosk1
-  gallery
-    pax
-      ...
-
-kopplingstabell från Settings till typer SettingBind
-SettingId
-SettingTypeId
-Value
-
-application: pax
-application_title "Default"    
-
-application: pax
-retailunit: sverige
-application_title "Svensk"    
-      

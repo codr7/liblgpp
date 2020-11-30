@@ -10,6 +10,8 @@ namespace lgpp::types {
 
   Type<lgpp::Trait *> Meta("Meta");
 
+  Type<nullptr_t> Nil("Nil");
+
   Type<lgpp::Thread::Id> Thread("Thread");
 
   Type<lgpp::Stack> Stack("Stack", {&Seq});

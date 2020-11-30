@@ -21,6 +21,17 @@ namespace lgpp::types {
 
   extern Type<lgpp::Trait *> Meta;
 
+  extern Type<nullptr_t> Nil;
+
+  template <>
+  inline bool eq(Type<nullptr_t> &type, const nullptr_t& x, Val y) { return true; }
+  
+  template <>
+  inline bool gt(Type<nullptr_t> &type, const nullptr_t& x, Val y) { return false; }
+  
+  template <>
+  inline bool lt(Type<nullptr_t> &type, const nullptr_t& x, Val y) { return false; }
+
   extern Type<lgpp::Stack> Stack;
 
   extern Type<Thread::Id> Thread;

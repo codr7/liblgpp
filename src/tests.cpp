@@ -11,6 +11,7 @@
 #include "lgpp/ops/dec.hpp"
 #include "lgpp/ops/drop.hpp"
 #include "lgpp/ops/inc.hpp"
+#include "lgpp/ops/isa.hpp"
 #include "lgpp/ops/goto.hpp"
 #include "lgpp/ops/join.hpp"
 #include "lgpp/ops/pause.hpp"
@@ -25,6 +26,7 @@
 #include "lgpp/ops/stop.hpp"
 #include "lgpp/ops/sub.hpp"
 #include "lgpp/ops/swap.hpp"
+#include "lgpp/ops/type_of.hpp"
 #include "lgpp/stack.hpp"
 #include "lgpp/thread.hpp"
 #include "lgpp/timer.hpp"
@@ -41,11 +43,11 @@ void type_tests() {
 void vm_branch_tests(VM& vm) {
   Stack s;
 
-  get_thread(vm).ops.reserve(10);
   emit<ops::Push>(vm, types::Int, 1);
   Label target("target");
   emit<ops::BranchEq>(vm, target, 0, types::Int, 1);
   emit<ops::Push>(vm, types::Int, 2);
+
   target.pc = emit_pc(vm);
   emit<ops::Stop>(vm);
   eval(vm, 0, s);
@@ -68,6 +70,31 @@ void vm_call_tests(VM& vm) {
   
   assert(s.size() == 1);
   assert(s.back().as(types::Int) == 42);
+  get_thread(vm).ops.clear();
+}
+
+void vm_coro_tests(VM& vm) {
+  Stack s;
+
+  Label target("target", emit_pc(vm));
+  emit<ops::Push>(vm, types::Int, 1);
+  emit<ops::Push>(vm, types::Int, 2);
+  emit<ops::Pause>(vm);
+  emit<ops::Push>(vm, types::Int, 3);
+  emit<ops::Ret>(vm);
+  
+  auto start_pc = emit_pc(vm);
+  emit<ops::StartCoro>(vm, target);
+  emit<ops::Resume>(vm);
+  emit<ops::Resume>(vm);
+  emit<ops::Drop>(vm);
+  emit<ops::Stop>(vm);
+  
+  eval(vm, start_pc, s);
+  assert(s.size() == 3);
+  assert(pop(s, types::Int) == 3);
+  assert(pop(s, types::Int) == 2);
+  assert(pop(s, types::Int) == 1);
   get_thread(vm).ops.clear();
 }
 
@@ -243,29 +270,38 @@ void vm_thread_tests(VM& vm) {
   get_thread(vm).ops.clear();
 }
 
-void vm_coro_tests(VM& vm) {
+void vm_type_of_tests(VM& vm) {
   Stack s;
 
-  Label target("target", emit_pc(vm));
   emit<ops::Push>(vm, types::Int, 1);
-  emit<ops::Push>(vm, types::Int, 2);
-  emit<ops::Pause>(vm);
-  emit<ops::Push>(vm, types::Int, 3);
-  emit<ops::Ret>(vm);
-  
-  auto start_pc = emit_pc(vm);
-  emit<ops::StartCoro>(vm, target);
-  emit<ops::Resume>(vm);
-  emit<ops::Resume>(vm);
-  emit<ops::Drop>(vm);
+  emit<ops::TypeOf>(vm);
+  emit<ops::Cp>(vm);
+  emit<ops::TypeOf>(vm);
   emit<ops::Stop>(vm);
+  eval(vm, 0, s);
   
-  eval(vm, start_pc, s);
-  assert(s.size() == 3);
-  assert(pop(s, types::Int) == 3);
-  assert(pop(s, types::Int) == 2);
-  assert(pop(s, types::Int) == 1);
+  assert(s.size() == 2);
+  assert(pop(s, types::Meta) == &types::Meta);
+  assert(pop(s, types::Meta) == &types::Int);
   get_thread(vm).ops.clear();
+}
+
+void vm_isa_tests(VM& vm) {
+  Stack s;
+  emit<ops::Push>(vm, types::Meta, &types::Int);
+  emit<ops::Push>(vm, types::Meta, &types::Num);
+  emit<ops::Isa>(vm);
+  emit<ops::Stop>(vm);
+  eval(vm, 0, s);
+  
+  assert(s.size() == 1);
+  assert(pop(s, types::Meta) == &types::Num);
+  get_thread(vm).ops.clear();
+}
+
+void vm_type_tests(VM& vm) {
+  vm_type_of_tests(vm);
+  vm_isa_tests(vm);
 }
 
 void fibrec_bench(VM& vm) {
@@ -360,10 +396,11 @@ void vm_tests() {
   
   vm_branch_tests(vm);
   vm_call_tests(vm);
+  vm_coro_tests(vm);
   vm_math_tests(vm);
   vm_stack_tests(vm);
   vm_thread_tests(vm);
-  vm_coro_tests(vm);
+  vm_type_tests(vm);
   
   fibrec_bench(vm);
   coro_bench(vm);
