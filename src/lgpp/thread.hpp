@@ -27,15 +27,6 @@ namespace lgpp {
       if (imp.joinable()) { imp.join(); }
     }
 
-    void push_coro(Coro coro) { coros.emplace_back(coro); }
-      
-    optional<Coro> pop_coro() {
-      if (coros.empty()) { return nullopt; }
-      auto c(coros.back());
-      coros.pop_back();
-      return c;
-    }
-
     VM &vm;
     vector<Op> ops;
     vector<Ret> rets;
@@ -62,6 +53,15 @@ namespace lgpp {
     return eval(thread, *(thread.ops.data()+start_pc), stack);
   }
 
+  inline void push_coro(Thread &thread, Coro coro) { thread.coros.emplace_back(coro); }
+      
+  inline optional<Coro> pop_coro(Thread &thread) {
+    if (thread.coros.empty()) { return nullopt; }
+    auto c(thread.coros.back());
+    thread.coros.pop_back();
+    return c;
+  }
+  
   inline void push_ret(Thread &thread, PC pc, Ret::Opts opts = Ret::Opts::NONE) { thread.rets.emplace_back(pc, opts); }
   
   inline Ret pop_ret(Thread &thread) {

@@ -13,7 +13,7 @@ namespace lgpp::ops {
   inline const Op* eval(const Op& op, const Resume& imp, lgpp::Thread& thread, lgpp::Stack& stack) {
     auto c = pop(stack, lgpp::types::Coro);
     if (c.done) { throw runtime_error("Coro is done"); }
-    thread.push_coro(c);
+    push_coro(thread, c);
     push_ret(thread, op.pc+1, lgpp::Ret::Opts::CORO);
     return &op - op.pc + c.pc;
   }
