@@ -10,11 +10,11 @@ namespace lgpp::ops {
   struct Ret {};
 
   template <>
-  inline const Op* eval(const Op& op, const Ret& imp, lgpp::VM& vm, lgpp::Stack& stack) {
-    auto ret = vm.pop_ret();
+  inline const Op* eval(const Op& op, const Ret& imp, lgpp::Thread& thread, lgpp::Stack& stack) {
+    auto ret = thread.pop_ret();
     
     if ((int)ret.opts & (int)lgpp::Ret::Opts::CORO) {
-      auto c = vm.thread().pop_coro();
+      auto c = thread.pop_coro();
       if (!c) { throw runtime_error("Missing coro"); }
       if (c->done) { throw runtime_error("Coro is done"); }
       c->pc = op.pc;

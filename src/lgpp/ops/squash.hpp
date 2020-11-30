@@ -10,7 +10,7 @@ namespace lgpp::ops {
   struct Squash {};
 
   template <>
-  inline const Op* eval(const Op& op, const Squash& imp, lgpp::VM& vm, lgpp::Stack& stack) {
+  inline const Op* eval(const Op& op, const Squash& imp, lgpp::Thread& thread, lgpp::Stack& stack) {
     Stack s;
     move(stack.begin(), stack.end(), back_inserter(s));
     stack.clear();

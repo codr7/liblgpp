@@ -37,7 +37,7 @@ namespace lgpp {
 
     template <typename...Args>
     Thread& start_thread(Args&&...args) {
-      Thread t(forward<Args>(args)...);
+      Thread t(*this, forward<Args>(args)...);
       lock_t lock(thread_mutex);
       return threads.insert(make_pair(t.id, move(t))).first->second;
     }
@@ -46,13 +46,9 @@ namespace lgpp {
     shared_mutex thread_mutex;
   };
 
-  inline const Op& eval(VM &vm, const Op& start_op, Stack &stack) {
-    const Op* pop = nullptr;
-    for (const Op* op = &start_op; op; pop = op, op = op->eval(vm, stack));
-    return *pop;
-  }
+  inline const Op& eval(VM &vm, const Op& start_op, Stack &stack) { return eval(vm.thread(), start_op, stack); }
 
-  inline const Op& eval(VM &vm, PC start_pc, Stack& stack) { return eval(vm, *(vm.thread().ops.data()+start_pc), stack); }
+  inline const Op& eval(VM &vm, PC start_pc, Stack& stack) { return eval(vm.thread(), start_pc, stack); }
 
   template <typename T, typename...Args>
   const T& emit(VM &vm, Args&&...args) { return emit<T, Args...>(vm.thread(), forward<Args>(args)...); }

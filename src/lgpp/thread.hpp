@@ -12,13 +12,16 @@
 namespace lgpp {
   
   using namespace std;
+
+  struct VM;
   
   struct Thread {
     using Id = thread::id;
     
-    Thread(Id id): id(id) {}
+    Thread(VM &vm, Id id): vm(vm), id(id) {}
 
-    Thread(const Thread &owner, function<void ()> body): ops(owner.ops), stack(owner.stack), imp(body), id(imp.get_id()) {}
+    Thread(VM &vm, const Thread &owner, function<void ()> body):
+      vm(vm), ops(owner.ops), stack(owner.stack), imp(body), id(imp.get_id()) {}
     
     void push_ret(PC pc, Ret::Opts opts = Ret::Opts::NONE) { rets.emplace_back(pc, opts); }
 
@@ -41,7 +44,8 @@ namespace lgpp {
       coros.pop_back();
       return c;
     }
-    
+
+    VM &vm;
     vector<Op> ops;
     vector<Ret> rets;
     Stack stack;
@@ -56,6 +60,16 @@ namespace lgpp {
   }
   
   inline PC emit_pc(const Thread &t) { return t.ops.size(); }
+
+  inline const Op& eval(Thread &thread, const Op& start_op, Stack &stack) {
+    const Op* pop = nullptr;
+    for (const Op* op = &start_op; op; pop = op, op = op->eval(thread, stack));
+    return *pop;
+  }
+
+  inline const Op& eval(Thread &thread, PC start_pc, Stack& stack) {
+    return eval(thread, *(thread.ops.data()+start_pc), stack);
+  }
 
 }
 

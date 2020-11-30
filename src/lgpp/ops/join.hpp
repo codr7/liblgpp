@@ -10,8 +10,9 @@ namespace lgpp::ops {
   struct Join {};
 
   template <>
-  inline const Op* eval(const Op& op, const Join& imp, lgpp::VM& vm, lgpp::Stack& stack) {
+  inline const Op* eval(const Op& op, const Join& imp, lgpp::Thread& thread, lgpp::Stack& stack) {
     auto tid = pop(stack, lgpp::types::Thread);
+    auto &vm(thread.vm);
     Thread& t = vm.thread(tid);
 
     t.imp.join();

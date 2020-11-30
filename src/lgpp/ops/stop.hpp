@@ -9,7 +9,7 @@ namespace lgpp::ops {
   struct Stop {};
 
   template <>
-  inline const Op* eval(const Op& op, const Stop& imp, lgpp::VM& vm, lgpp::Stack& stack) { return nullptr; }
+  inline const Op* eval(const Op& op, const Stop& imp, lgpp::Thread& thread, lgpp::Stack& stack) { return nullptr; }
 
 }
 
