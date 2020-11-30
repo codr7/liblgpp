@@ -18,7 +18,7 @@ namespace lgpp {
     
     Thread(Id id): id(id) {}
 
-    Thread(const Thread &owner, function<void ()> body): ops(owner.ops), imp(body), id(imp.get_id()) {}
+    Thread(const Thread &owner, function<void ()> body): ops(owner.ops), stack(owner.stack), imp(body), id(imp.get_id()) {}
     
     void push_ret(PC pc, Ret::Opts opts = Ret::Opts::NONE) { rets.emplace_back(pc, opts); }
 

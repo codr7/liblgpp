@@ -17,7 +17,7 @@ namespace lgpp::ops {
     auto& t = vm.start_thread(vm.thread(), [&vm, &imp]() {
       eval(vm, *imp.target.pc, vm.thread().stack);
     });
-
+    
     push(stack, Val(lgpp::types::Thread, t.id));
     return &op+1;
   }
