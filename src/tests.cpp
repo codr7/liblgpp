@@ -36,7 +36,7 @@ using namespace lgpp;
 void vm_branch_tests(VM& vm) {
   Stack s;
 
-  vm.thread().ops.reserve(10);
+  get_thread(vm).ops.reserve(10);
   emit<ops::Push>(vm, types::Int, 1);
   Label target("target");
   emit<ops::BranchEq>(vm, target, 0, types::Int, 1);
@@ -47,7 +47,7 @@ void vm_branch_tests(VM& vm) {
   
   assert(s.size() == 1);
   assert(s.back().as(types::Int) == 1);
-  vm.clear_ops();
+  get_thread(vm).ops.clear();
 }
 
 void vm_call_tests(VM& vm) {
@@ -63,7 +63,7 @@ void vm_call_tests(VM& vm) {
   
   assert(s.size() == 1);
   assert(s.back().as(types::Int) == 42);
-  vm.clear_ops();
+  get_thread(vm).ops.clear();
 }
 
 void vm_inc_tests(VM& vm) {
@@ -76,7 +76,7 @@ void vm_inc_tests(VM& vm) {
 
   assert(s.size() == 1);
   assert(s.back().as(types::Int) == 42);
-  vm.clear_ops();
+  get_thread(vm).ops.clear();
 }
 
 void vm_dec_tests(VM& vm) {
@@ -89,7 +89,7 @@ void vm_dec_tests(VM& vm) {
 
   assert(s.size() == 1);
   assert(s.back().as(types::Int) == 42);
-  vm.clear_ops();
+  get_thread(vm).ops.clear();
 }
 
 void vm_add_tests(VM& vm) {
@@ -103,7 +103,7 @@ void vm_add_tests(VM& vm) {
 
   assert(s.size() == 1);
   assert(s.back().as(types::Int) == 42);
-  vm.clear_ops();
+  get_thread(vm).ops.clear();
 }
 
 void vm_sub_tests(VM& vm) {
@@ -117,7 +117,7 @@ void vm_sub_tests(VM& vm) {
 
   assert(s.size() == 1);
   assert(s.back().as(types::Int) == 42);
-  vm.clear_ops();
+  get_thread(vm).ops.clear();
 }
 
 void vm_math_tests(VM& vm) {
@@ -143,7 +143,7 @@ void vm_stack_cp_tests(VM& vm) {
   assert(pop(s, types::Int) == 3);
   assert(pop(s, types::Int) == 2);
   assert(pop(s, types::Int) == 1);
-  vm.clear_ops();  
+  get_thread(vm).ops.clear();  
 }
 
 void vm_stack_drop_tests(VM& vm) {
@@ -158,7 +158,7 @@ void vm_stack_drop_tests(VM& vm) {
 
   assert(s.size() == 1);
   assert(pop(s, types::Int) == 1);
-  vm.clear_ops();  
+  get_thread(vm).ops.clear();  
 }
 
 void vm_stack_splat_tests(VM& vm) {
@@ -173,7 +173,7 @@ void vm_stack_splat_tests(VM& vm) {
   assert(pop(s, types::Int) == 3);
   assert(pop(s, types::Int) == 2);
   assert(pop(s, types::Int) == 1);
-  vm.clear_ops();  
+  get_thread(vm).ops.clear();  
 }
 
 void vm_stack_squash_tests(VM& vm) {
@@ -192,7 +192,7 @@ void vm_stack_squash_tests(VM& vm) {
   assert(pop(s, types::Int) == 3);
   assert(pop(s, types::Int) == 2);
   assert(pop(s, types::Int) == 1);
-  vm.clear_ops();  
+  get_thread(vm).ops.clear();  
 }
 
 void vm_stack_swap_tests(VM& vm) {
@@ -207,7 +207,7 @@ void vm_stack_swap_tests(VM& vm) {
   assert(s.size() == 2);
   assert(pop(s, types::Int) == 1);
   assert(pop(s, types::Int) == 2);
-  vm.clear_ops();
+  get_thread(vm).ops.clear();
 }
 
 void vm_stack_tests(VM& vm) {
@@ -235,7 +235,7 @@ void vm_thread_tests(VM& vm) {
   s = pop(s, types::Stack);
   assert(s.size() == 1);
   assert(pop(s, types::Int) == 42);
-  vm.clear_ops();
+  get_thread(vm).ops.clear();
 }
 
 void vm_coro_tests(VM& vm) {
@@ -260,7 +260,7 @@ void vm_coro_tests(VM& vm) {
   assert(pop(s, types::Int) == 3);
   assert(pop(s, types::Int) == 2);
   assert(pop(s, types::Int) == 1);
-  vm.clear_ops();
+  get_thread(vm).ops.clear();
 }
 
 void fibrec_bench(VM& vm) {
@@ -294,7 +294,7 @@ void fibrec_bench(VM& vm) {
   }
 
   cout << "fibrec: " << timer.us() << "us" << endl;
-  vm.clear_ops();
+  get_thread(vm).ops.clear();
 }
 
 void coro_bench(VM& vm) {
@@ -322,7 +322,7 @@ void coro_bench(VM& vm) {
   timer.reset();
   eval(vm, start_pc, s);
   cout << "coro: " << timer.us() << "us" << endl;
-  vm.clear_ops();
+  get_thread(vm).ops.clear();
 }
 
 void thread_bench(VM& vm) {
@@ -345,7 +345,7 @@ void thread_bench(VM& vm) {
   timer.reset();
   eval(vm, start_pc, s);
   cout << "thread: " << timer.us() << "us" << endl;
-  vm.clear_ops();
+  get_thread(vm).ops.clear();
 }
 
 void vm_tests() {

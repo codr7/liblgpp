@@ -13,7 +13,7 @@ namespace lgpp::ops {
   inline const Op* eval(const Op& op, const Join& imp, lgpp::Thread& thread, lgpp::Stack& stack) {
     auto tid = pop(stack, lgpp::types::Thread);
     auto &vm(thread.vm);
-    Thread& t = vm.thread(tid);
+    Thread& t = get_thread(vm, tid);
 
     t.imp.join();
     push(stack, types::Stack, t.stack);
