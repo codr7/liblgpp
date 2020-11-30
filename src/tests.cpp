@@ -33,6 +33,11 @@
 
 using namespace lgpp;
 
+void type_tests() {
+  assert(isa(types::Int, types::Num) == &types::Num);
+  assert(isa(types::Int, types::Seq) == &types::Seq);
+}
+
 void vm_branch_tests(VM& vm) {
   Stack s;
 
@@ -350,6 +355,8 @@ void thread_bench(VM& vm) {
 
 void vm_tests() {
   VM vm;
+  
+  type_tests();
   
   vm_branch_tests(vm);
   vm_call_tests(vm);

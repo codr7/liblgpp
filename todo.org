@@ -1,4 +1,9 @@
 * ---1---
+* add TypeOf op
+*** push type of value
+* add Isa op
+* add types readme section
+* ---2---
 * add Chan
 ** add Chan type
 ** use deque
@@ -12,14 +17,6 @@
 ** add Next op
 *** peek iter && push next value or NIL
 ** add Stack iter
-* add Meta type
-** add TypeOf op
-*** push type of value
-** store pointer to type
-** add readme section
-* add type hierarchy support
-** add Isa op
-** add Num type
 * add eval trace support
 * add exception types
 ** runtime_error
@@ -43,3 +40,28 @@
 * add PushStack op
 ** push copy of current stack
 * ---N---
+
+sök nyckel eller 'application'
+
+gallery
+  application
+    title
+    image
+
+kiosk1
+  gallery
+    pax
+      ...
+
+kopplingstabell från Settings till typer SettingBind
+SettingId
+SettingTypeId
+Value
+
+application: pax
+application_title "Default"    
+
+application: pax
+retailunit: sverige
+application_title "Svensk"    
+      

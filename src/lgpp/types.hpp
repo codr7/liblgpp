@@ -7,6 +7,8 @@
 
 namespace lgpp::types {
   
+  extern Trait Num, Seq;
+
   extern Type<Coro> Coro;
   
   extern Type<int> Int;
@@ -16,6 +18,8 @@ namespace lgpp::types {
   
   template <>
   inline Val sub(Type<int>& type, const int& x, Val y) { return Val(type, x - y.as(type)); }
+
+  extern Type<lgpp::Trait *> Meta;
 
   extern Type<lgpp::Stack> Stack;
 
