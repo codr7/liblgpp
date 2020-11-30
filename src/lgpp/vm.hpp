@@ -42,17 +42,6 @@ namespace lgpp {
       return threads.insert(make_pair(t.id, move(t))).first->second;
     }
 
-    void join(Thread::Id id, Stack& stack) {
-      Thread& t = thread(id);
-      t.imp.join();
-      push(stack, types::Stack, t.stack);
-      
-      lock_t lock(thread_mutex);
-      auto found = threads.find(id);
-      if (found == threads.end()) { throw runtime_error("Thread not found"); }
-      threads.erase(found);
-    }
-
     map<Thread::Id, Thread> threads;
     shared_mutex thread_mutex;
   };

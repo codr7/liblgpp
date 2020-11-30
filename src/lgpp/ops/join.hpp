@@ -11,7 +11,17 @@ namespace lgpp::ops {
 
   template <>
   inline const Op* eval(const Op& op, const Join& imp, lgpp::VM& vm, lgpp::Stack& stack) {
-    vm.join(pop(stack, lgpp::types::Thread), stack);
+    auto tid = pop(stack, lgpp::types::Thread);
+    Thread& t = vm.thread(tid);
+
+    t.imp.join();
+    push(stack, types::Stack, t.stack);
+    
+    VM::lock_t lock(vm.thread_mutex);
+    auto found = vm.threads.find(tid);
+    if (found == vm.threads.end()) { throw runtime_error("Thread not found"); }
+    vm.threads.erase(found);
+
     return &op+1;
   }
 

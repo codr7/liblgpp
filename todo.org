@@ -1,3 +1,17 @@
+* ---1---
+* add Chan
+** add Chan type
+** use deque
+* add Pair type
+** add Zip/Unzip ops
+*** add offs arg
+* add Iter type
+** add types::iter method
+** add Iter type
+** add Iter op
+** add Next op
+*** peek iter && push next value or NIL
+** add Stack iter
 * add Meta type
 ** add TypeOf op
 *** push type of value
@@ -26,7 +40,7 @@
 ** implement for existing typs
 ** add Dump op
 *** dump val on stack to specified stream
-* add Stack op
+* add PushStack op
 ** push copy of current stack
-* ---maintainance---
+* ---N---
 ** move methods out of Thread/VM
