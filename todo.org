@@ -43,4 +43,3 @@
 * add PushStack op
 ** push copy of current stack
 * ---N---
-** move methods out of Thread

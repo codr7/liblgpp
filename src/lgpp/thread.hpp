@@ -23,10 +23,6 @@ namespace lgpp {
     Thread(VM &vm, const Thread &owner, function<void ()> body):
       vm(vm), ops(owner.ops), stack(owner.stack), imp(body), id(imp.get_id()) {}
     
-    void join() {
-      if (imp.joinable()) { imp.join(); }
-    }
-
     VM &vm;
     vector<Op> ops;
     vector<Ret> rets;

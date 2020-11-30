@@ -15,6 +15,7 @@ namespace lgpp::ops {
     auto &vm(thread.vm);
     Thread& t = get_thread(vm, tid);
 
+    if (!t.imp.joinable()) { throw runtime_error("Cannot join main thread"); }
     t.imp.join();
     push(stack, types::Stack, t.stack);
     
