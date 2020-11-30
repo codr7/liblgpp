@@ -34,10 +34,6 @@ namespace lgpp {
 
     const Thread& thread() const { return const_cast<VM*>(this)->thread(); }
 
-    void push_ret(PC pc, Ret::Opts opts = Ret::Opts::NONE) { thread().push_ret(pc, opts); }
-    
-    Ret pop_ret() { return thread().pop_ret(); }
-
     map<Thread::Id, Thread> threads;
     shared_mutex thread_mutex;
   };
@@ -51,6 +47,10 @@ namespace lgpp {
 
   inline const Op& eval(VM &vm, PC start_pc, Stack& stack) { return eval(vm.thread(), start_pc, stack); }
 
+  void push_ret(VM &vm, PC pc, Ret::Opts opts = Ret::Opts::NONE) { push_ret(vm.thread(), pc, opts); }
+  
+  Ret pop_ret(VM &vm) { return pop_ret(vm.thread()); }
+  
   template <typename...Args>
   Thread& start_thread(VM &vm, Args&&...args) {
     Thread t(vm, forward<Args>(args)...);

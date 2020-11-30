@@ -12,7 +12,7 @@ namespace lgpp::ops {
   template <>
   inline const Op* eval(const Op& op, const Pause& imp, lgpp::Thread& thread, lgpp::Stack& stack) {
     auto c = thread.pop_coro();
-    auto ret = thread.pop_ret();
+    auto ret = pop_ret(thread);
     if (!c) { runtime_error("Missing coro"); }
     if (c->done) { throw runtime_error("Coro is done"); }
     if (!((int)ret.opts & (int)lgpp::Ret::Opts::CORO)) { throw runtime_error("Pause outside of coro"); }

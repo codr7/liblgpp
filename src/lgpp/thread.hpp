@@ -23,15 +23,6 @@ namespace lgpp {
     Thread(VM &vm, const Thread &owner, function<void ()> body):
       vm(vm), ops(owner.ops), stack(owner.stack), imp(body), id(imp.get_id()) {}
     
-    void push_ret(PC pc, Ret::Opts opts = Ret::Opts::NONE) { rets.emplace_back(pc, opts); }
-
-    Ret pop_ret() {
-      if (!rets.size()) { throw runtime_error("Ret stack is empty"); }
-      auto r = rets.back();
-      rets.pop_back();
-      return r;
-    }
-
     void join() {
       if (imp.joinable()) { imp.join(); }
     }
@@ -71,6 +62,14 @@ namespace lgpp {
     return eval(thread, *(thread.ops.data()+start_pc), stack);
   }
 
+  inline void push_ret(Thread &thread, PC pc, Ret::Opts opts = Ret::Opts::NONE) { thread.rets.emplace_back(pc, opts); }
+  
+  inline Ret pop_ret(Thread &thread) {
+    if (!thread.rets.size()) { throw runtime_error("Ret stack is empty"); }
+    auto r = thread.rets.back();
+    thread.rets.pop_back();
+    return r;
+  }
 }
 
 #endif

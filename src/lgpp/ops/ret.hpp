@@ -11,7 +11,7 @@ namespace lgpp::ops {
 
   template <>
   inline const Op* eval(const Op& op, const Ret& imp, lgpp::Thread& thread, lgpp::Stack& stack) {
-    auto ret = thread.pop_ret();
+    auto ret = pop_ret(thread);
     
     if ((int)ret.opts & (int)lgpp::Ret::Opts::CORO) {
       auto c = thread.pop_coro();
