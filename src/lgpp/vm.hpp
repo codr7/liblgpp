@@ -14,11 +14,14 @@ namespace lgpp {
 
   using namespace std;
 
+  template <typename...Args>
+  Thread& start_thread(VM &vm, Args&&...args);
+
   struct VM {
     using shared_lock_t = shared_lock<shared_mutex>;
     using lock_t = unique_lock<shared_mutex>;
 
-    VM() { start_thread(this_thread::get_id()); }
+    VM() { start_thread(*this, this_thread::get_id()); }
         
     void clear_ops() { thread().ops.clear(); }
 
@@ -35,25 +38,26 @@ namespace lgpp {
     
     Ret pop_ret() { return thread().pop_ret(); }
 
-    template <typename...Args>
-    Thread& start_thread(Args&&...args) {
-      Thread t(*this, forward<Args>(args)...);
-      lock_t lock(thread_mutex);
-      return threads.insert(make_pair(t.id, move(t))).first->second;
-    }
-
     map<Thread::Id, Thread> threads;
     shared_mutex thread_mutex;
   };
-
-  inline const Op& eval(VM &vm, const Op& start_op, Stack &stack) { return eval(vm.thread(), start_op, stack); }
-
-  inline const Op& eval(VM &vm, PC start_pc, Stack& stack) { return eval(vm.thread(), start_pc, stack); }
 
   template <typename T, typename...Args>
   const T& emit(VM &vm, Args&&...args) { return emit<T, Args...>(vm.thread(), forward<Args>(args)...); }
   
   inline PC emit_pc(const VM &vm) { return emit_pc(vm.thread()); }
+
+  inline const Op& eval(VM &vm, const Op& start_op, Stack &stack) { return eval(vm.thread(), start_op, stack); }
+
+  inline const Op& eval(VM &vm, PC start_pc, Stack& stack) { return eval(vm.thread(), start_pc, stack); }
+
+  template <typename...Args>
+  Thread& start_thread(VM &vm, Args&&...args) {
+    Thread t(vm, forward<Args>(args)...);
+    VM::lock_t lock(vm.thread_mutex);
+    return vm.threads.insert(make_pair(t.id, move(t))).first->second;
+  }
+
 }
 
 #endif
