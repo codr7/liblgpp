@@ -1,6 +1,4 @@
 * ---1---
-* add types readme section
-* ---2---
 * add Chan
 ** add Chan type
 ** use deque

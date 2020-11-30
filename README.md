@@ -28,8 +28,6 @@ Custom interpreters are powerful and flexible tools that allow solving thorny pr
 
 The general idea is that distilling the fundamental building blocks in library form makes it possible to reduce needed effort to the point where more problems start to look like custom languages, and where it's affordable to try out new ideas and throw some away.
 
-The provided VM so far supports four [types](https://github.com/codr7/liblgpp/blob/main/src/lgpp/types.hpp) of values: coroutines, threads, stacks and integers; and the minimal set of [operations](https://github.com/codr7/liblgpp/tree/main/src/lgpp/ops) needed to write simple algorithms; but it is trivial to extend with additional types and operations.
-
 ### setup
 The project requires a C++17 compiler and CMake to build.
 
@@ -150,6 +148,63 @@ assert(pop(s, types::Int) == 3);
 assert(pop(s, types::Int) == 2);
 assert(pop(s, types::Int) == 1);
 ```
+
+### types
+Types are passed by reference. The provided type hierarchy contains the following types, but new ones are trivial to add:
+
+#### Nil
+Represents nothing and has one value of type `nullptr_t`.
+
+#### Meta
+The type of all types with values of type `Trait *`.
+
+#### Num
+The type of all numbers.
+
+#### Seq
+The type of all sequences.
+
+#### Int
+Plain old ints.
+
+#### Stack
+Stacks are implemented as `vector<Val>`.
+
+#### Coro
+Coroutines (see below).
+
+#### Thread
+Threads (see below).
+
+`TypeOf`replaces the top stack value with its type.
+
+```
+emit<ops::Push>(vm, types::Int, 1);
+emit<ops::TypeOf>(vm);
+emit<ops::Cp>(vm);
+emit<ops::TypeOf>(vm);
+emit<ops::Stop>(vm);
+eval(vm, 0, s);
+  
+assert(s.size() == 2);
+assert(pop(s, types::Meta) == &types::Meta);
+assert(pop(s, types::Meta) == &types::Int);
+```
+
+`Isa` replaces the top two stack values with their common root if they are related, otherwise `Nil`/`nullptr`.
+
+```
+emit<ops::Push>(vm, types::Meta, &types::Int);
+emit<ops::Push>(vm, types::Meta, &types::Num);
+emit<ops::Isa>(vm);
+emit<ops::Stop>(vm);
+eval(vm, 0, s);
+  
+assert(s.size() == 1);
+assert(pop(s, types::Meta) == &types::Num);
+```
+
+The provided VM so far supports four [types](https://github.com/codr7/liblgpp/blob/main/src/lgpp/types.hpp) of values: coroutines, threads, stacks and integers; and the minimal set of [operations](https://github.com/codr7/liblgpp/tree/main/src/lgpp/ops) needed to write simple algorithms; but it is trivial to extend with additional types and operations.
 
 ### coroutines
 Coroutines are labels that support pausing/resuming calls. Since they are passed by value, copying results in a separate call chain starting at the same position.
