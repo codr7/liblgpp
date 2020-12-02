@@ -37,15 +37,21 @@ $ cd liblgpp
 $ mkdir build
 $ cd build
 $ cmake ..
-$ make
+$ make test
 $ ./test
-fibrec: 630993us
-coro: 380486us
-thread: 1001610us
 ```
 
 ### performance
 Single threaded performance is around 3 times slower than [Python3](https://github.com/codr7/liblgpp/blob/main/bench/fibrec.py). While I believe that's possible to improve significantly within the constraints imposed by the current design, in the end [computed goto](https://github.com/codr7/liblg) is going to outperform function calls for the [eval loop](https://github.com/codr7/liblgpp/blob/f5eba0b60a65da2c6c7eea60e42a752b1843999f/src/lgpp/vm.hpp#L33).
+
+```
+$ cd build
+$ make bench
+$ ./bench
+fibrec: 645432us
+coro: 384625us
+thread: 1004606us
+```
 
 ```
 $ cd bench

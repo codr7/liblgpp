@@ -11,6 +11,9 @@ file(GLOB_RECURSE src src/lgpp/*.cpp)
 add_executable(test ${src} src/test.cpp)
 target_include_directories(test PUBLIC src/)
 
+add_executable(bench ${src} src/bench.cpp)
+target_include_directories(bench PUBLIC src/)
+
 file(GLOB inc src/lgpp/*.hpp)
 install(FILES ${inc} DESTINATION include/lgpp)
 

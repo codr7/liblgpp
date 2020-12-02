@@ -343,91 +343,6 @@ void vm_type_tests(VM& vm) {
   vm_isa_tests(vm);
 }
 
-void fibrec_bench(VM& vm) {
-  Stack s;
-  Label exit("exit");
-  
-  Label fib("fib", emit_pc(vm));
-  emit<ops::BranchLt>(vm, exit, 0, types::Int, 2);
-  emit<ops::Dec>(vm, types::Int, 1);
-  emit<ops::Cp>(vm);
-  emit<ops::Call>(vm, fib);
-  emit<ops::Swap>(vm);
-  emit<ops::Dec>(vm, types::Int, 1);
-  emit<ops::Call>(vm, fib);
-  emit<ops::Add>(vm);
-
-  exit.pc = emit_pc(vm);
-  emit<ops::Ret>(vm);
-
-  PC start_pc = emit_pc(vm);
-  emit<ops::Push>(vm, types::Int, 20);
-  emit<ops::Call>(vm, fib);
-  emit<ops::Stop>(vm);
-
-  Timer timer;
-  timer.reset();
-  
-  for (auto i = 0; i < 100; i++) {
-    eval(vm, start_pc, s);
-    assert(pop(s, types::Int) == 6765);
-  }
-
-  cout << "fibrec: " << timer.us() << "us" << endl;
-  get_thread(vm).ops.clear();
-}
-
-void coro_bench(VM& vm) {
-  Stack s;
-  Label exit("exit");
-  
-  Label target("target", emit_pc(vm));
-  emit<ops::BranchEq>(vm, exit, 0, types::Int, 0);
-  emit<ops::Dec>(vm, types::Int, 1);
-  emit<ops::Pause>(vm);
-  emit<ops::Goto>(vm, target);
-  exit.pc = emit_pc(vm);
-  emit<ops::Ret>(vm);
-
-  auto start_pc = emit_pc(vm);
-  emit<ops::Push>(vm, types::Int, 1000000);
-  emit<ops::StartCoro>(vm, target);
-  
-  Label loop("loop", emit_pc(vm));
-  emit<ops::Resume>(vm);
-  emit<ops::BranchGt>(vm, loop, 1, types::Int, 0);
-  emit<ops::Stop>(vm);
-
-  Timer timer;
-  timer.reset();
-  eval(vm, start_pc, s);
-  cout << "coro: " << timer.us() << "us" << endl;
-  get_thread(vm).ops.clear();
-}
-
-void thread_bench(VM& vm) {
-  Stack s;
-  auto ms = 1000;
-  
-  Label main("main", emit_pc(vm));
-  emit<ops::Push>(vm, types::Int, ms);
-  emit<ops::Sleep>(vm);
-  emit<ops::Stop>(vm);
-
-  auto start_pc = emit_pc(vm);
-  emit<ops::StartThread>(vm, main);
-  emit<ops::Push>(vm, types::Int, ms);
-  emit<ops::Sleep>(vm);
-  emit<ops::Join>(vm);
-  emit<ops::Stop>(vm);
-
-  Timer timer;
-  timer.reset();
-  eval(vm, start_pc, s);
-  cout << "thread: " << timer.us() << "us" << endl;
-  get_thread(vm).ops.clear();
-}
-
 void vm_tests() {
   VM vm;
   
@@ -441,10 +356,6 @@ void vm_tests() {
   vm_stack_tests(vm);
   vm_thread_tests(vm);
   vm_type_tests(vm);
-  
-  fibrec_bench(vm);
-  coro_bench(vm);
-  thread_bench(vm);
 }
 
 int main() {

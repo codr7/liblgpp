@@ -1,10 +1,9 @@
 * ---1---
-* separate bench/test
-** add bench target
-** update readme
 * add Chan
 ** add Chan type
 ** use deque
+** finish thread test
+*** prod/cons/queue
 * add Iter type
 ** add types::iter method
 ** add Iter type
