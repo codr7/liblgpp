@@ -2,6 +2,7 @@
 #define LGPP_TYPES_HPP
 
 #include "lgpp/coro.hpp"
+#include "lgpp/pair.hpp"
 #include "lgpp/stack.hpp"
 #include "lgpp/type.hpp"
 
@@ -31,6 +32,8 @@ namespace lgpp::types {
   
   template <>
   inline bool lt(Type<nullptr_t> &type, const nullptr_t& x, Val y) { return false; }
+
+  extern Type<pair<Val, Val>> Pair;
 
   extern Type<lgpp::Stack> Stack;
 

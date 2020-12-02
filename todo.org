@@ -1,10 +1,10 @@
 * ---1---
+* separate bench/test
+** add bench target
+** update readme
 * add Chan
 ** add Chan type
 ** use deque
-* add Pair type
-** add Zip/Unzip ops
-*** add offs arg
 * add Iter type
 ** add types::iter method
 ** add Iter type

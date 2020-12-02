@@ -38,7 +38,7 @@ $ mkdir build
 $ cd build
 $ cmake ..
 $ make
-$ ./tests
+$ ./test
 fibrec: 630993us
 coro: 380486us
 thread: 1001610us
@@ -166,6 +166,36 @@ The type of all sequences.
 
 #### Int
 Plain old ints.
+
+#### Pair
+Pairs are implemented as `pair<Val, Val>` and passed by value.
+
+```
+emit<ops::Push>(vm, types::Int, 1);
+emit<ops::Push>(vm, types::Int, 2);
+emit<ops::Zip>(vm);
+emit<ops::Stop>(vm);
+
+eval(vm, 0, s);
+assert(s.size() == 1);
+auto v = pop(s);
+assert(&type_of(v) == &types::Pair);
+auto p = v.as(types::Pair);
+assert(p.first.as(types::Int) == 1 && p.second.as(types::Int) == 2);
+```
+
+```
+Pair p({types::Int, 1}, {types::Int, 2});
+  
+emit<ops::Push>(vm, types::Pair, p);
+emit<ops::Unzip>(vm);
+emit<ops::Stop>(vm);
+
+eval(vm, 0, s);
+assert(s.size() == 2);
+assert(pop(s, types::Int) == 2);
+assert(pop(s, types::Int) == 1);
+```
 
 #### Stack
 Stacks are implemented as `vector<Val>`.

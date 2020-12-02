@@ -14,5 +14,7 @@ namespace lgpp::types {
 
   Type<lgpp::Thread::Id> Thread("Thread");
 
+  Type<pair<Val, Val>> Pair("Pair", {});
+
   Type<lgpp::Stack> Stack("Stack", {&Seq});
 }
