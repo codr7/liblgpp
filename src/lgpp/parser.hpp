@@ -2,7 +2,6 @@
 #define LGPP_PARSER_HPP
 
 #include <deque>
-#include <list>
 #include <optional>
 #include <sstream>
 
@@ -41,7 +40,7 @@ namespace lgpp {
     
     Pos pos;
     deque<Tok> toks;
-    list<Alt> alts;
+    vector<Alt> alts;
   };
 
   template <typename T, typename...Args>
