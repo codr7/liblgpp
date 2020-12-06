@@ -40,7 +40,7 @@ namespace lgpp {
     
     Pos pos;
     deque<Tok> toks;
-    vector<Alt> alts;
+    deque<Alt> alts;
   };
 
   template <typename T, typename...Args>
