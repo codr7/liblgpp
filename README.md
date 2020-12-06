@@ -50,7 +50,6 @@ $ make bench
 $ ./bench
 fibrec: 645432us
 coro: 384625us
-thread: 1004606us
 ```
 
 ```

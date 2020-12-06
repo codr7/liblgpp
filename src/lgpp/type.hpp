@@ -6,6 +6,8 @@
 namespace lgpp {
   template <typename T>
   struct Type: Trait {
+    using Val = T;
+    
     Type(string name, initializer_list<Trait *> parents = {}): Trait(name, parents) {}
   };
 }

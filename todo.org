@@ -1,9 +1,20 @@
 * ---1---
+* add tok compile method
+** pass tok/parser/thread/stack/env
+*** add Env type map<string, Val>
+* add Def/Get ops
+** add op compile stage
+*** add env arg
+* ---2---
+* finish support for hex/bin notation in parse_int
 * add Chan
 ** add Chan type
 ** use deque
 ** finish thread test
 *** prod/cons/queue
+* add Op encode/decode
+** add Val encode/decode type methods
+* add load(vm, path)/store(vm, path)
 * add Iter type
 ** add types::iter method
 ** add Iter type
@@ -19,10 +30,6 @@
 ** separate stacks
 ** add StartTask op
 ** add Snooze op
-* add Def/Get ops
-** add op compile stage
-*** add env type map<string, Val>
-*** add env arg
 * add parser support
 ** add Tok type
 *** add Pos
@@ -34,3 +41,25 @@
 * add PushStack op
 ** push copy of current stack
 * ---N---
+
+label fib
+  if (< 2) ret
+  dec cp call &fib
+  + (swap dec call &fib)
+  ret
+
+20 call fib 
+stop
+
+
+label foo-Int
+  say "Int"
+
+label foo
+  goto (find-label (str "foo-" (typeofs 0)))
+
+42 call foo
+"bar" call foo
+
+
+

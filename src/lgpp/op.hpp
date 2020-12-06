@@ -26,20 +26,20 @@ namespace lgpp {
 
     template <typename T>
     struct TImp: Imp {
-      TImp(T it): it(move(it)) { }
+      TImp(T imp): imp(move(imp)) { }
 
       const Op *eval(const Op &op, lgpp::Thread &thread, Stack &stack) const override {
-	return ops::eval(op, it, thread, stack);
+	return ops::eval(op, imp, thread, stack);
       }
 
-      T it;
+      T imp;
     };
 
     template <typename T>
     Op(PC pc, T imp): pc(pc), imp(make_shared<TImp<T>>(move(imp))) { } 
 
     template <typename T>
-    const T &as() { return dynamic_cast<const TImp<T> &>(*imp).it; }
+    const T &as() { return dynamic_cast<const TImp<T> &>(*imp).imp; }
     
     const Op *eval(lgpp::Thread &thread, Stack &stack) const { return imp->eval(*this, thread, stack); }
 

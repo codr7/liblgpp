@@ -29,6 +29,7 @@
 #include "lgpp/ops/type_of.hpp"
 #include "lgpp/ops/unzip.hpp"
 #include "lgpp/ops/zip.hpp"
+#include "lgpp/parser.hpp"
 #include "lgpp/stack.hpp"
 #include "lgpp/thread.hpp"
 #include "lgpp/timer.hpp"
@@ -36,6 +37,18 @@
 #include "lgpp/vm.hpp"
 
 using namespace lgpp;
+
+void parser_tests() {
+  Parser p("repl");
+  //parse(p, "foo + bar = 42");
+  //for (auto &t: p.toks) { cout << t << endl; }
+  assert(parse(p, "foo + bar = 42") == 5);
+  assert(pop(p).as<toks::Id>().name == "foo");
+  assert(pop(p).as<toks::Id>().name == "+");
+  assert(pop(p).as<toks::Id>().name == "bar");
+  assert(pop(p).as<toks::Id>().name == "=");
+  assert(pop(p).as<toks::Lit>().val.as(types::Int) == 42);
+}
 
 void type_tests() {
   assert(isa(types::Int, types::Num) == &types::Num);
@@ -344,10 +357,7 @@ void vm_type_tests(VM& vm) {
 }
 
 void vm_tests() {
-  VM vm;
-  
-  type_tests();
-  
+  VM vm;  
   vm_branch_tests(vm);
   vm_call_tests(vm);
   vm_coro_tests(vm);
@@ -359,6 +369,8 @@ void vm_tests() {
 }
 
 int main() {
+  parser_tests();
+  type_tests();
   vm_tests();
   return 0;
 }

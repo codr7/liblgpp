@@ -14,6 +14,9 @@ target_include_directories(test PUBLIC src/)
 add_executable(bench ${src} src/bench.cpp)
 target_include_directories(bench PUBLIC src/)
 
+add_library(lgpp STATIC ${src})
+target_include_directories(lgpp PUBLIC src/)
+
 file(GLOB inc src/lgpp/*.hpp)
 install(FILES ${inc} DESTINATION include/lgpp)
 

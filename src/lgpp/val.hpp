@@ -16,7 +16,10 @@ namespace lgpp {
   Trait& type_of(const Val &val);
 
   namespace types {
-    
+
+    template <typename T>
+    void dump(Type<T>& type, const T& imp, ostream& out);
+
     template <typename T>
     bool eq(Type<T>& type, const T& x, Val y);
 
@@ -39,6 +42,8 @@ namespace lgpp {
       virtual ~Imp() = default;
 
       virtual Trait& type() const = 0;
+
+      virtual void dump(ostream& out) const = 0;
       
       virtual bool eq(Val y) const = 0;
       virtual bool gt(Val y) const = 0;
@@ -54,6 +59,7 @@ namespace lgpp {
 
       Trait& type() const override { return _type; }
 
+      void dump(ostream& out) const override { types::dump(_type, data, out); }
       bool eq(Val y) const override { return types::eq(_type, data, y); }
       bool gt(Val y) const override { return types::gt(_type, data, y); }
       bool lt(Val y) const override { return types::lt(_type, data, y); }
@@ -87,6 +93,9 @@ namespace lgpp {
   
   namespace types {
     template <typename T>
+    void dump(Type<T>& type, const T& imp, ostream& out) { throw runtime_error("Not implemented"); }
+
+    template <typename T>
     bool eq(Type<T> &type, const T& x, Val y) { return x == y.as(type); }
 
     template <typename T>
@@ -111,7 +120,11 @@ namespace lgpp {
   inline Val operator+(const Val& x, const Val& y) { return x.imp->add(y); }
 
   inline Val operator-(const Val& x, const Val& y) { return x.imp->sub(y); }
-  
+
+  inline ostream &operator<<(ostream &out, const Val &v) {
+    v.imp->dump(out);
+    return out;
+  }
 }
 
 #endif

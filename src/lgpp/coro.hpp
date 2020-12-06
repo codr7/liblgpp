@@ -1,9 +1,14 @@
 #ifndef LGPP_CORO_HPP
 #define LGPP_CORO_HPP
 
+#include <ostream>
+
 #include "lgpp/pc.hpp"
 
 namespace lgpp {
+
+  using namespace std;
+  
   struct Coro {
     Coro(PC pc): pc(pc), done(false) {}
     
