@@ -2,6 +2,9 @@
 * add tok compile method
 ** pass tok/parser/thread/stack/env
 *** add Env type map<string, Val>
+* add op compile method
+** pass op, out, stack
+** move eval out of Op
 * add Def/Get ops
 ** add op compile stage
 *** add env arg
