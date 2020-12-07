@@ -1,7 +1,4 @@
 * ---1---
-* rename Goto to Go
-* rename type_of() to get_type
-
 * add tok compile method
 ** pass tok/parser/thread/stack/env
 *** add Env type map<string, Val>

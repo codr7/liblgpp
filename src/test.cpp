@@ -267,7 +267,7 @@ void vm_zip_tests(VM& vm) {
   eval(vm, 0, s);
   assert(s.size() == 1);
   auto v = pop(s);
-  assert(&type_of(v) == &types::Pair);
+  assert(&get_type(v) == &types::Pair);
   auto p = v.as(types::Pair);
   assert(p.first.as(types::Int) == 1 && p.second.as(types::Int) == 2);
   get_thread(vm).ops.clear();

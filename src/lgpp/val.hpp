@@ -13,7 +13,7 @@ namespace lgpp {
 
   struct Val;
 
-  Trait& type_of(const Val &val);
+  Trait& get_type(const Val &val);
 
   namespace types {
 
@@ -82,14 +82,14 @@ namespace lgpp {
     
     template <typename T>
     const T& as(Type<T>& type) const {
-      if (&type_of(*this) != &type) { throw runtime_error("Wrong type"); }
+      if (&get_type(*this) != &type) { throw runtime_error("Wrong type"); }
       return dynamic_cast<const TImp<T>&>(*imp).data;
     }
     
     shared_ptr<const Imp> imp;
   };
 
-  inline Trait& type_of(const Val &val) { return val.imp->type(); }
+  inline Trait& get_type(const Val &val) { return val.imp->type(); }
   
   namespace types {
     template <typename T>

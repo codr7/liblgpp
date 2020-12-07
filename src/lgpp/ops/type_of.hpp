@@ -10,7 +10,7 @@ namespace lgpp::ops {
 
   template <>
   inline const Op* eval(const Op& op, const TypeOf& imp, lgpp::Thread& thread, lgpp::Stack& stack) {
-    push(stack, lgpp::types::Meta, &type_of(pop(stack)));
+    push(stack, lgpp::types::Meta, &get_type(pop(stack)));
     return &op+1;
   }
 
