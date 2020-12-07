@@ -1,4 +1,7 @@
 * ---1---
+* rename Goto to Go
+* rename type_of() to get_type
+
 * add tok compile method
 ** pass tok/parser/thread/stack/env
 *** add Env type map<string, Val>
@@ -42,7 +45,7 @@
 ** push copy of current stack
 * ---N---
 
-label fib
+label: fib
   if (< 2) ret
   dec cp call &fib
   + (swap dec call &fib)
@@ -52,14 +55,13 @@ label fib
 stop
 
 
-label foo-Int
+label: foo-Int
   say "Int"
 
-label foo
+label: foo
   goto (find-label (str "foo-" (typeofs 0)))
 
 42 call foo
 "bar" call foo
-
 
 

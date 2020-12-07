@@ -12,7 +12,7 @@
 #include "lgpp/ops/drop.hpp"
 #include "lgpp/ops/inc.hpp"
 #include "lgpp/ops/isa.hpp"
-#include "lgpp/ops/goto.hpp"
+#include "lgpp/ops/go.hpp"
 #include "lgpp/ops/join.hpp"
 #include "lgpp/ops/pause.hpp"
 #include "lgpp/ops/push.hpp"
@@ -79,7 +79,7 @@ void coro_bench(VM& vm) {
   emit<ops::BranchEq>(vm, exit, 0, types::Int, 0);
   emit<ops::Dec>(vm, types::Int, 1);
   emit<ops::Pause>(vm);
-  emit<ops::Goto>(vm, target);
+  emit<ops::Go>(vm, target);
   exit.pc = emit_pc(vm);
   emit<ops::Ret>(vm);
 

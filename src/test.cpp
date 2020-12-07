@@ -12,7 +12,6 @@
 #include "lgpp/ops/drop.hpp"
 #include "lgpp/ops/inc.hpp"
 #include "lgpp/ops/isa.hpp"
-#include "lgpp/ops/goto.hpp"
 #include "lgpp/ops/join.hpp"
 #include "lgpp/ops/pause.hpp"
 #include "lgpp/ops/push.hpp"
