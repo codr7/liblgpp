@@ -6,9 +6,14 @@
 #include "lgpp/pos.hpp"
 
 namespace lgpp {
+  struct Env;
+  struct Parser;
   struct Tok;
 
   namespace toks {
+    template <typename T>
+    void compile(const Tok& tok, const T& imp, Parser& in, Thread& out, Env& env) {}
+
     template <typename T>
     void dump(const Tok& tok, const T& imp, ostream& out);
   }
@@ -16,6 +21,7 @@ namespace lgpp {
   struct Tok {
     struct Imp {
       virtual ~Imp() = default;
+      virtual void compile(const Tok& tok, Parser& in, Thread& out, Env& env) const = 0;
       virtual void dump(const Tok& tok, ostream& out) const = 0;
     };
 
@@ -23,6 +29,10 @@ namespace lgpp {
     struct TImp: Imp {
       TImp(T imp): imp(move(imp)) { }
 
+      void compile(const Tok& tok, Parser& in, Thread& out, Env& env) const override {
+	toks::compile(tok, imp, in, out, env);
+      }
+      
       void dump(const Tok& tok, ostream& out) const override { toks::dump(tok, imp, out); }
 
       T imp;
@@ -34,11 +44,13 @@ namespace lgpp {
     template <typename T>
     const T& as() { return dynamic_cast<const TImp<T>&>(*imp).imp; }
     
-    void dump(ostream& out) const { return imp->dump(*this, out); }
-
     const Pos pos;
     shared_ptr<const Imp> imp;
   };
+
+  inline void compile(const Tok &tok, Parser& in, Thread& out, Env& env) { return tok.imp->compile(tok, in, out, env); }
+
+  inline void dump(const Tok &tok, ostream& out) { return tok.imp->dump(tok, out); }
 
   inline ostream &operator<<(ostream &out, const Tok &t) {
     t.imp->dump(t, out);

@@ -1,13 +1,10 @@
 * ---1---
-* add tok compile method
-** pass tok/parser/thread/stack/env
-*** add Env type map<string, Val>
-* add op compile method
-** pass op, out, stack
-** move eval out of Op
-* add Def/Get ops
-** add op compile stage
-*** add env arg
+* add compile(Parser, Thread, Env)
+** implement tok compile for lit/id
+*** add Def/Get ops
+**** add op compile method
+***** pass op, out, stack
+**** move eval out of Op
 * ---2---
 * finish support for hex/bin notation in parse_int
 * add Chan
