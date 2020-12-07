@@ -41,7 +41,7 @@ namespace lgpp {
 
   inline const Op& eval(Thread &thread, const Op& start_op, Stack &stack) {
     const Op* pop = nullptr;
-    for (const Op* op = &start_op; op; pop = op, op = op->eval(thread, stack));
+    for (const Op* op = &start_op; op; pop = op, op = eval(*op, thread, stack));
     return *pop;
   }
 

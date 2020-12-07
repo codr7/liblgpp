@@ -1,5 +1,19 @@
 * ---1---
-* move eval out of Op
+* add alang main/repl
+** add lgpp repl template
+* add call binding
+** add optional op label pickup from stack
+* add goto binding
+** add optional op label pickup from stack
+* add say binding
+* add label? binding
+* add typofs binding
+** add Typofs op
+*** rename TypeOf to Typof
+* add String type/parser
+* add str binding
+* add label: macro
+** add Label op to store Label
 * ---2---
 * finish support for hex/bin notation in parse_int
 * add Chan
@@ -23,7 +37,6 @@
 ** separate stacks
 ** add StartTask op
 ** add Snooze op
-* add repl template
 * add Dump op
 ** dump val on stack to specified stream
 * ---N---
@@ -42,7 +55,7 @@ label: foo-Int
   say "Int"
 
 label: foo
-  goto (find-label (str "foo-" (typeofs 0)))
+  goto (label? (str "foo-" (typofs 0)))
 
 42 call foo
 "bar" call foo
