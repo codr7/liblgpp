@@ -37,7 +37,7 @@ namespace lgpp {
   }
   
   inline optional<Tok> peek(const Parser& parser) {
-    return parser.toks.size() ? make_optional(parser.toks.front()) : nullopt;
+    return parser.toks.empty() ? nullopt : make_optional(parser.toks.front());
   }
 
   inline Tok pop(Parser& parser) {

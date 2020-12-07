@@ -14,7 +14,7 @@ namespace lgpp {
   void push(Stack& stack, Args&&...args) { stack.emplace_back(forward<Args>(args)...); }
 
   inline Val pop(Stack& stack) {
-    if (!stack.size()) { throw runtime_error("Stack is empty"); }
+    if (stack.empty()) { throw runtime_error("Stack is empty"); }
     Val v(stack.back());
     stack.pop_back();
     return v;

@@ -61,7 +61,7 @@ namespace lgpp {
   inline void push_ret(Thread &thread, PC pc, Ret::Opts opts = Ret::Opts::NONE) { thread.rets.emplace_back(pc, opts); }
   
   inline Ret pop_ret(Thread &thread) {
-    if (!thread.rets.size()) { throw runtime_error("Ret stack is empty"); }
+    if (thread.rets.empty()) { throw runtime_error("Ret stack is empty"); }
     auto r = thread.rets.back();
     thread.rets.pop_back();
     return r;
