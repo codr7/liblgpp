@@ -37,8 +37,8 @@
 
 using namespace lgpp;
 
-void parser_tests() {
-  Parser p("repl");
+void parse_tests() {
+  Parser p("parse_tests");
   //parse(p, "foo + bar = 42");
   //for (auto &t: p.toks) { cout << t << endl; }
   assert(parse(p, "foo + bar = 42") == 5);
@@ -67,7 +67,7 @@ void vm_branch_tests(VM& vm) {
   eval(vm, 0, s);
   
   assert(s.size() == 1);
-  assert(s.back().as(types::Int) == 1);
+  assert(pop(s, types::Int) == 1);
   get_thread(vm).ops.clear();
 }
 
@@ -83,8 +83,26 @@ void vm_call_tests(VM& vm) {
   eval(vm, 0, s);
   
   assert(s.size() == 1);
-  assert(s.back().as(types::Int) == 42);
+  assert(pop(s, types::Int) == 42);
   get_thread(vm).ops.clear();
+}
+
+void vm_compile_tests(VM &vm) {
+  Parser p("compile_tests");
+  parse(p, "foo 7");
+  
+  Env e;
+  set(e, "foo", types::Int, 35);
+  auto &t = get_thread(vm);
+  compile(p, t, e);
+  emit<ops::Add>(t);
+  emit<ops::Stop>(t);
+  
+  Stack s;
+  eval(t, 0, s);
+  assert(s.size() == 1);
+  assert(pop(s, types::Int) == 42);
+  t.ops.clear();
 }
 
 void vm_coro_tests(VM& vm) {
@@ -121,7 +139,7 @@ void vm_inc_tests(VM& vm) {
   eval(vm, 0, s); 
 
   assert(s.size() == 1);
-  assert(s.back().as(types::Int) == 42);
+  assert(pop(s, types::Int) == 42);
   get_thread(vm).ops.clear();
 }
 
@@ -134,7 +152,7 @@ void vm_dec_tests(VM& vm) {
   eval(vm, 0, s); 
 
   assert(s.size() == 1);
-  assert(s.back().as(types::Int) == 42);
+  assert(pop(s, types::Int) == 42);
   get_thread(vm).ops.clear();
 }
 
@@ -148,7 +166,7 @@ void vm_add_tests(VM& vm) {
   eval(vm, 0, s); 
 
   assert(s.size() == 1);
-  assert(s.back().as(types::Int) == 42);
+  assert(pop(s, types::Int) == 42);
   get_thread(vm).ops.clear();
 }
 
@@ -162,7 +180,7 @@ void vm_sub_tests(VM& vm) {
   eval(vm, 0, s); 
 
   assert(s.size() == 1);
-  assert(s.back().as(types::Int) == 42);
+  assert(pop(s, types::Int) == 42);
   get_thread(vm).ops.clear();
 }
 
@@ -359,6 +377,7 @@ void vm_tests() {
   VM vm;  
   vm_branch_tests(vm);
   vm_call_tests(vm);
+  vm_compile_tests(vm);
   vm_coro_tests(vm);
   vm_math_tests(vm);
   vm_pair_tests(vm);
@@ -368,7 +387,7 @@ void vm_tests() {
 }
 
 int main() {
-  parser_tests();
+  parse_tests();
   type_tests();
   vm_tests();
   return 0;

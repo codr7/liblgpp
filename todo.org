@@ -1,7 +1,4 @@
 * ---1---
-* add Parser.compile
-** implement tok compile for lit/id
-** commit compile phase
 * move eval out of Op
 * ---2---
 * finish support for hex/bin notation in parse_int

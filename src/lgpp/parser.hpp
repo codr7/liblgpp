@@ -5,25 +5,13 @@
 #include <optional>
 #include <sstream>
 
+#include "lgpp/error.hpp"
 #include "lgpp/tok.hpp"
 #include "lgpp/toks.hpp"
 #include "lgpp/types.hpp"
 
 namespace lgpp {
   using namespace std;
-
-  struct EParse: runtime_error {
-    template <typename...Args>
-    static string format_msg(lgpp::Pos pos, Args&&...args) {
-      stringstream buf;
-      buf << "Error in '" << pos.file << "' at row " << pos.row << ", col " << pos.col << ':' << endl;
-      (buf << ... << args);
-      return buf.str();
-    }
-
-    template <typename...Args>
-    EParse(Pos pos, Args&&...args): runtime_error(format_msg(pos, forward<Args>(args)...)) {}
-  };
 
   struct Parser;
   
@@ -155,6 +143,10 @@ namespace lgpp {
     }
     
     return n;
+  }
+
+  inline void compile(Parser& parser, Thread& out, Env& env) {
+    while (!parser.toks.empty()) { compile(pop(parser), parser, out, env); }
   }
 }
 

@@ -3,10 +3,10 @@
 
 #include <ostream>
 
+#include "lgpp/env.hpp"
 #include "lgpp/pos.hpp"
 
 namespace lgpp {
-  struct Env;
   struct Parser;
   struct Tok;
 
