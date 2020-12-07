@@ -1,10 +1,8 @@
 * ---1---
-* add compile(Parser, Thread, Env)
+* add Parser.compile
 ** implement tok compile for lit/id
-*** add Def/Get ops
-**** add op compile method
-***** pass op, out, stack
-**** move eval out of Op
+** commit compile phase
+* move eval out of Op
 * ---2---
 * finish support for hex/bin notation in parse_int
 * add Chan
@@ -23,23 +21,14 @@
 *** peek iter && push next value or NIL
 ** add Stack iter
 * add eval trace support
-* add exception types
-** runtime_error
 * add tasks
 ** use Pause to switch
 ** separate stacks
 ** add StartTask op
 ** add Snooze op
-* add parser support
-** add Tok type
-*** add Pos
 * add repl template
-* add Val dump method
-** implement for existing typs
-** add Dump op
-*** dump val on stack to specified stream
-* add PushStack op
-** push copy of current stack
+* add Dump op
+** dump val on stack to specified stream
 * ---N---
 
 label: fib
