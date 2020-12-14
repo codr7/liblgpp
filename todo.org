@@ -1,8 +1,5 @@
 * ---1---
-* convert repl to REPL class
-* add group support to parser
-** add alang::Parser: lgpp: Parser
-* add dump binding
+* add alang dump binding
 ** add Dump op
 *** dump val on stack to specified stream
 * add Prim type function<void (thread, stack>>

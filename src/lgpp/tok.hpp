@@ -45,7 +45,7 @@ namespace lgpp {
     template <typename T>
     const T& as() { return dynamic_cast<const TImp<T>&>(*imp).imp; }
     
-    const Pos pos;
+    Pos pos;
     shared_ptr<const Imp> imp;
   };
 

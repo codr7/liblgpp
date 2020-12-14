@@ -10,6 +10,30 @@
 namespace lgpp::toks {
   using namespace lgpp;
   
+  struct Group {
+    template <typename...Args>
+    Group(Args&&...args): toks(forward<Args>(args)...) {}
+    vector<Tok> toks;
+  };
+
+  template <>
+  inline void compile(const Tok& tok, const Group& imp, Parser& in, Thread& out, Env& env) {
+    for (auto &t: imp.toks) { lgpp::compile(t, in, out, env); }
+  }
+
+  template <>
+  inline void dump(const Tok &tok, const Group &imp, ostream &out) {
+    out << "(group";
+    auto i = 0;
+
+    for (auto &t: imp.toks) {
+      if (i++) { out << ' '; }
+      lgpp::dump(t, out);
+    }
+    
+    out << ')';
+  }
+
   struct Lit {
     template <typename...Args>
     Lit(Args &&...args): val(forward<Args>(args)...) {}

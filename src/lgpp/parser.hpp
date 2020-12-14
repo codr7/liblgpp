@@ -20,7 +20,7 @@ namespace lgpp {
 
   struct Parser {
     using Alt = function<size_t (Parser&, char, istream&)>;
-
+    
     Parser(string file): pos(move(file)) {
       alts.push_back(&parse_int);
       alts.push_back(&parse_id);
@@ -67,7 +67,7 @@ namespace lgpp {
     if (!in.eof()) { in.unget(); }
     return n;
   }
-  
+
   inline size_t parse_id(Parser& parser, char c, istream& in) {
     if (!isgraph(c)) { return 0; }
     auto p(parser.pos);
@@ -129,6 +129,28 @@ namespace lgpp {
     }
 
     return 0;
+  }
+
+  inline Parser::Alt parse_group(char beg, char end) {
+    return [beg, end](Parser& parser, char c, istream& in) -> size_t {
+      if (c != beg) { return 0; }
+      Pos p = parser.pos;
+      vector<Tok> toks;
+      auto i = parser.toks.size();
+
+      for(;;) {
+	if (!in.get(c)) { throw EParse(parser.pos, "Missing end"); }
+	if (c == end) { break; }
+	in.unget();
+	if (!parse_tok(parser, in)) { break; }
+	skip(parser, in);
+      }
+
+      move(parser.toks.begin() + i, parser.toks.end(), back_inserter(toks));
+      parser.toks.erase(parser.toks.begin() + i, parser.toks.end());
+      push<toks::Group>(parser, p, toks);
+      return 1;
+    };
   }
 
   inline size_t parse(Parser& parser, string in) {

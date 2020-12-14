@@ -15,7 +15,7 @@ namespace lgpp {
     istream &in;
     ostream &out;
 
-    optional<function<bool (const string &line)>> on_getline;
+    function<bool (const string &line)> on_getline;
   };
   
   inline void enter(REPL &repl) {
@@ -23,7 +23,7 @@ namespace lgpp {
     string line;
   
     while (getline(repl.in, line)) {
-      if (repl.on_getline && !(*repl.on_getline)(line)) { break; }
+      if (repl.on_getline && !repl.on_getline(line)) { break; }
     }
   }
 

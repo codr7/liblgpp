@@ -39,6 +39,8 @@ using namespace lgpp;
 
 void parse_tests() {
   Parser p("parse_tests");
+  p.alts.push_front(parse_group('(', ')'));
+		   
   //parse(p, "foo + bar = 42");
   //for (auto &t: p.toks) { cout << t << endl; }
   assert(parse(p, "foo + bar = 42") == 5);
