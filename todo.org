@@ -1,4 +1,5 @@
 * ---1---
+* convert repl to REPL class
 * add group support to parser
 ** add alang::Parser: lgpp: Parser
 * add dump binding
