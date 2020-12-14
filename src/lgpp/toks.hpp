@@ -3,6 +3,7 @@
 
 #include "lgpp/env.hpp"
 #include "lgpp/ops/push.hpp"
+#include "lgpp/thread.hpp"
 #include "lgpp/tok.hpp"
 #include "lgpp/val.hpp"
 

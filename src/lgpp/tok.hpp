@@ -8,6 +8,7 @@
 
 namespace lgpp {
   struct Parser;
+  struct Thread;
   struct Tok;
 
   namespace toks {

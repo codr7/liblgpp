@@ -4,6 +4,7 @@
 #include "lgpp/coro.hpp"
 #include "lgpp/pair.hpp"
 #include "lgpp/stack.hpp"
+#include "lgpp/thread.hpp"
 #include "lgpp/type.hpp"
 
 namespace lgpp::types {

@@ -1,6 +1,10 @@
 * ---1---
-* add alang main/repl
-** add lgpp repl template
+* add group support to parser
+** add alang::Parser: lgpp: Parser
+* add dump binding
+** add Dump op
+*** dump val on stack to specified stream
+* add Prim type function<void (thread, stack>>
 * add call binding
 ** add optional op label pickup from stack
 * add goto binding
@@ -14,6 +18,9 @@
 * add str binding
 * add label: macro
 ** add Label op to store Label
+* add Ref (&) support
+* add stack literals
+* add map literals
 * ---2---
 * finish support for hex/bin notation in parse_int
 * add Chan
@@ -37,27 +44,24 @@
 ** separate stacks
 ** add StartTask op
 ** add Snooze op
-* add Dump op
-** dump val on stack to specified stream
 * ---N---
 
 label: fib
   if (< 2) ret
   dec cp call &fib
-  + (swap dec call &fib)
+  swap dec call &fib +
   ret
 
-20 call fib 
+20 call &fib 
 stop
 
 
 label: foo-Int
   say "Int"
+  ret
 
 label: foo
   goto (label? (str "foo-" (typofs 0)))
 
-42 call foo
-"bar" call foo
-
-
+42 call &foo
+"bar" call &foo
