@@ -1,8 +1,11 @@
 * ---1---
+* add stack literals
+** use parse_group
+* add Prim type function<void (thread, stack>>
+* add stack op bindings (cp/drop/swap)
 * add alang dump binding
 ** add Dump op
 *** dump val on stack to specified stream
-* add Prim type function<void (thread, stack>>
 * add call binding
 ** add optional op label pickup from stack
 * add goto binding
@@ -17,7 +20,6 @@
 * add label: macro
 ** add Label op to store Label
 * add Ref (&) support
-* add stack literals
 * add map literals
 * ---2---
 * finish support for hex/bin notation in parse_int

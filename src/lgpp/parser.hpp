@@ -131,7 +131,8 @@ namespace lgpp {
     return 0;
   }
 
-  inline Parser::Alt parse_group(char beg, char end) {
+  template <typename T = toks::Group>
+  Parser::Alt parse_group(char beg, char end) {
     return [beg, end](Parser& parser, char c, istream& in) -> size_t {
       if (c != beg) { return 0; }
       Pos p = parser.pos;
@@ -148,7 +149,7 @@ namespace lgpp {
 
       move(parser.toks.begin() + i, parser.toks.end(), back_inserter(toks));
       parser.toks.erase(parser.toks.begin() + i, parser.toks.end());
-      push<toks::Group>(parser, p, toks);
+      push<T>(parser, p, toks);
       return 1;
     };
   }
