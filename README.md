@@ -12,12 +12,12 @@ using namespace lgpp;
 
 int main() {
   VM vm;
-  Stack s;
+  Stack& s = get_stack(vm);
 
   emit<ops::Push>(vm, types::Int, 42);
   emit<ops::Stop>(vm);
 
-  eval(vm, 0, s);
+  eval(vm, 0);
   assert(pop(s, types::Int) == 42);
 
   return 0;
@@ -79,7 +79,7 @@ emit<ops::Push>(vm, types::Int, 2);
 emit<ops::Push>(vm, types::Int, 3);
 emit<ops::Cp>(vm, 2, 2);
 emit<ops::Stop>(vm);
-eval(vm, 0, s);
+eval(vm, 0);
   
 assert(s.size() == 5);
 assert(pop(s, types::Int) == 2);
@@ -97,7 +97,7 @@ emit<ops::Push>(vm, types::Int, 2);
 emit<ops::Push>(vm, types::Int, 3);
 emit<ops::Drop>(vm, 1, 2);
 emit<ops::Stop>(vm);
-eval(vm, 0, s); 
+eval(vm, 0); 
 
 assert(s.size() == 1);
 assert(pop(s, types::Int) == 1);
@@ -112,7 +112,7 @@ emit<ops::Push>(vm, types::Int, 2);
 emit<ops::Swap>(vm);
 emit<ops::Stop>(vm);
 
-eval(vm, 0, s);
+eval(vm, 0);
 assert(s.size() == 2);
 assert(pop(s, types::Int) == 1);
 assert(pop(s, types::Int) == 2);
@@ -128,7 +128,7 @@ emit<ops::Push>(vm, types::Stack, v);
 emit<ops::Splat>(vm);
 emit<ops::Stop>(vm);
 
-eval(vm, 0, s); 
+eval(vm, 0); 
 assert(s.size() == 3);
 assert(pop(s, types::Int) == 3);
 assert(pop(s, types::Int) == 2);
@@ -145,7 +145,7 @@ emit<ops::Push>(vm, types::Int, 3);
 emit<ops::Squash>(vm);
 emit<ops::Stop>(vm);
 
-eval(vm, 0, s); 
+eval(vm, 0); 
 assert(s.size() == 1);
 s = pop(s, types::Stack);
 assert(s.size() == 3);
@@ -181,7 +181,7 @@ emit<ops::Push>(vm, types::Int, 2);
 emit<ops::Zip>(vm);
 emit<ops::Stop>(vm);
 
-eval(vm, 0, s);
+eval(vm, 0);
 assert(s.size() == 1);
 auto v = pop(s);
 assert(&type_of(v) == &types::Pair);
@@ -196,7 +196,7 @@ emit<ops::Push>(vm, types::Pair, p);
 emit<ops::Unzip>(vm);
 emit<ops::Stop>(vm);
 
-eval(vm, 0, s);
+eval(vm, 0);
 assert(s.size() == 2);
 assert(pop(s, types::Int) == 2);
 assert(pop(s, types::Int) == 1);
@@ -219,7 +219,7 @@ emit<ops::TypeOf>(vm);
 emit<ops::Cp>(vm);
 emit<ops::TypeOf>(vm);
 emit<ops::Stop>(vm);
-eval(vm, 0, s);
+eval(vm, 0);
   
 assert(s.size() == 2);
 assert(pop(s, types::Meta) == &types::Meta);
@@ -233,7 +233,7 @@ emit<ops::Push>(vm, types::Meta, &types::Int);
 emit<ops::Push>(vm, types::Meta, &types::Num);
 emit<ops::Isa>(vm);
 emit<ops::Stop>(vm);
-eval(vm, 0, s);
+eval(vm, 0);
   
 assert(s.size() == 1);
 assert(pop(s, types::Meta) == &types::Num);
@@ -257,7 +257,7 @@ emit<ops::Resume>(vm);
 emit<ops::Drop>(vm);
 emit<ops::Stop>(vm);
   
-eval(vm, start_pc, s);
+eval(vm, start_pc);
 assert(pop(s, types::Int) == 3);
 assert(pop(s, types::Int) == 2);
 assert(pop(s, types::Int) == 1);
@@ -277,6 +277,6 @@ emit<ops::StartThread>(vm, target);
 emit<ops::Join>(vm);
 emit<ops::Stop>(vm);
   
-eval(vm, start_pc, s);
+eval(vm, start_pc);
 assert(pop(s, types::Stack).size() == 0);
 ```

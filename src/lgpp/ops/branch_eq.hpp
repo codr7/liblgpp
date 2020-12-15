@@ -12,13 +12,14 @@ namespace lgpp::ops {
   
   struct BranchEq: Branch {
     template <typename...Args>
-    BranchEq(lgpp::Label& target, size_t x_offs, Args&&...args):
+    BranchEq(Label& target, size_t x_offs, Args&&...args):
       Branch(target, x_offs, forward<Args>(args)...) {}
   };
 
   template <>
-  inline const Op* eval(const Op& op, const BranchEq& imp, lgpp::Thread& thread, lgpp::Stack& stack) {
-    return (*(stack.end()-imp.x_offs-1) == imp.y) ? &op-op.pc + *imp.target.pc : &op+1;
+  inline const Op* eval(const Op& op, const BranchEq& imp, Thread& thread) {
+    auto& s = get_stack(thread);
+    return (*(s.end()-imp.x_offs-1) == imp.y) ? &op-op.pc + *imp.target.pc : &op+1;
   }
 
 }

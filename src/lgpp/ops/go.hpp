@@ -12,7 +12,7 @@ namespace lgpp::ops {
   };
 
   template <>
-  inline const Op* eval(const Op& op, const Go& imp, lgpp::Thread& thread, lgpp::Stack& stack) {
+  inline const Op* eval(const Op& op, const Go& imp, Thread& thread) {
     return &op - op.pc + *imp.target.pc;
   }
 

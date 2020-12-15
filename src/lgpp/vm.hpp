@@ -38,9 +38,9 @@ namespace lgpp {
   
   inline PC emit_pc(const VM &vm) { return emit_pc(get_thread(vm)); }
 
-  inline const Op& eval(VM &vm, const Op& start_op, Stack &stack) { return eval(get_thread(vm), start_op, stack); }
+  inline const Op& eval(VM &vm, const Op& start_op) { return eval(get_thread(vm), start_op); }
 
-  inline const Op& eval(VM &vm, PC start_pc, Stack& stack) { return eval(get_thread(vm), start_pc, stack); }
+  inline const Op& eval(VM &vm, PC start_pc) { return eval(get_thread(vm), start_pc); }
 
   inline void push_ret(VM &vm, PC pc, Ret::Opts opts = Ret::Opts::NONE) { push_ret(get_thread(vm), pc, opts); }
   
@@ -61,6 +61,9 @@ namespace lgpp {
   }
 
   inline const Thread& get_thread(const VM &vm, Thread::Id id) { return get_thread(const_cast<VM &>(vm), id); }
+
+  inline Stack& get_stack(VM &vm) { return get_stack(get_thread(vm)); }
+
 }
 
 #endif

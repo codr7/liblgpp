@@ -11,12 +11,12 @@ namespace lgpp::ops {
     template <typename...Args>
     Push(Args&&...args): val(forward<Args>(args)...) {}
       
-    lgpp::Val val;
+    Val val;
   };
 
   template <>
-  inline const Op* eval(const Op& op, const Push& imp, lgpp::Thread& thread, lgpp::Stack& stack) {
-    stack.push_back(imp.val);
+  inline const Op* eval(const Op& op, const Push& imp, Thread& thread) {
+    get_stack(thread).push_back(imp.val);
     return &op+1;
   }
 

@@ -13,14 +13,10 @@ namespace lgpp::ops {
   };
 
   template <>
-  inline const Op* eval(const Op& op, const StartThread& imp, lgpp::Thread& thread, lgpp::Stack& stack) {
+  inline const Op* eval(const Op& op, const StartThread& imp, Thread& thread) {
     auto &vm(thread.vm);
-    
-    auto& t = start_thread(vm, thread, [&vm, &imp]() {
-      eval(vm, *imp.target.pc, get_thread(vm).stack);
-    });
-    
-    push(stack, Val(lgpp::types::Thread, t.id));
+    auto& t = start_thread(vm, thread, [&vm, &imp]() { eval(vm, *imp.target.pc); });
+    push(get_stack(thread), Val(types::Thread, t.id));
     return &op+1;
   }
 

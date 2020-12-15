@@ -10,7 +10,7 @@ namespace lgpp::ops {
   struct Ret {};
 
   template <>
-  inline const Op* eval(const Op& op, const Ret& imp, lgpp::Thread& thread, lgpp::Stack& stack) {
+  inline const Op* eval(const Op& op, const Ret& imp, Thread& thread) {
     auto ret = pop_ret(thread);
     
     if ((int)ret.opts & (int)lgpp::Ret::Opts::CORO) {
@@ -19,9 +19,9 @@ namespace lgpp::ops {
       if (c->done) { throw runtime_error("Coro is done"); }
       c->pc = op.pc;
       c->done = true;
-      push(stack, lgpp::types::Coro, *c);
+      push(get_stack(thread), types::Coro, *c);
     }
-    
+
     return &op - op.pc + ret.pc;
   }
 

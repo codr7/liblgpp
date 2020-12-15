@@ -15,8 +15,9 @@ namespace lgpp::ops {
   };
 
   template <>
-  inline const Op* eval(const Op& op, const Dec& imp, lgpp::Thread& thread, lgpp::Stack& stack) {
-    push(stack, pop(stack) - imp.delta);
+  inline const Op* eval(const Op& op, const Dec& imp, Thread& thread) {
+    auto& s = get_stack(thread);
+    push(s, pop(s) - imp.delta);
     return &op+1;
   }
 

@@ -10,14 +10,15 @@ namespace lgpp::ops {
   struct Join {};
 
   template <>
-  inline const Op* eval(const Op& op, const Join& imp, lgpp::Thread& thread, lgpp::Stack& stack) {
-    auto tid = pop(stack, lgpp::types::Thread);
+  inline const Op* eval(const Op& op, const Join& imp, Thread& thread) {
+    auto& s = get_stack(thread);
+    auto tid = pop(s, types::Thread);
     auto &vm(thread.vm);
     Thread& t = get_thread(vm, tid);
 
     if (!t.imp.joinable()) { throw runtime_error("Cannot join main thread"); }
     t.imp.join();
-    push(stack, types::Stack, t.stack);
+    push(s, types::Stack, get_stack(t));
     
     VM::lock_t lock(vm.thread_mutex);
     auto found = vm.threads.find(tid);

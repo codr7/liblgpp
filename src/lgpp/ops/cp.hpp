@@ -13,9 +13,10 @@ namespace lgpp::ops {
   };
 
   template <>
-  inline const Op* eval(const Op& op, const Cp& imp, lgpp::Thread& thread, lgpp::Stack& stack) {
-    auto i = stack.end() - imp.offs - 1;
-    copy(i, i + imp.len, back_inserter(stack)); 
+  inline const Op* eval(const Op& op, const Cp& imp, Thread& thread) {
+    auto& s = get_stack(thread);
+    auto i = s.end() - imp.offs - 1;
+    copy(i, i + imp.len, back_inserter(s)); 
     return &op+1;
   }
 

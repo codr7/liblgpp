@@ -9,14 +9,15 @@ namespace lgpp::ops {
   struct Isa {};
 
   template <>
-  inline const Op* eval(const Op& op, const Isa& imp, lgpp::Thread& thread, lgpp::Stack& stack) {
-    auto &parent(*pop(stack).as(lgpp::types::Meta)), &child(*pop(stack).as(lgpp::types::Meta));
-    auto root = lgpp::isa(child, parent);
+  inline const Op* eval(const Op& op, const Isa& imp, Thread& thread) {
+    auto& s = get_stack(thread);
+    auto &parent(*pop(s).as(types::Meta)), &child(*pop(s).as(types::Meta));
+    auto root = isa(child, parent);
 
     if (root) {
-      push(stack, lgpp::types::Meta, root);
+      push(s, types::Meta, root);
     } else {
-      push(stack, lgpp::types::Nil, nullptr);      
+      push(s, types::Nil, nullptr);      
     }
     
     return &op+1;

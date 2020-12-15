@@ -38,7 +38,7 @@
 using namespace lgpp;
 
 void fibrec_bench(VM& vm) {
-  Stack s;
+  auto& s = get_stack(vm);
   Label exit("exit");
   
   Label fib("fib", emit_pc(vm));
@@ -63,7 +63,7 @@ void fibrec_bench(VM& vm) {
   timer.reset();
   
   for (auto i = 0; i < 100; i++) {
-    eval(vm, start_pc, s);
+    eval(vm, start_pc);
     assert(pop(s, types::Int) == 6765);
   }
 
@@ -94,7 +94,7 @@ void coro_bench(VM& vm) {
 
   Timer timer;
   timer.reset();
-  eval(vm, start_pc, s);
+  eval(vm, start_pc);
   cout << "coro: " << timer.us() << "us" << endl;
   get_thread(vm).ops.clear();
 }
@@ -117,7 +117,7 @@ void thread_bench(VM& vm) {
 
   Timer timer;
   timer.reset();
-  eval(vm, start_pc, s);
+  eval(vm, start_pc);
   cout << "thread: " << timer.us() << "us" << endl;
   get_thread(vm).ops.clear();
 }

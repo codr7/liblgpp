@@ -1,11 +1,8 @@
 * ---1---
-* add stack literals
+* add stack literals to alang
 ** use parse_group
 * add Prim type function<void (thread, stack>>
 * add stack op bindings (cp/drop/swap)
-* add alang dump binding
-** add Dump op
-*** dump val on stack to specified stream
 * add call binding
 ** add optional op label pickup from stack
 * add goto binding

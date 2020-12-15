@@ -1,18 +1,18 @@
 #ifndef LGPP_OPS_ADD_HPP
 #define LGPP_OPS_ADD_HPP
 
-#include "../stack.hpp"
-#include "../val.hpp"
 #include "../op.hpp"
+#include "../thread.hpp"
 
 namespace lgpp::ops {
 
   struct Add {};
 
   template <>
-  inline const Op* eval(const Op& op, const Add& imp, lgpp::Thread& thread, lgpp::Stack& stack) {
-    Val y(pop(stack)), x(pop(stack));
-    push(stack, x+y);
+  inline const Op* eval(const Op& op, const Add& imp, Thread& thread) {
+    auto& s = get_stack(thread);
+    auto y(pop(s)), x(pop(s));
+    push(s, x+y);
     return &op+1;
   }
 

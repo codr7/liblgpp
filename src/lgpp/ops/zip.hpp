@@ -10,9 +10,10 @@ namespace lgpp::ops {
   struct Zip {};
 
   template <>
-  inline const Op* eval(const Op& op, const Zip& imp, lgpp::Thread& thread, lgpp::Stack& stack) {
-    auto y(pop(stack)), x(pop(stack));
-    push(stack, lgpp::types::Pair, make_pair(x, y));
+  inline const Op* eval(const Op& op, const Zip& imp, Thread& thread) {
+    auto& s = get_stack(thread);
+    auto y(pop(s)), x(pop(s));
+    push(s, types::Pair, make_pair(x, y));
     return &op+1;
   }
 
