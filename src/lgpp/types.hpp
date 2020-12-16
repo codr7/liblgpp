@@ -26,6 +26,9 @@ namespace lgpp::types {
 
   extern Type<lgpp::Trait *> Meta;
 
+  template <>
+  inline void dump(Type<lgpp::Trait*>& type, lgpp::Trait* const& x, ostream &out) { out << x->name; }
+
   extern Type<nullptr_t> Nil;
 
   template <>
