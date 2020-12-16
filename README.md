@@ -63,7 +63,7 @@ $ python3 coro.py
 ### design
 Modern C++ is a fairly complex language, but it is unique in the way it allows dialling in just the right balance between abstraction, performance and safety. I've tried my best to keep the code as simple as straight forward as the language allows, using the standard library where appropriate without getting tangled up.
 
-One somewhat unusual aspect of the design is that it doesn't use inheritance for [polymorphism](https://github.com/codr7/liblgpp/blob/main/src/lgpp/op.hpp), [this](https://www.youtube.com/watch?v=QGcVXgEVMJg) allows more flexibility in extending the library and simplifies usage.
+One somewhat unusual aspect of the design is that it doesn't use inheritance for [polymorphism](https://www.youtube.com/watch?v=QGcVXgEVMJg), this allows more flexibility and simplifies usage.
 
 The [eval loop](https://github.com/codr7/liblgpp/blob/f5eba0b60a65da2c6c7eea60e42a752b1843999f/src/lgpp/vm.hpp#L33) trades speed for simplicity, extensibility, portability and maintainability by dispatching to functions rather than using computed goto and representing operations as structs rather than packed bytecode.
 

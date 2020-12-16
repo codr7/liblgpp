@@ -1,8 +1,15 @@
 * ---1---
-* add stack literals to alang
-** use parse_group
+* add types to alang env
+** add init_env
+* add Scope tok like Stack
+** {...}
+** emit Splat after PopStack
 * add Prim type function<void (thread, stack>>
+** add PrimCall op
+** add Val eval method
+*** default return val
 * add stack op bindings (cp/drop/swap)
+* --
 * add call binding
 ** add optional op label pickup from stack
 * add goto binding
