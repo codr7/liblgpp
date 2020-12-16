@@ -4,9 +4,9 @@
 #include "../stack.hpp"
 #include "../val.hpp"
 #include "../op.hpp"
+#include "../thread.hpp"
 
 namespace lgpp::ops {
-
   struct Push {
     template <typename...Args>
     Push(Args&&...args): val(forward<Args>(args)...) {}

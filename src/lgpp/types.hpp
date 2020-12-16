@@ -49,6 +49,9 @@ namespace lgpp::types {
 
   extern Type<lgpp::Stack> Stack;
 
+  template <>
+  inline void dump(Type<lgpp::Stack>& type, const lgpp::Stack& x, ostream &out) { dump(x, out); }
+
   extern Type<Thread::Id> Thread;
 
 }
