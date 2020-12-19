@@ -41,6 +41,8 @@ namespace lgpp {
   }
 
   inline Tok pop(Parser& parser) {
+    if (parser.toks.empty()) { throw EParse(parser.pos, "Missing token"); }
+    
     Tok t = parser.toks.front();
     parser.toks.pop_front();
     return t;

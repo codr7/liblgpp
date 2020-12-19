@@ -1,9 +1,12 @@
 * ---1---
-* add Prim type function<void (thread, stack>>
+* add goto macro
+* add Prim type
+** function<void (thread)>
 ** add PrimCall op
 ** add Val eval method
+*** call from id compile
 *** default return val
-* add stack op bindings (cp/drop/swap)
+* add stack op bindings (d/cp/swap)
 * --
 * add Scope tok like Stack
 ** {...}

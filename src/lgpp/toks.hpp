@@ -59,7 +59,13 @@ namespace lgpp::toks {
   inline void compile(const Tok& tok, const Id& imp, Parser& in, Thread& out, Env& env) {
     auto found = env.find(imp.name);
     if (found == env.end()) { throw ECompile(tok.pos, "Unknown identifier: ", imp.name); }
-    emit<ops::Push>(out, found->second);
+    auto &v = found->second;
+
+    if (&get_type(v) == &types::Macro) {
+      v.as(types::Macro).imp(in, out, env);
+    } else {
+      emit<ops::Push>(out, v);
+    }
   }
 
   template <>

@@ -8,6 +8,10 @@ namespace lgpp::types {
 
   Type<int> Int("Int", {&Num, &Seq});
 
+  Type<lgpp::Label> Label("Label");
+
+  Type<lgpp::Macro> Macro("Macro");
+
   Type<lgpp::Trait *> Meta("Meta");
 
   Type<nullptr_t> Nil("Nil");

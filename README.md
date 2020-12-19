@@ -264,7 +264,7 @@ assert(pop(s, types::Int) == 1);
 ```
 
 ### threads
-The VM supports preemptive multithreading and has been carefully designed to minimize locking. Each thread runs in complete isolation on its own fresh copy of the stack, which is finally pushed to the calling stack on join.
+The VM supports preemptive multithreading and has been carefully designed to minimize locking. Each thread runs in complete isolation on its own stack, which is finally pushed to the calling stack on join.
 
 ```
 Label target("target", emit_pc(vm));
