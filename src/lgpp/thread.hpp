@@ -2,13 +2,15 @@
 #define LGPP_THREAD_HPP
 
 #include <deque>
+#include <list>
 #include <optional>
 #include <thread>
 
-#include "coro.hpp"
-#include "op.hpp"
-#include "ret.hpp"
-#include "stack.hpp"
+#include "lgpp/coro.hpp"
+#include "lgpp/label.hpp"
+#include "lgpp/op.hpp"
+#include "lgpp/ret.hpp"
+#include "lgpp/stack.hpp"
 
 namespace lgpp {
   
@@ -30,6 +32,7 @@ namespace lgpp {
     }
     
     VM &vm;
+    list<Label> labels;
     vector<Op> ops;
     vector<Ret> rets;
     deque<Stack> stacks;
@@ -38,6 +41,8 @@ namespace lgpp {
     vector<Coro> coros;
   };
 
+  inline Label &push_label(Thread &thread) { return thread.labels.emplace_back(); }
+  
   template <typename T, typename...Args>
   const T& emit(Thread& thread, Args&&...args) {
     return thread.ops.emplace_back(thread.ops.size(), T(forward<Args>(args)...)).template as<T>();

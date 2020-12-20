@@ -22,6 +22,9 @@ namespace lgpp::types {
   inline void dump(Type<int>& type, const int& x, ostream &out) { out << x; }
 
   template <>
+  inline bool is_true(Type<int>& type, const int& x) { return x; }
+
+  template <>
   inline Val add(Type<int>& type, const int& x, Val y) { return Val(type, x + y.as(type)); }
   
   template <>
@@ -34,13 +37,13 @@ namespace lgpp::types {
   inline void dump(Type<lgpp::Label>& type, const lgpp::Label& x, ostream &out) { out << "(Label " << x.name << ')'; }
 
   template <>
-  inline bool eq(Type<lgpp::Label> &type, const lgpp::Label& x, Val y) { return x.name == y.as(Label).name; }
+  inline bool eq(Type<lgpp::Label>& type, const lgpp::Label& x, Val y) { return x.name == y.as(Label).name; }
   
   template <>
-  inline bool gt(Type<lgpp::Label> &type, const lgpp::Label& x, Val y) { return x.name > y.as(Label).name; }
+  inline bool gt(Type<lgpp::Label>& type, const lgpp::Label& x, Val y) { return x.name > y.as(Label).name; }
   
   template <>
-  inline bool lt(Type<lgpp::Label> &type, const lgpp::Label& x, Val y) { return x.name < y.as(Label).name; }
+  inline bool lt(Type<lgpp::Label>& type, const lgpp::Label& x, Val y) { return x.name < y.as(Label).name; }
   
 
   extern Type<lgpp::Macro> Macro;
@@ -49,13 +52,13 @@ namespace lgpp::types {
   inline void dump(Type<lgpp::Macro>& type, const lgpp::Macro& x, ostream &out) { out << "(Macro " << x.name << ')'; }
 
   template <>
-  inline bool eq(Type<lgpp::Macro> &type, const lgpp::Macro& x, Val y) { return x.name == y.as(Macro).name; }
+  inline bool eq(Type<lgpp::Macro>& type, const lgpp::Macro& x, Val y) { return x.name == y.as(Macro).name; }
   
   template <>
-  inline bool gt(Type<lgpp::Macro> &type, const lgpp::Macro& x, Val y) { return x.name > y.as(Macro).name; }
+  inline bool gt(Type<lgpp::Macro>& type, const lgpp::Macro& x, Val y) { return x.name > y.as(Macro).name; }
   
   template <>
-  inline bool lt(Type<lgpp::Macro> &type, const lgpp::Macro& x, Val y) { return x.name < y.as(Macro).name; }
+  inline bool lt(Type<lgpp::Macro>& type, const lgpp::Macro& x, Val y) { return x.name < y.as(Macro).name; }
 
   
   extern Type<lgpp::Trait *> Meta;
@@ -70,13 +73,16 @@ namespace lgpp::types {
   inline void dump(Type<nullptr_t>& type, const nullptr_t& x, ostream &out) { out << "_"; }
 
   template <>
-  inline bool eq(Type<nullptr_t> &type, const nullptr_t& x, Val y) { return true; }
+  inline bool is_true(Type<nullptr_t>& type, const nullptr_t& x) { return false; }
+
+  template <>
+  inline bool eq(Type<nullptr_t>& type, const nullptr_t& x, Val y) { return true; }
   
   template <>
-  inline bool gt(Type<nullptr_t> &type, const nullptr_t& x, Val y) { return false; }
+  inline bool gt(Type<nullptr_t>& type, const nullptr_t& x, Val y) { return false; }
   
   template <>
-  inline bool lt(Type<nullptr_t> &type, const nullptr_t& x, Val y) { return false; }
+  inline bool lt(Type<nullptr_t>& type, const nullptr_t& x, Val y) { return false; }
 
 
   extern Type<lgpp::Pair> Pair;
@@ -92,8 +98,10 @@ namespace lgpp::types {
   template <>
   inline void dump(Type<lgpp::Stack>& type, const lgpp::Stack& x, ostream &out) { dump(x, out); }
 
-  extern Type<Thread::Id> Thread;
+  template <>
+  inline bool is_true(Type<lgpp::Stack>& type, const lgpp::Stack& x) { return !x.empty(); }
 
+  extern Type<Thread::Id> Thread;
 }
 
 #endif

@@ -24,6 +24,12 @@ namespace lgpp {
   template <typename T>
   T pop(Stack& stack, Type<T>& type) { return pop(stack).as(type); } 
 
+  template <typename T>
+  const T &peek(Stack& stack, Type<T>& type) {
+    if (stack.empty()) { throw runtime_error("Stack is empty"); }
+    return stack.back().as(type);
+  } 
+
   inline void dump(const Stack &stack, ostream &out) {
     out << '[';
     auto i = 0;

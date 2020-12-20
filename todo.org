@@ -1,39 +1,27 @@
 * ---1---
+* add ret macro
 * add Prim type
 ** add PrimCall op
 *** emit in Id compile
-* add call macro
-* add ret macro
-* add stack op bindings (d/cp/swap)
-* --
-* add Scope tok like Stack
-** {...}
-** emit Splat after PopStack
-* add call binding
-** add optional op label pickup from stack
-* add goto binding
-** add optional op label pickup from stack
+* add call syntax
+** make Parser::parse_id virtual
+** override and check for args
+** lookup label & emit call op
+* add stack bindings (d/cp/swap)
+* add <=> bindings
+* add +/- bindings
+* add inc/dec bindings
+* ---2---
 * add say binding
-* add label? binding
-* add typofs binding
-** add Typofs op
-*** rename TypeOf to Typof
 * add String type/parser
 * add str binding
-* add label: macro
-** add Label op to store Label
-* add Ref (&) support
 * add map literals
-* ---2---
 * finish support for hex/bin notation in parse_int
 * add Chan
 ** add Chan type
 ** use deque
 ** finish thread test
 *** prod/cons/queue
-* add Op encode/decode
-** add Val encode/decode type methods
-* add load(vm, path)/store(vm, path)
 * add Iter type
 ** add types::iter method
 ** add Iter type
@@ -42,12 +30,12 @@
 *** peek iter && push next value or NIL
 ** add Stack iter
 * add eval trace support
+* ---N---
 * add tasks
 ** use Pause to switch
 ** separate stacks
 ** add StartTask op
 ** add Snooze op
-* ---N---
 
 label fib
   if (< 2) ret

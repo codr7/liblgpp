@@ -21,6 +21,9 @@ namespace lgpp {
     void dump(Type<T>& type, const T& imp, ostream& out);
 
     template <typename T>
+    bool is_true(Type<T>& type, const T& x);
+
+    template <typename T>
     bool eq(Type<T>& type, const T& x, Val y);
 
     template <typename T>
@@ -45,6 +48,7 @@ namespace lgpp {
 
       virtual void dump(ostream& out) const = 0;
       
+      virtual bool is_true() const = 0;
       virtual bool eq(Val y) const = 0;
       virtual bool gt(Val y) const = 0;
       virtual bool lt(Val y) const = 0;
@@ -60,6 +64,7 @@ namespace lgpp {
       Trait& type() const override { return _type; }
 
       void dump(ostream& out) const override { types::dump(_type, data, out); }
+      bool is_true() const override { return types::is_true(_type, data); }
       bool eq(Val y) const override { return types::eq(_type, data, y); }
       bool gt(Val y) const override { return types::gt(_type, data, y); }
       bool lt(Val y) const override { return types::lt(_type, data, y); }
@@ -96,6 +101,9 @@ namespace lgpp {
     void dump(Type<T>& type, const T& imp, ostream& out) { throw runtime_error("Not implemented"); }
 
     template <typename T>
+    bool is_true(Type<T> &type, const T& x) { return true; }
+
+    template <typename T>
     bool eq(Type<T> &type, const T& x, Val y) { return x == y.as(type); }
 
     template <typename T>
@@ -125,6 +133,8 @@ namespace lgpp {
     v.imp->dump(out);
     return out;
   }
+
+  inline bool is_true(const Val& x) { return x.imp->is_true(); }
 }
 
 #endif

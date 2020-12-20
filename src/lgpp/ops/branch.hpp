@@ -7,21 +7,17 @@
 #include "../val.hpp"
 #include "../op.hpp"
 
-namespace lgpp {
-  struct Label;
-}
-
 namespace lgpp::ops {
   
   struct Branch {
-    template <typename...Args>
-    Branch(Label& target, size_t x_offs, Args&&...args):
-      target(target), x_offs(x_offs), y(forward<Args>(args)...) {}
-    
-    Label& target;
-    size_t x_offs;
-    Val y;
+    Branch(const Label& target): target(target) {}    
+    const Label& target;
   };
+
+  template <>
+  inline const Op* eval(const Op& op, const Branch& imp, Thread& thread) {
+    return is_true(pop(get_stack(thread))) ? &op+1 : &op-op.pc + *imp.target.pc;
+  }
 
 }
 

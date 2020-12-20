@@ -6,14 +6,14 @@
 #include "../stack.hpp"
 #include "../val.hpp"
 #include "../op.hpp"
-#include "branch.hpp"
+#include "branch_const.hpp"
 
 namespace lgpp::ops {
   
-  struct BranchLt: Branch {
+  struct BranchLt: BranchConst {
     template <typename...Args>
     BranchLt(Label& target, size_t x_offs, Args&&...args):
-      Branch(target, x_offs, forward<Args>(args)...) {}
+      BranchConst(target, x_offs, forward<Args>(args)...) {}
   };
 
   template <>
