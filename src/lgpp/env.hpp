@@ -18,6 +18,11 @@ namespace lgpp {
     return env;
   }
 
+  inline Val *find(Env& env, const string& id) {
+    auto found = env.find(id);
+    if (found == env.end()) { return nullptr; }
+    return &found->second;
+  }
 }
 
 #endif

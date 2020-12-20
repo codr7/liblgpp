@@ -1,4 +1,4 @@
-This project implements an extensible stack based interpreter toolkit in C++17.
+This project aims to implement an extensible stack based interpreter toolkit in C++17.
 
 ```
 #include <cassert>

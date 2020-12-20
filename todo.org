@@ -1,11 +1,9 @@
 * ---1---
-* add goto macro
 * add Prim type
-** function<void (thread)>
 ** add PrimCall op
-** add Val eval method
-*** call from id compile
-*** default return val
+*** emit in Id compile
+* add call macro
+* add ret macro
 * add stack op bindings (d/cp/swap)
 * --
 * add Scope tok like Stack
@@ -51,25 +49,14 @@
 ** add Snooze op
 * ---N---
 
-label: fib
+label fib
   if (< 2) ret
-  dec cp call &fib
-  swap dec call &fib +
+  dec() cp() fib()
+  +(swap() dec() fib())
   ret
 
-20 call &fib 
+fib(20)
 stop
-
-
-label: foo-Int
-  say "Int"
-  ret
-
-label: foo
-  goto (label? (str "foo-" (typofs 0)))
-
-42 call &foo
-"bar" call &foo
 
 
 

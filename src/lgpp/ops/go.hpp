@@ -7,8 +7,8 @@
 namespace lgpp::ops {
 
   struct Go {
-    Go(Label& target): target(target) {}
-    Label& target;
+    Go(const Label& target): target(target) {}
+    const Label& target;
   };
 
   template <>
