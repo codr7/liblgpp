@@ -1,5 +1,6 @@
 * ---1---
 * add ret macro
+* add and/or macros
 * add Prim type
 ** add PrimCall op
 *** emit in Id compile

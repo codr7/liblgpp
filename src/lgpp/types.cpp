@@ -4,6 +4,8 @@
 namespace lgpp::types {
   Trait Num("Num"), Seq("Seq");
   
+  Type<bool> Bool("Bool");
+
   Type<lgpp::Coro> Coro("Coro", {&Seq});
 
   Type<int> Int("Int", {&Num, &Seq});

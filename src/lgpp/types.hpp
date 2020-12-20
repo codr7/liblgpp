@@ -13,6 +13,15 @@ namespace lgpp::types {
   
   extern Trait Num, Seq;
 
+  extern Type<bool> Bool;
+
+  template <>
+  inline void dump(Type<bool>& type, const bool& x, ostream &out) { out << (x ? 'T' : 'F'); }
+
+  template <>
+  inline bool is_true(Type<bool>& type, const bool& x) { return x; }
+
+
   extern Type<Coro> Coro;
   
 
