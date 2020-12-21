@@ -22,5 +22,7 @@ namespace lgpp::types {
 
   Type<pair<Val, Val>> Pair("Pair", {});
 
+  Type<lgpp::Prim> Prim("Prim");
+
   Type<lgpp::Stack> Stack("Stack", {&Seq});
 }

@@ -44,10 +44,13 @@ namespace lgpp {
   inline Label &push_label(Thread &thread) { return thread.labels.emplace_back(); }
   
   template <typename T, typename...Args>
-  const T& emit(Thread& thread, Args&&...args) {
-    return thread.ops.emplace_back(thread.ops.size(), T(forward<Args>(args)...)).template as<T>();
+  const T& emit(Thread& thread, Pos pos, Args&&...args) {
+    return thread.ops.emplace_back(thread.ops.size(), pos, T(forward<Args>(args)...)).template as<T>();
   }
-  
+
+  template <typename T, typename...Args>
+  const T& emit(Thread& thread, Args&&...args) { return emit<T>(thread, Pos("n/a"), forward<Args>(args)...); }
+
   inline PC emit_pc(const Thread& t) { return t.ops.size(); }
 
   inline const Op& eval(Thread& thread, const Op& start_op) {

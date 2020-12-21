@@ -2,6 +2,7 @@
 #define LGPP_TOKS_HPP
 
 #include "lgpp/env.hpp"
+#include "lgpp/ops/call_prim.hpp"
 #include "lgpp/ops/push.hpp"
 #include "lgpp/thread.hpp"
 #include "lgpp/tok.hpp"
@@ -42,7 +43,7 @@ namespace lgpp::toks {
 
   template <>
   inline void compile(const Tok& tok, const Lit& imp, Parser& in, Thread& out, Env& env) {
-    emit<ops::Push>(out, imp.val);
+    emit<ops::Push>(out, tok.pos, imp.val);
   }
 
   template <>
@@ -60,11 +61,14 @@ namespace lgpp::toks {
     auto found = env.find(imp.name);
     if (found == env.end()) { throw ECompile(tok.pos, "Unknown identifier: ", imp.name); }
     auto &v = found->second;
-
-    if (&get_type(v) == &types::Macro) {
+    auto vt = &get_type(v);
+    
+    if (vt == &types::Macro) {
       v.as(types::Macro).imp(in, out, env);
+    } else if (vt == &types::Prim) {
+      emit<ops::CallPrim>(out, tok.pos,  v.as(types::Prim));
     } else {
-      emit<ops::Push>(out, v);
+      emit<ops::Push>(out, tok.pos, v);
     }
   }
 

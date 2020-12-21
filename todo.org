@@ -1,17 +1,19 @@
 * ---1---
 * add ret macro
 * add and/or macros
-* add Prim type
-** add PrimCall op
-*** emit in Id compile
-* add call syntax
+* add paren call syntax
 ** make Parser::parse_id virtual
 ** override and check for args
-** lookup label & emit call op
+** add alang Call tok
+** move args lookup label & emit call op
+* add dot call syntax
+** pass as first arg
 * add stack bindings (d/cp/swap)
-* add <=> bindings
 * add +/- bindings
 * add inc/dec bindings
+* activate Op.pos
+** add arg to all op constructors
+** update test/bench/README
 * ---2---
 * add say binding
 * add String type/parser

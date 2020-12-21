@@ -4,8 +4,9 @@
 #include <memory>
 #include <utility>
 
-#include "pc.hpp"
-#include "stack.hpp"
+#include "lgpp/pc.hpp"
+#include "lgpp/pos.hpp"
+#include "lgpp/stack.hpp"
 
 namespace lgpp {
   using namespace std;
@@ -34,12 +35,13 @@ namespace lgpp {
     };
 
     template <typename T>
-    Op(PC pc, T imp): pc(pc), imp(make_shared<TImp<T>>(move(imp))) { } 
+    Op(PC pc, Pos pos, T imp): pc(pc), pos(pos), imp(make_shared<TImp<T>>(move(imp))) { } 
 
     template <typename T>
     const T& as() { return dynamic_cast<const TImp<T>&>(*imp).imp; }
     
     const PC pc;
+    const Pos pos;
     shared_ptr<const Imp> imp;
   };
 

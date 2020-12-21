@@ -5,6 +5,7 @@
 #include "lgpp/label.hpp"
 #include "lgpp/macro.hpp"
 #include "lgpp/pair.hpp"
+#include "lgpp/prim.hpp"
 #include "lgpp/stack.hpp"
 #include "lgpp/thread.hpp"
 #include "lgpp/type.hpp"
@@ -102,6 +103,21 @@ namespace lgpp::types {
   }
 
 
+  extern Type<lgpp::Prim> Prim;
+
+  template <>
+  inline void dump(Type<lgpp::Prim>& type, const lgpp::Prim& x, ostream &out) { out << "(Prim " << x.name << ')'; }
+
+  template <>
+  inline bool eq(Type<lgpp::Prim>& type, const lgpp::Prim& x, Val y) { return x.name == y.as(Prim).name; }
+  
+  template <>
+  inline bool gt(Type<lgpp::Prim>& type, const lgpp::Prim& x, Val y) { return x.name > y.as(Prim).name; }
+  
+  template <>
+  inline bool lt(Type<lgpp::Prim>& type, const lgpp::Prim& x, Val y) { return x.name < y.as(Prim).name; }
+
+  
   extern Type<lgpp::Stack> Stack;
 
   template <>
