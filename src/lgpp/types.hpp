@@ -41,20 +41,17 @@ namespace lgpp::types {
   inline Val sub(Type<int>& type, const int& x, Val y) { return Val(type, x - y.as(type)); }
 
 
-  extern Type<lgpp::Label> Label;
+  extern Type<lgpp::Label *> Label;
 
   template <>
-  inline void dump(Type<lgpp::Label>& type, const lgpp::Label& x, ostream &out) { out << "(Label " << x.name << ')'; }
+  inline PC call(Type<lgpp::Label *>& type, lgpp::Label* const& imp, Thread& thread, PC pc, Pos pos) {
+    push_ret(thread, pc+1);	
+    return *imp->pc; 
+  }
 
   template <>
-  inline bool eq(Type<lgpp::Label>& type, const lgpp::Label& x, Val y) { return x.name == y.as(Label).name; }
-  
-  template <>
-  inline bool gt(Type<lgpp::Label>& type, const lgpp::Label& x, Val y) { return x.name > y.as(Label).name; }
-  
-  template <>
-  inline bool lt(Type<lgpp::Label>& type, const lgpp::Label& x, Val y) { return x.name < y.as(Label).name; }
-  
+  inline void dump(Type<lgpp::Label *>& type, lgpp::Label* const& x, ostream &out) { out << "(Label " << x->name << ')'; }
+
 
   extern Type<lgpp::Macro> Macro;
 

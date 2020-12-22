@@ -6,6 +6,8 @@
 namespace lgpp {  
   using namespace std;
   
+  struct Thread;
+  
   struct Trait;
   
   template <typename T>
@@ -18,25 +20,28 @@ namespace lgpp {
   namespace types {
 
     template <typename T>
-    void dump(Type<T>& type, const T& imp, ostream& out);
+    PC call(Type<T>&, const T&, Thread&, PC, Pos);
 
     template <typename T>
-    bool is_true(Type<T>& type, const T& x);
+    void dump(Type<T>&, const T&, ostream&);
 
     template <typename T>
-    bool eq(Type<T>& type, const T& x, Val y);
+    bool is_true(Type<T>&, const T&);
 
     template <typename T>
-    bool gt(Type<T>& type, const T& x, Val y);
+    bool eq(Type<T>&, const T&, Val);
 
     template <typename T>
-    bool lt(Type<T>& type, const T& x, Val y);
+    bool gt(Type<T>&, const T&, Val);
 
     template <typename T>
-    Val add(Type<T>& type, const T& x, Val y);
+    bool lt(Type<T>&, const T&, Val);
 
     template <typename T>
-    Val sub(Type<T>& type, const T& x, Val y);
+    Val add(Type<T>&, const T&, Val);
+
+    template <typename T>
+    Val sub(Type<T>&, const T&, Val);
 
   }
 
@@ -46,15 +51,16 @@ namespace lgpp {
 
       virtual Trait& type() const = 0;
 
-      virtual void dump(ostream& out) const = 0;
+      virtual PC call(Thread&, PC, Pos) const = 0;
+      virtual void dump(ostream&) const = 0;
       
       virtual bool is_true() const = 0;
-      virtual bool eq(Val y) const = 0;
-      virtual bool gt(Val y) const = 0;
-      virtual bool lt(Val y) const = 0;
+      virtual bool eq(Val) const = 0;
+      virtual bool gt(Val) const = 0;
+      virtual bool lt(Val) const = 0;
 
-      virtual Val add(Val y) const = 0;
-      virtual Val sub(Val y) const = 0;
+      virtual Val add(Val) const = 0;
+      virtual Val sub(Val) const = 0;
     };
 
     template <typename T>
@@ -63,6 +69,7 @@ namespace lgpp {
 
       Trait& type() const override { return _type; }
 
+      PC call(Thread& thread, PC pc, Pos pos) const override { return types::call(_type, data, thread, pc, pos); }
       void dump(ostream& out) const override { types::dump(_type, data, out); }
       bool is_true() const override { return types::is_true(_type, data); }
       bool eq(Val y) const override { return types::eq(_type, data, y); }
@@ -98,6 +105,9 @@ namespace lgpp {
   
   namespace types {
     template <typename T>
+    PC call(Type<T>& type, const T& imp, Thread& thread, PC pc, Pos pos) { throw runtime_error("Not implemented"); }
+
+    template <typename T>
     void dump(Type<T>& type, const T& imp, ostream& out) { throw runtime_error("Not implemented"); }
 
     template <typename T>
@@ -119,6 +129,8 @@ namespace lgpp {
     Val sub(Type<T> &type, const T& x, Val y) { throw runtime_error("Not implemented"); }
   }
 
+  inline PC call(const Val& x, Thread& thread, PC pc, Pos pos) { return x.imp->call(thread, pc, pos); }
+  
   constexpr bool operator==(const Val& x, const Val& y) { return x.imp->eq(y); }
 
   constexpr bool operator>(const Val& x, const Val& y) { return x.imp->gt(y); }

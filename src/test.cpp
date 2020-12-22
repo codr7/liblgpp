@@ -79,7 +79,7 @@ void vm_call_tests(VM& vm) {
   auto& s = get_stack(vm);
 
   Label target("target");
-  emit<ops::Call>(vm, target);
+  emit<ops::Call>(vm, types::Label, &target);
   emit<ops::Stop>(vm);
   target.pc = emit_pc(vm);
   emit<ops::Push>(vm, types::Int, 42);

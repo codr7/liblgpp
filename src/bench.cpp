@@ -45,10 +45,10 @@ void fibrec_bench(VM& vm) {
   emit<ops::BranchLt>(vm, exit, 0, types::Int, 2);
   emit<ops::Dec>(vm, types::Int, 1);
   emit<ops::Cp>(vm);
-  emit<ops::Call>(vm, fib);
+  emit<ops::Call>(vm, types::Label, &fib);
   emit<ops::Swap>(vm);
   emit<ops::Dec>(vm, types::Int, 1);
-  emit<ops::Call>(vm, fib);
+  emit<ops::Call>(vm, types::Label, &fib);
   emit<ops::Add>(vm);
 
   exit.pc = emit_pc(vm);
@@ -56,7 +56,7 @@ void fibrec_bench(VM& vm) {
 
   PC start_pc = emit_pc(vm);
   emit<ops::Push>(vm, types::Int, 20);
-  emit<ops::Call>(vm, fib);
+  emit<ops::Call>(vm, types::Label, &fib);
   emit<ops::Stop>(vm);
 
   Timer timer;

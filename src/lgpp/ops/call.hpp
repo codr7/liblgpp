@@ -7,15 +7,19 @@
 
 namespace lgpp::ops {
 
-  struct Call {    
-    Call(Label& target): target(target) {}
-    Label& target;
+  struct Call {
+    Call() {}
+
+    template <typename...Args>
+    Call(Args&&...args) { target.emplace(forward<Args>(args)...); }
+    
+    optional<Val> target;
   };
 
   template <>
   inline const Op* eval(const Op& op, const Call& imp, Thread& thread) {
-    push_ret(thread, op.pc+1);
-    return &op - op.pc + *imp.target.pc;
+    Val t = imp.target ? *imp.target : pop(get_stack(thread));
+    return &op - op.pc + call(t, thread, op.pc, op.pos);
   }
 
 }

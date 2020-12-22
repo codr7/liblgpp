@@ -10,7 +10,7 @@ namespace lgpp::types {
 
   Type<int> Int("Int", {&Num, &Seq});
 
-  Type<lgpp::Label> Label("Label");
+  Type<lgpp::Label *> Label("Label");
 
   Type<lgpp::Macro> Macro("Macro");
 

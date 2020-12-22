@@ -1,11 +1,15 @@
 * ---1---
-* add ret macro
+* join Call & CallPrim ops
+** add Prim call method
+** update alang
 * add and/or macros
 * add paren call syntax
 ** make Parser::parse_id virtual
 ** override and check for args
 ** add alang Call tok
 ** move args lookup label & emit call op
+* add support for calling labels
+** add ret macro
 * add dot call syntax
 ** pass as first arg
 * add stack bindings (d/cp/swap)
