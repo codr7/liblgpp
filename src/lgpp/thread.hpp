@@ -41,7 +41,8 @@ namespace lgpp {
     vector<Coro> coros;
   };
 
-  inline Label &push_label(Thread &thread) { return thread.labels.emplace_back(); }
+  template <typename...Args>
+  Label &push_label(Thread &thread, Args &&...args) { return thread.labels.emplace_back(forward<Args>(args)...); }
   
   template <typename T, typename...Args>
   const T& emit(Thread& thread, Pos pos, Args&&...args) {

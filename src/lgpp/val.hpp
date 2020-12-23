@@ -3,6 +3,9 @@
 
 #include <memory>
 
+#include "lgpp/pc.hpp"
+#include "lgpp/pos.hpp"
+
 namespace lgpp {  
   using namespace std;
   
