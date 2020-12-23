@@ -2,7 +2,6 @@
 #define LGPP_TOKS_HPP
 
 #include "lgpp/env.hpp"
-#include "lgpp/ops/call_prim.hpp"
 #include "lgpp/ops/push.hpp"
 #include "lgpp/thread.hpp"
 #include "lgpp/tok.hpp"
@@ -65,8 +64,6 @@ namespace lgpp::toks {
     
     if (vt == &types::Macro) {
       v.as(types::Macro).imp(in, out, env);
-    } else if (vt == &types::Prim) {
-      emit<ops::CallPrim>(out, tok.pos,  v.as(types::Prim));
     } else {
       emit<ops::Push>(out, tok.pos, v);
     }

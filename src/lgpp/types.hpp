@@ -103,6 +103,12 @@ namespace lgpp::types {
   extern Type<lgpp::Prim> Prim;
 
   template <>
+  inline PC call(Type<lgpp::Prim>& type, const lgpp::Prim& imp, Thread& thread, PC pc, Pos pos) {
+    imp.imp(thread, pos);
+    return pc+1;
+  }
+
+  template <>
   inline void dump(Type<lgpp::Prim>& type, const lgpp::Prim& x, ostream &out) { out << "(Prim " << x.name << ')'; }
 
   template <>
