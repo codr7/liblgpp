@@ -1,29 +1,34 @@
 * ---1---
 * join Call & CallPrim ops
 ** add Prim call method
+** remove CallPrim
 ** update alang
-* add and/or macros
 * add paren call syntax
-** make Parser::parse_id virtual
-** override and check for args
 ** add alang Call tok
-** move args lookup label & emit call op
-* add support for calling labels
-** add ret macro
+*** target/args
+** override parse_id and check for args
+** move args, lookup label & emit call op
+** update README
+* replace label macro with syntax
+** label fib -> fib:
 * add dot call syntax
 ** pass as first arg
+* --
+* add and/or macros
+* add support for calling labels
+** add ret macro
 * add stack bindings (d/cp/swap)
 * add +/- bindings
 * add inc/dec bindings
 * activate Op.pos
 ** add arg to all op constructors
 ** update test/bench/README
+* finish support for hex/bin notation in parse_int
 * ---2---
-* add say binding
+* add say prim
 * add String type/parser
 * add str binding
 * add map literals
-* finish support for hex/bin notation in parse_int
 * add Chan
 ** add Chan type
 ** use deque

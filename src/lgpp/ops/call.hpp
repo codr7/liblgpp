@@ -8,18 +8,15 @@
 namespace lgpp::ops {
 
   struct Call {
-    Call() {}
-
     template <typename...Args>
-    Call(Args&&...args) { target.emplace(forward<Args>(args)...); }
+    Call(Args&&...args): target(forward<Args>(args)...) {}
     
-    optional<Val> target;
+    Val target;
   };
 
   template <>
   inline const Op* eval(const Op& op, const Call& imp, Thread& thread) {
-    Val t = imp.target ? *imp.target : pop(get_stack(thread));
-    return &op - op.pc + call(t, thread, op.pc, op.pos);
+    return &op - op.pc + call(imp.target, thread, op.pc, op.pos);
   }
 
 }
