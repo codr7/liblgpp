@@ -12,7 +12,7 @@
 
 namespace lgpp::types {
   
-  extern Trait Num, Seq;
+  extern Trait Any, Num, Seq;
 
   extern Type<bool> Bool;
 
@@ -77,7 +77,7 @@ namespace lgpp::types {
   extern Type<nullptr_t> Nil;
 
   template <>
-  inline void dump(Type<nullptr_t>& type, const nullptr_t& x, ostream &out) { out << "_"; }
+  inline void dump(Type<nullptr_t>& type, const nullptr_t& x, ostream &out) { out << "NA"; }
 
   template <>
   inline bool is_true(Type<nullptr_t>& type, const nullptr_t& x) { return false; }

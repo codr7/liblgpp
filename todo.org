@@ -1,18 +1,14 @@
 * ---1---
-* join Call & CallPrim ops
-** add Prim call method
-** remove CallPrim
-** update alang
 * add paren call syntax
 ** add alang Call tok
 *** target/args
 ** override parse_id and check for args
 ** move args, lookup label & emit call op
 ** update README
-* replace label macro with syntax
-** label fib -> fib:
 * add dot call syntax
 ** pass as first arg
+* replace label macro with syntax
+** label fib -> fib:
 * --
 * add and/or macros
 * add support for calling labels
@@ -50,9 +46,9 @@
 ** add Snooze op
 
 label fib
-  if (< 2) ret
-  dec() cp() fib()
-  +(swap() dec() fib())
+  if (.< 2) ret
+  dec cp fib()
+  .+ (swap dec fib())
   ret
 
 fib(20)

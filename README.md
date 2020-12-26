@@ -226,7 +226,7 @@ assert(pop(s, types::Meta) == &types::Meta);
 assert(pop(s, types::Meta) == &types::Int);
 ```
 
-`Isa` replaces the top two stack values with their common root if they are related, otherwise `Nil`/`nullptr`.
+`Isa` replaces the top two stack values with `T` if the first argument is derived from the second, `F` otherwise.
 
 ```
 emit<ops::Push>(vm, types::Meta, &types::Int);
@@ -236,7 +236,7 @@ emit<ops::Stop>(vm);
 eval(vm, 0);
   
 assert(s.size() == 1);
-assert(pop(s, types::Meta) == &types::Num);
+assert(pop(s, types::Bool));
 ```
 
 ### coroutines

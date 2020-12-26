@@ -13,13 +13,7 @@ namespace lgpp::ops {
     auto& s = get_stack(thread);
     auto &parent(*pop(s).as(types::Meta)), &child(*pop(s).as(types::Meta));
     auto root = isa(child, parent);
-
-    if (root) {
-      push(s, types::Meta, root);
-    } else {
-      push(s, types::Nil, nullptr);      
-    }
-    
+    push(s, types::Bool, root != nullptr);
     return &op+1;
   }
 
