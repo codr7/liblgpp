@@ -1,15 +1,7 @@
 * ---1---
-* add paren call syntax
-** add alang Call tok
-*** target/args
-** override parse_id and check for args
-** move args, lookup label & emit call op
-** update README
 * add dot call syntax
 ** pass as first arg
-* replace label macro with syntax
-** label fib -> fib:
-* --
+** transform macros
 * add and/or macros
 * add support for calling labels
 ** add ret macro

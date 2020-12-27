@@ -21,10 +21,7 @@ namespace lgpp {
   struct Parser {
     using Alt = function<size_t (Parser&, char, istream&)>;
     
-    Parser(string file): pos(move(file)) {
-      alts.push_back(&parse_int);
-      alts.push_back(&parse_id);
-    }
+    Parser(string file): pos(move(file)) {}
     
     Pos pos;
     deque<Tok> toks;
@@ -69,8 +66,8 @@ namespace lgpp {
     if (!in.eof()) { in.unget(); }
     return n;
   }
-
-  inline size_t parse_id(Parser& parser, char c, istream& in) {
+  
+  inline size_t parse_id_pred(Parser& parser, char c, istream& in, function<bool (char c)> pred) {
     if (!isgraph(c)) { return 0; }
     auto p(parser.pos);
     stringstream buf;
@@ -79,7 +76,7 @@ namespace lgpp {
       buf << c;
       parser.pos.col++;
 
-      if (!in.get(c) || !isgraph(c)) {
+      if (!in.get(c) || !isgraph(c) || (pred && !pred(c))) {
         in.unget();
         break;
       }
@@ -90,7 +87,11 @@ namespace lgpp {
     return 1;
   }
 
-  int parse_int(Parser &parser, char c, istream &in, int base) {
+  inline size_t parse_id(Parser& parser, char c, istream& in) {
+    return parse_id_pred(parser, c, in, nullptr);
+  }
+
+  int parse_int_base(Parser &parser, char c, istream &in, int base) {
     int v(0);
     
     static map<char, int8_t> char_vals = {
@@ -116,7 +117,7 @@ namespace lgpp {
   inline size_t parse_int(Parser& parser, char c, istream& in) {
     if (!isdigit(c)) { return 0; }
     auto p = parser.pos;
-    push<toks::Lit>(parser, p, types::Int, parse_int(parser, c, in, 10));
+    push<toks::Lit>(parser, p, types::Int, parse_int_base(parser, c, in, 10));
     return 1;
   }
   

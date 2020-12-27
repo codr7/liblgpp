@@ -43,7 +43,13 @@ namespace lgpp {
     Tok(Pos pos, T imp): pos(pos), imp(make_shared<TImp<T>>(move(imp))) { } 
 
     template <typename T>
-    const T& as() { return dynamic_cast<const TImp<T>&>(*imp).imp; }
+    const T& as() const { return dynamic_cast<const TImp<T>&>(*imp).imp; }
+
+    template <typename T>
+    const T* try_as() const {
+      auto timp = dynamic_cast<const TImp<T> *>(imp.get());
+      return timp ? &timp->imp : nullptr;
+    }
 
     Pos pos;
     shared_ptr<const Imp> imp;

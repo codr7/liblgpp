@@ -41,7 +41,9 @@ using namespace lgpp;
 
 void parse_tests() {
   Parser p("parse_tests");
-  p.alts.push_front(parse_group('(', ')'));
+  p.alts.push_back(parse_int);
+  p.alts.push_back(parse_group('(', ')'));
+  p.alts.push_back(parse_id);
 		   
   //parse(p, "foo + bar = 42");
   //for (auto &t: p.toks) { cout << t << endl; }
@@ -93,6 +95,8 @@ void vm_call_tests(VM& vm) {
 
 void vm_compile_tests(VM &vm) {
   Parser p("compile_tests");
+  p.alts.push_back(parse_int);
+  p.alts.push_back(parse_id);
   parse(p, "foo 7");
   
   Env e;
@@ -389,7 +393,7 @@ void vm_isa_tests(VM& vm) {
   eval(vm, 0);
   
   assert(s.size() == 1);
-  assert(pop(s, types::Meta) == &types::Num);
+  assert(pop(s, types::Bool));
   get_thread(vm).ops.clear();
 }
 
