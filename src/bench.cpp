@@ -17,7 +17,7 @@
 #include "lgpp/ops/pause.hpp"
 #include "lgpp/ops/push.hpp"
 #include "lgpp/ops/resume.hpp"
-#include "lgpp/ops/ret.hpp"
+#include "lgpp/ops/return.hpp"
 #include "lgpp/ops/sleep.hpp"
 #include "lgpp/ops/splat.hpp"
 #include "lgpp/ops/squash.hpp"
@@ -52,7 +52,7 @@ void fibrec_bench(VM& vm) {
   emit<ops::Add>(vm);
 
   exit.pc = emit_pc(vm);
-  emit<ops::Ret>(vm);
+  emit<ops::Return>(vm);
 
   PC start_pc = emit_pc(vm);
   emit<ops::Push>(vm, types::Int, 20);
@@ -81,7 +81,7 @@ void coro_bench(VM& vm) {
   emit<ops::Pause>(vm);
   emit<ops::Go>(vm, target);
   exit.pc = emit_pc(vm);
-  emit<ops::Ret>(vm);
+  emit<ops::Return>(vm);
 
   auto start_pc = emit_pc(vm);
   emit<ops::Push>(vm, types::Int, 1000000);

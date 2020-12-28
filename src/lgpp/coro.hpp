@@ -20,8 +20,7 @@ namespace lgpp {
 
   constexpr bool operator>(const Coro& x, const Coro& y) { return x.pc > y.pc; }
 
-  constexpr bool operator<(const Coro& x, const Coro& y) { return x.pc < y.pc; }
-
+  constexpr bool operator<(const Coro& x, const Coro& y) { return x.pc < y.pc; }  
 }
 
 #endif

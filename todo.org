@@ -3,9 +3,6 @@
 ** pass as first arg
 ** transform macros
 * add and/or macros
-* add support for calling labels
-** add ret macro
-* add stack bindings (d/cp/swap)
 * add +/- bindings
 * add inc/dec bindings
 * activate Op.pos
@@ -39,12 +36,9 @@
 
 label fib
   if (.< 2) ret
-  dec cp fib()
-  .+ (swap dec fib())
+  dec cp fib(_)
+  .+ (swap dec fib(_))
   ret
 
 fib(20)
 stop
-
-
-

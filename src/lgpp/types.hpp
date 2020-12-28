@@ -24,7 +24,11 @@ namespace lgpp::types {
 
 
   extern Type<Coro> Coro;
-  
+
+  template <>
+  inline PC call(Type<lgpp::Coro>& type, const lgpp::Coro& imp, Thread& thread, PC pc, Pos pos) {
+    return resume(imp, thread, pc, pos); 
+  }
 
   extern Type<int> Int;
 
@@ -45,7 +49,7 @@ namespace lgpp::types {
 
   template <>
   inline PC call(Type<lgpp::Label *>& type, lgpp::Label* const& imp, Thread& thread, PC pc, Pos pos) {
-    push_ret(thread, pc+1);	
+    push_call(thread, pc+1);	
     return *imp->pc; 
   }
 

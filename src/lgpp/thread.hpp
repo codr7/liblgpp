@@ -6,10 +6,11 @@
 #include <optional>
 #include <thread>
 
+#include "lgpp/call.hpp"
 #include "lgpp/coro.hpp"
+#include "lgpp/error.hpp"
 #include "lgpp/label.hpp"
 #include "lgpp/op.hpp"
-#include "lgpp/ret.hpp"
 #include "lgpp/stack.hpp"
 
 namespace lgpp {
@@ -34,7 +35,7 @@ namespace lgpp {
     VM &vm;
     list<Label> labels;
     vector<Op> ops;
-    vector<Ret> rets;
+    vector<Call> calls;
     deque<Stack> stacks;
     thread imp;
     const Id id;
@@ -70,14 +71,22 @@ namespace lgpp {
     thread.coros.pop_back();
     return c;
   }
+
+  template <typename...Args>
+  void push_call(Thread& thread, Args&&...args) { thread.calls.emplace_back(forward<Args>(args)...); }
   
-  inline void push_ret(Thread& thread, PC pc, Ret::Opts opts = Ret::Opts::NONE) { thread.rets.emplace_back(pc, opts); }
-  
-  inline Ret pop_ret(Thread& thread) {
-    if (thread.rets.empty()) { throw runtime_error("Ret stack is empty"); }
-    auto r = thread.rets.back();
-    thread.rets.pop_back();
-    return r;
+  inline Call pop_call(Thread& thread) {
+    if (thread.calls.empty()) { throw runtime_error("Call stack is empty"); }
+    auto c = thread.calls.back();
+    thread.calls.pop_back();
+    return c;
+  }
+
+  inline PC resume(const Coro &coro, Thread& thread, PC pc, Pos pos) {
+    if (coro.done) { throw ERun(pos, "Coro is done"); }
+    push_coro(thread, coro);
+    push_call(thread, pc+1, Call::Opts::CORO);
+    return coro.pc;
   }
 
   inline Stack& get_stack(Thread& thread) {

@@ -42,9 +42,10 @@ namespace lgpp {
 
   inline const Op& eval(VM &vm, PC start_pc) { return eval(get_thread(vm), start_pc); }
 
-  inline void push_ret(VM &vm, PC pc, Ret::Opts opts = Ret::Opts::NONE) { push_ret(get_thread(vm), pc, opts); }
+  template <typename...Args>
+  void push_call(VM &vm, Args&&...args) { push_call(get_thread(vm), forward<Args>(args)...); }
   
-  inline Ret pop_ret(VM &vm) { return pop_ret(get_thread(vm)); }
+  inline Call pop_call(VM &vm) { return pop_call(get_thread(vm)); }
   
   template <typename...Args>
   Thread& start_thread(VM &vm, Args&&...args) {

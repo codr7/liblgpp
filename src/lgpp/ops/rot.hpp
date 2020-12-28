@@ -1,5 +1,5 @@
-#ifndef LGPP_OPS_MV_HPP
-#define LGPP_OPS_MV_HPP
+#ifndef LGPP_OPS_ROT_HPP
+#define LGPP_OPS_ROT_HPP
 
 #include "../stack.hpp"
 #include "../val.hpp"
@@ -7,13 +7,13 @@
 
 namespace lgpp::ops {
 
-  struct Mv {
-    Mv(size_t offs = 0, size_t len = 1): offs(offs), len(len) {}
+  struct Rot {
+    Rot(size_t offs = 2, size_t len = 1): offs(offs), len(len) {}
     size_t offs, len;
   };
 
   template <>
-  inline const Op* eval(const Op& op, const Mv& imp, Thread& thread) {
+  inline const Op* eval(const Op& op, const Rot& imp, Thread& thread) {
     auto& s = get_stack(thread);
     auto i = s.end() - imp.offs - 1;
     rotate(i, i+imp.len, s.end());

@@ -12,10 +12,7 @@ namespace lgpp::ops {
   template <>
   inline const Op* eval(const Op& op, const Resume& imp, Thread& thread) {
     auto c = pop(get_stack(thread), types::Coro);
-    if (c.done) { throw runtime_error("Coro is done"); }
-    push_coro(thread, c);
-    push_ret(thread, op.pc+1, Ret::Opts::CORO);
-    return &op - op.pc + c.pc;
+    return &op - op.pc + resume(c, thread, op.pc, op.pos);
   }
 
 }

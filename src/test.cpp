@@ -18,7 +18,7 @@
 #include "lgpp/ops/push.hpp"
 #include "lgpp/ops/push_stack.hpp"
 #include "lgpp/ops/resume.hpp"
-#include "lgpp/ops/ret.hpp"
+#include "lgpp/ops/return.hpp"
 #include "lgpp/ops/sleep.hpp"
 #include "lgpp/ops/splat.hpp"
 #include "lgpp/ops/squash.hpp"
@@ -45,8 +45,6 @@ void parse_tests() {
   p.alts.push_back(parse_group('(', ')'));
   p.alts.push_back(parse_id);
 		   
-  //parse(p, "foo + bar = 42");
-  //for (auto &t: p.toks) { cout << t << endl; }
   assert(parse(p, "foo + bar = 42") == 5);
   assert(pop(p).as<toks::Id>().name == "foo");
   assert(pop(p).as<toks::Id>().name == "+");
@@ -85,7 +83,7 @@ void vm_call_tests(VM& vm) {
   emit<ops::Stop>(vm);
   target.pc = emit_pc(vm);
   emit<ops::Push>(vm, types::Int, 42);
-  emit<ops::Ret>(vm);
+  emit<ops::Return>(vm);
   eval(vm, 0);
   
   assert(s.size() == 1);
@@ -121,7 +119,7 @@ void vm_coro_tests(VM& vm) {
   emit<ops::Push>(vm, types::Int, 2);
   emit<ops::Pause>(vm);
   emit<ops::Push>(vm, types::Int, 3);
-  emit<ops::Ret>(vm);
+  emit<ops::Return>(vm);
   
   auto start_pc = emit_pc(vm);
   emit<ops::StartCoro>(vm, target);

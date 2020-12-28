@@ -33,6 +33,11 @@ namespace lgpp {
     ECompile(Args&&...args): Error(forward<Args>(args)...) {}
   };
 
+  struct ERun: Error {
+    template <typename...Args>
+    ERun(Args&&...args): Error(forward<Args>(args)...) {}
+  };
+
 }
 
 #endif

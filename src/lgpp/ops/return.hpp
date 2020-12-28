@@ -1,5 +1,5 @@
-#ifndef LGPP_OPS_RET_HPP
-#define LGPP_OPS_RET_HPP
+#ifndef LGPP_OPS_RETURN_HPP
+#define LGPP_OPS_RETURN_HPP
 
 #include "../op.hpp"
 #include "../val.hpp"
@@ -7,13 +7,13 @@
 
 namespace lgpp::ops {
 
-  struct Ret {};
+  struct Return {};
 
   template <>
-  inline const Op* eval(const Op& op, const Ret& imp, Thread& thread) {
-    auto ret = pop_ret(thread);
+  inline const Op* eval(const Op& op, const Return& imp, Thread& thread) {
+    auto c = pop_call(thread);
     
-    if ((int)ret.opts & (int)lgpp::Ret::Opts::CORO) {
+    if ((int)c.opts & (int)lgpp::Call::Opts::CORO) {
       auto c = pop_coro(thread);
       if (!c) { throw runtime_error("Missing coro"); }
       if (c->done) { throw runtime_error("Coro is done"); }
@@ -22,7 +22,7 @@ namespace lgpp::ops {
       push(get_stack(thread), types::Coro, *c);
     }
 
-    return &op - op.pc + ret.pc;
+    return &op - op.pc + c.return_pc;
   }
 
 }
