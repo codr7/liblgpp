@@ -5,10 +5,7 @@
 * add and/or macros
 * add +/- bindings
 * add inc/dec bindings
-* activate Op.pos
-** add arg to all op constructors
-** update test/bench/README
-* finish support for hex/bin notation in parse_int
+* fib
 * ---2---
 * add say prim
 * add String type/parser

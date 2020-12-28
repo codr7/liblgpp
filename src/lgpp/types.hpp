@@ -78,24 +78,6 @@ namespace lgpp::types {
   inline void dump(Type<lgpp::Trait*>& type, lgpp::Trait* const& x, ostream &out) { out << x->name; }
 
 
-  extern Type<nullptr_t> Nil;
-
-  template <>
-  inline void dump(Type<nullptr_t>& type, const nullptr_t& x, ostream &out) { out << "NA"; }
-
-  template <>
-  inline bool is_true(Type<nullptr_t>& type, const nullptr_t& x) { return false; }
-
-  template <>
-  inline bool eq(Type<nullptr_t>& type, const nullptr_t& x, Val y) { return true; }
-  
-  template <>
-  inline bool gt(Type<nullptr_t>& type, const nullptr_t& x, Val y) { return false; }
-  
-  template <>
-  inline bool lt(Type<nullptr_t>& type, const nullptr_t& x, Val y) { return false; }
-
-
   extern Type<lgpp::Pair> Pair;
 
   template <>

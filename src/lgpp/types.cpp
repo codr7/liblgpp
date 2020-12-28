@@ -16,8 +16,6 @@ namespace lgpp::types {
 
   Type<lgpp::Trait *> Meta("Meta", {&Any});
 
-  Type<nullptr_t> Nil("Nil");
-
   Type<lgpp::Thread::Id> Thread("Thread", {&Any});
 
   Type<pair<Val, Val>> Pair("Pair", {&Any});
