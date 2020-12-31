@@ -1,7 +1,6 @@
 * ---1---
-* add dot call syntax
-** pass as first arg
-** transform macros
+* convert prims to macros
+** add lt/gt/eq ops
 * add and/or macros
 * add +/- bindings
 * add inc/dec bindings
