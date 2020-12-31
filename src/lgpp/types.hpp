@@ -1,6 +1,8 @@
 #ifndef LGPP_TYPES_HPP
 #define LGPP_TYPES_HPP
 
+#include <iostream>
+
 #include "lgpp/coro.hpp"
 #include "lgpp/label.hpp"
 #include "lgpp/macro.hpp"
@@ -11,7 +13,6 @@
 #include "lgpp/type.hpp"
 
 namespace lgpp::types {
-  
   extern Trait Any, Num, Seq;
 
   extern Type<bool> Bool;
@@ -26,8 +27,8 @@ namespace lgpp::types {
   extern Type<Coro> Coro;
 
   template <>
-  inline PC call(Type<lgpp::Coro>& type, const lgpp::Coro& imp, Thread& thread, PC pc, Pos pos) {
-    return resume(imp, thread, pc, pos); 
+  inline PC call(Type<lgpp::Coro>& type, const lgpp::Coro& imp, Thread& thread, PC return_pc, Pos pos) {
+    return resume(imp, thread, return_pc, pos); 
   }
 
   extern Type<int> Int;
@@ -48,13 +49,17 @@ namespace lgpp::types {
   extern Type<lgpp::Label *> Label;
 
   template <>
-  inline PC call(Type<lgpp::Label *>& type, lgpp::Label* const& imp, Thread& thread, PC pc, Pos pos) {
-    push_call(thread, pc+1);	
+  inline PC call(Type<lgpp::Label *>& type, lgpp::Label* const& imp, Thread& thread, PC return_pc, Pos pos) {
+    push_call(thread, return_pc);	
     return *imp->pc; 
   }
 
   template <>
-  inline void dump(Type<lgpp::Label *>& type, lgpp::Label* const& x, ostream &out) { out << "(Label " << x->name << ')'; }
+  inline void dump(Type<lgpp::Label *>& type, lgpp::Label* const& x, ostream &out) { 
+    out << "(Label ";
+    if (x->name) { out << *x->name; } else { out << x; }
+    out << ')';
+  }
 
 
   extern Type<lgpp::Macro> Macro;
@@ -89,9 +94,9 @@ namespace lgpp::types {
   extern Type<lgpp::Prim> Prim;
 
   template <>
-  inline PC call(Type<lgpp::Prim>& type, const lgpp::Prim& imp, Thread& thread, PC pc, Pos pos) {
+  inline PC call(Type<lgpp::Prim>& type, const lgpp::Prim& imp, Thread& thread, PC return_pc, Pos pos) {
     imp.imp(thread, pos);
-    return pc+1;
+    return return_pc;
   }
 
   template <>

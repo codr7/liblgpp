@@ -82,10 +82,10 @@ namespace lgpp {
     return c;
   }
 
-  inline PC resume(const Coro &coro, Thread& thread, PC pc, Pos pos) {
+  inline PC resume(const Coro &coro, Thread& thread, PC return_pc, Pos pos) {
     if (coro.done) { throw ERun(pos, "Coro is done"); }
     push_coro(thread, coro);
-    push_call(thread, pc+1, Call::Opts::CORO);
+    push_call(thread, return_pc, Call::Opts::CORO);
     return coro.pc;
   }
 

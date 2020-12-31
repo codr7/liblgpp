@@ -1,4 +1,5 @@
 * ---1---
+* change parsers to return bool instead of size_t
 * add dot call syntax
 ** pass as first arg
 ** transform macros

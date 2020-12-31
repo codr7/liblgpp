@@ -16,7 +16,7 @@ namespace lgpp::ops {
 
   template <>
   inline const Op* eval(const Op& op, const Call& imp, Thread& thread) {
-    return &op - op.pc + call(imp.target, thread, op.pc, op.pos);
+    return &op - op.pc + call(imp.target, thread, op.pc+1, op.pos);
   }
 
 }

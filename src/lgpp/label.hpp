@@ -9,9 +9,9 @@ namespace lgpp {
   using namespace std;
   
   struct Label {
-    Label(string name = "", optional<size_t> pc = nullopt): name(name), pc(pc) {}
+    Label(optional<string> name = nullopt, optional<size_t> pc = nullopt): name(name), pc(pc) {}
 
-    const string name;
+    optional<string> name;
     optional<size_t> pc;
   };
 }

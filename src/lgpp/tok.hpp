@@ -11,9 +11,11 @@ namespace lgpp {
   struct Thread;
   struct Tok;
 
+  using Toque = deque<Tok>;
+
   namespace toks {
     template <typename T>
-    void compile(const Tok& tok, const T& imp, Parser& in, Thread& out, Env& env) {}
+    void compile(const Tok& tok, const T& imp, Toque& in, Thread& out, Env& env) {}
 
     template <typename T>
     void dump(const Tok& tok, const T& imp, ostream& out);
@@ -22,7 +24,7 @@ namespace lgpp {
   struct Tok {
     struct Imp {
       virtual ~Imp() = default;
-      virtual void compile(const Tok& tok, Parser& in, Thread& out, Env& env) const = 0;
+      virtual void compile(const Tok& tok, Toque& in, Thread& out, Env& env) const = 0;
       virtual void dump(const Tok& tok, ostream& out) const = 0;
     };
 
@@ -30,7 +32,7 @@ namespace lgpp {
     struct TImp: Imp {
       TImp(T imp): imp(move(imp)) { }
 
-      void compile(const Tok& tok, Parser& in, Thread& out, Env& env) const override {
+      void compile(const Tok& tok, Toque& in, Thread& out, Env& env) const override {
 	toks::compile(tok, imp, in, out, env);
       }
       
@@ -55,13 +57,36 @@ namespace lgpp {
     shared_ptr<const Imp> imp;
   };
 
-  inline void compile(const Tok &tok, Parser& in, Thread& out, Env& env) { return tok.imp->compile(tok, in, out, env); }
+  inline void compile(const Tok &tok, Toque& in, Thread& out, Env& env) { return tok.imp->compile(tok, in, out, env); }
 
   inline void dump(const Tok &tok, ostream& out) { return tok.imp->dump(tok, out); }
 
   inline ostream &operator<<(ostream &out, const Tok &t) {
     t.imp->dump(t, out);
     return out;
+  }
+
+  template <typename T, typename...Args>
+  const Tok& push(Toque& in, Pos pos, Args&&...args) {
+    return in.emplace_back(pos, T(forward<Args>(args)...));
+  }
+  
+  inline optional<Tok> peek(const Toque& in) {
+    return in.empty() ? nullopt : make_optional(in.front());
+  }
+
+  inline Tok pop(Toque& in) {
+    if (in.empty()) { throw runtime_error("Missing token"); }
+    Tok t = in.front();
+    in.pop_front();
+    return t;
+  }
+
+  inline Tok pop_back(Toque& in) {
+    if (in.empty()) { throw runtime_error("Missing token"); }
+    Tok t = in.back();
+    in.pop_back();
+    return t;
   }
 }
 

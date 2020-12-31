@@ -2,6 +2,7 @@
 #define LGPP_MACRO_HPP
 
 #include "lgpp/env.hpp"
+#include "lgpp/tok.hpp"
 #include "lgpp/types.hpp"
 
 namespace lgpp {
@@ -9,7 +10,7 @@ namespace lgpp {
   struct Thread;
   
   struct Macro {
-    using Imp = function<void (Parser &, Thread &, Env &)>;
+    using Imp = function<void (Toque &, Thread &, Env &)>;
 
     Macro(string name, Imp imp): name(name), imp(imp) {}
 

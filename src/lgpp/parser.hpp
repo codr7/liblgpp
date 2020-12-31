@@ -1,7 +1,6 @@
 #ifndef LGPP_PARSER_HPP
 #define LGPP_PARSER_HPP
 
-#include <deque>
 #include <optional>
 #include <sstream>
 
@@ -24,26 +23,18 @@ namespace lgpp {
     Parser(string file): pos(move(file)) {}
     
     Pos pos;
-    deque<Tok> toks;
+    Toque toks;
     deque<Alt> alts;
   };
 
   template <typename T, typename...Args>
-  const Tok& push(Parser& parser, Pos pos, Args&&...args) {
-    return parser.toks.emplace_back(pos, T(forward<Args>(args)...));
-  }
+  const Tok& push(Parser& parser, Pos pos, Args&&...args) { return push<T>(parser.toks, pos, forward<Args>(args)...); }
   
-  inline optional<Tok> peek(const Parser& parser) {
-    return parser.toks.empty() ? nullopt : make_optional(parser.toks.front());
-  }
+  inline optional<Tok> peek(const Parser& parser) { return peek(parser.toks); }
 
-  inline Tok pop(Parser& parser) {
-    if (parser.toks.empty()) { throw EParse(parser.pos, "Missing token"); }
-    
-    Tok t = parser.toks.front();
-    parser.toks.pop_front();
-    return t;
-  }
+  inline Tok pop(Parser& parser) { return pop(parser.toks); }
+
+  inline Tok pop_back(Parser& parser) { return pop_back(parser.toks); }
 
   inline size_t skip(Parser &parser, istream &in) {
     int n = 0;
@@ -172,7 +163,7 @@ namespace lgpp {
   }
 
   inline void compile(Parser& parser, Thread& out, Env& env) {
-    while (!parser.toks.empty()) { compile(pop(parser), parser, out, env); }
+    while (!parser.toks.empty()) { compile(pop(parser), parser.toks, out, env); }
   }
 }
 

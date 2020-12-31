@@ -10,9 +10,9 @@ namespace lgpp::ops {
   struct Return {};
 
   template <>
-  inline const Op* eval(const Op& op, const Return& imp, Thread& thread) {
+  inline const Op* eval(const Op& op, const Return& imp, Thread& thread) {    
     auto c = pop_call(thread);
-    
+
     if ((int)c.opts & (int)lgpp::Call::Opts::CORO) {
       auto c = pop_coro(thread);
       if (!c) { throw runtime_error("Missing coro"); }

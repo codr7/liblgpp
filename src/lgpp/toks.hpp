@@ -17,8 +17,14 @@ namespace lgpp::toks {
   };
 
   template <>
-  inline void compile(const Tok& tok, const Group& imp, Parser& in, Thread& out, Env& env) {
-    for (auto &t: imp.toks) { lgpp::compile(t, in, out, env); }
+  inline void compile(const Tok& tok, const Group& imp, Toque& in, Thread& out, Env& env) {
+    deque<Tok> ts(imp.toks.begin(), imp.toks.end());
+    
+    while (!ts.empty()) {
+      auto t = ts.front();
+      ts.pop_front();
+      lgpp::compile(t, ts, out, env);
+    }
   }
 
   template <>
@@ -41,7 +47,7 @@ namespace lgpp::toks {
   };
 
   template <>
-  inline void compile(const Tok& tok, const Lit& imp, Parser& in, Thread& out, Env& env) {
+  inline void compile(const Tok& tok, const Lit& imp, Toque& in, Thread& out, Env& env) {
     emit<ops::Push>(out, tok.pos, imp.val);
   }
 
@@ -56,7 +62,7 @@ namespace lgpp::toks {
   };
 
   template <>
-  inline void compile(const Tok& tok, const Id& imp, Parser& in, Thread& out, Env& env) {
+  inline void compile(const Tok& tok, const Id& imp, Toque& in, Thread& out, Env& env) {
     auto found = env.find(imp.name);
     if (found == env.end()) { throw ECompile(tok.pos, "Unknown identifier: ", imp.name); }
     auto &v = found->second;
