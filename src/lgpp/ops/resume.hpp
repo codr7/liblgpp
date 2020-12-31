@@ -12,7 +12,7 @@ namespace lgpp::ops {
   template <>
   inline const Op* eval(const Op& op, const Resume& imp, Thread& thread) {
     auto c = pop(get_stack(thread), types::Coro);
-    return &op - op.pc + resume(c, thread, op.pc, op.pos);
+    return &op - op.pc + resume(c, thread, op.pc+1, op.pos);
   }
 
 }

@@ -45,7 +45,7 @@ void parse_tests() {
   p.alts.push_back(parse_group('(', ')'));
   p.alts.push_back(parse_id);
 		   
-  assert(parse(p, "foo + bar = 42") == 5);
+  parse(p, "foo + bar = 42");
   assert(pop(p).as<toks::Id>().name == "foo");
   assert(pop(p).as<toks::Id>().name == "+");
   assert(pop(p).as<toks::Id>().name == "bar");
@@ -128,7 +128,9 @@ void vm_coro_tests(VM& vm) {
   emit<ops::Drop>(vm);
   emit<ops::Stop>(vm);
   
+  cout << "<<<" << endl;
   eval(vm, start_pc);
+  cout << ">>>" << endl;
   assert(s.size() == 3);
   assert(pop(s, types::Int) == 3);
   assert(pop(s, types::Int) == 2);

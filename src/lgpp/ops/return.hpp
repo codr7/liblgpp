@@ -16,7 +16,7 @@ namespace lgpp::ops {
     if ((int)c.opts & (int)lgpp::Call::Opts::CORO) {
       auto c = pop_coro(thread);
       if (!c) { throw runtime_error("Missing coro"); }
-      if (c->done) { throw runtime_error("Coro is done"); }
+      assert(!c->done);
       c->pc = op.pc;
       c->done = true;
       push(get_stack(thread), types::Coro, *c);
