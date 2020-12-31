@@ -128,9 +128,7 @@ void vm_coro_tests(VM& vm) {
   emit<ops::Drop>(vm);
   emit<ops::Stop>(vm);
   
-  cout << "<<<" << endl;
   eval(vm, start_pc);
-  cout << ">>>" << endl;
   assert(s.size() == 3);
   assert(pop(s, types::Int) == 3);
   assert(pop(s, types::Int) == 2);
