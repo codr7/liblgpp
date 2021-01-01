@@ -3,6 +3,7 @@
 
 #include "../val.hpp"
 #include "../op.hpp"
+#include "../vm.hpp"
 
 namespace lgpp::ops {
 

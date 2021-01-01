@@ -28,6 +28,7 @@ namespace lgpp {
     using lock_t = unique_lock<shared_mutex>;
 
     VM();
+    virtual ~VM();
     
     Trait Any, Num, Seq;
 

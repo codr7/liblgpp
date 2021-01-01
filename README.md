@@ -14,11 +14,11 @@ int main() {
   VM vm;
   Stack& s = get_stack(vm);
 
-  emit<ops::Push>(vm, types::Int, 42);
+  emit<ops::Push>(vm, vm.Int, 42);
   emit<ops::Stop>(vm);
 
   eval(vm, 0);
-  assert(pop(s, types::Int) == 42);
+  assert(pop(s, vm.Int) == 42);
 
   return 0;
 }
@@ -74,84 +74,84 @@ Stacks are passed by value. The following set of operations is provided for stac
 Copies a number of values (default 1) from the stack starting at an offset from the end (default 0).
 
 ```
-emit<ops::Push>(vm, types::Int, 1);
-emit<ops::Push>(vm, types::Int, 2);
-emit<ops::Push>(vm, types::Int, 3);
+emit<ops::Push>(vm, vm.Int, 1);
+emit<ops::Push>(vm, vm.Int, 2);
+emit<ops::Push>(vm, vm.Int, 3);
 emit<ops::Cp>(vm, 2, 2);
 emit<ops::Stop>(vm);
 eval(vm, 0);
   
 assert(s.size() == 5);
-assert(pop(s, types::Int) == 2);
-assert(pop(s, types::Int) == 1);
-assert(pop(s, types::Int) == 3);
-assert(pop(s, types::Int) == 2);
-assert(pop(s, types::Int) == 1);
+assert(pop(s, vm.Int) == 2);
+assert(pop(s, vm.Int) == 1);
+assert(pop(s, vm.Int) == 3);
+assert(pop(s, vm.Int) == 2);
+assert(pop(s, vm.Int) == 1);
 ```
 
 #### drop
 Drops a number of values (default 1) from the stack starting at an offset from the end (default 0).
 ```
-emit<ops::Push>(vm, types::Int, 1);
-emit<ops::Push>(vm, types::Int, 2);
-emit<ops::Push>(vm, types::Int, 3);
+emit<ops::Push>(vm, vm.Int, 1);
+emit<ops::Push>(vm, vm.Int, 2);
+emit<ops::Push>(vm, vm.Int, 3);
 emit<ops::Drop>(vm, 1, 2);
 emit<ops::Stop>(vm);
 eval(vm, 0); 
 
 assert(s.size() == 1);
-assert(pop(s, types::Int) == 1);
+assert(pop(s, vm.Int) == 1);
 ```
 
 #### swap
 Swaps the value on the stack at one offset from the end (default 0) with another (default 1).
 
 ```
-emit<ops::Push>(vm, types::Int, 1);
-emit<ops::Push>(vm, types::Int, 2);
+emit<ops::Push>(vm, vm.Int, 1);
+emit<ops::Push>(vm, vm.Int, 2);
 emit<ops::Swap>(vm);
 emit<ops::Stop>(vm);
 
 eval(vm, 0);
 assert(s.size() == 2);
-assert(pop(s, types::Int) == 1);
-assert(pop(s, types::Int) == 2);
+assert(pop(s, vm.Int) == 1);
+assert(pop(s, vm.Int) == 2);
 ```
 
 #### splat
 Replaces the top stack value with its contents.
 
 ```
-Stack v{{types::Int, 1}, {types::Int, 2}, {types::Int, 3}};
+Stack v{{vm.Int, 1}, {vm.Int, 2}, {vm.Int, 3}};
 
-emit<ops::Push>(vm, types::Stack, v);
+emit<ops::Push>(vm, vm.Stack, v);
 emit<ops::Splat>(vm);
 emit<ops::Stop>(vm);
 
 eval(vm, 0); 
 assert(s.size() == 3);
-assert(pop(s, types::Int) == 3);
-assert(pop(s, types::Int) == 2);
-assert(pop(s, types::Int) == 1);
+assert(pop(s, vm.Int) == 3);
+assert(pop(s, vm.Int) == 2);
+assert(pop(s, vm.Int) == 1);
 ```
 
 #### squash
 Replaces the current stack with a single value holding its contents.
 
 ```
-emit<ops::Push>(vm, types::Int, 1);
-emit<ops::Push>(vm, types::Int, 2);
-emit<ops::Push>(vm, types::Int, 3);
+emit<ops::Push>(vm, vm.Int, 1);
+emit<ops::Push>(vm, vm.Int, 2);
+emit<ops::Push>(vm, vm.Int, 3);
 emit<ops::Squash>(vm);
 emit<ops::Stop>(vm);
 
 eval(vm, 0); 
 assert(s.size() == 1);
-s = pop(s, types::Stack);
+s = pop(s, vm.Stack);
 assert(s.size() == 3);
-assert(pop(s, types::Int) == 3);
-assert(pop(s, types::Int) == 2);
-assert(pop(s, types::Int) == 1);
+assert(pop(s, vm.Int) == 3);
+assert(pop(s, vm.Int) == 2);
+assert(pop(s, vm.Int) == 1);
 ```
 
 ### types
@@ -176,30 +176,30 @@ Plain old ints.
 Pairs are implemented as `pair<Val, Val>` and passed by value.
 
 ```
-emit<ops::Push>(vm, types::Int, 1);
-emit<ops::Push>(vm, types::Int, 2);
+emit<ops::Push>(vm, vm.Int, 1);
+emit<ops::Push>(vm, vm.Int, 2);
 emit<ops::Zip>(vm);
 emit<ops::Stop>(vm);
 
 eval(vm, 0);
 assert(s.size() == 1);
 auto v = pop(s);
-assert(&type_of(v) == &types::Pair);
-auto p = v.as(types::Pair);
-assert(p.first.as(types::Int) == 1 && p.second.as(types::Int) == 2);
+assert(&type_of(v) == &vm.Pair);
+auto p = v.as(vm.Pair);
+assert(p.first.as(vm.Int) == 1 && p.second.as(vm.Int) == 2);
 ```
 
 ```
-Pair p({types::Int, 1}, {types::Int, 2});
+Pair p({vm.Int, 1}, {vm.Int, 2});
   
-emit<ops::Push>(vm, types::Pair, p);
+emit<ops::Push>(vm, vm.Pair, p);
 emit<ops::Unzip>(vm);
 emit<ops::Stop>(vm);
 
 eval(vm, 0);
 assert(s.size() == 2);
-assert(pop(s, types::Int) == 2);
-assert(pop(s, types::Int) == 1);
+assert(pop(s, vm.Int) == 2);
+assert(pop(s, vm.Int) == 1);
 ```
 
 #### Stack
@@ -214,7 +214,7 @@ Threads (see below).
 `TypeOf`replaces the top stack value with its type.
 
 ```
-emit<ops::Push>(vm, types::Int, 1);
+emit<ops::Push>(vm, vm.Int, 1);
 emit<ops::TypeOf>(vm);
 emit<ops::Cp>(vm);
 emit<ops::TypeOf>(vm);
@@ -222,21 +222,21 @@ emit<ops::Stop>(vm);
 eval(vm, 0);
   
 assert(s.size() == 2);
-assert(pop(s, types::Meta) == &types::Meta);
-assert(pop(s, types::Meta) == &types::Int);
+assert(pop(s, vm.Meta) == &vm.Meta);
+assert(pop(s, vm.Meta) == &vm.Int);
 ```
 
 `Isa` replaces the top two stack values with `T` if the first argument is derived from the second, `F` otherwise.
 
 ```
-emit<ops::Push>(vm, types::Meta, &types::Int);
-emit<ops::Push>(vm, types::Meta, &types::Num);
+emit<ops::Push>(vm, vm.Meta, &vm.Int);
+emit<ops::Push>(vm, vm.Meta, &vm.Num);
 emit<ops::Isa>(vm);
 emit<ops::Stop>(vm);
 eval(vm, 0);
   
 assert(s.size() == 1);
-assert(pop(s, types::Bool));
+assert(pop(s, vm.Bool));
 ```
 
 ### coroutines
@@ -244,10 +244,10 @@ Coroutines are labels that support pausing/resuming calls. Since they are passed
 
 ```
 Label target("target", emit_pc(vm));
-emit<ops::Push>(vm, types::Int, 1);
-emit<ops::Push>(vm, types::Int, 2);
+emit<ops::Push>(vm, vm.Int, 1);
+emit<ops::Push>(vm, vm.Int, 2);
 emit<ops::Pause>(vm);
-emit<ops::Push>(vm, types::Int, 3);
+emit<ops::Push>(vm, vm.Int, 3);
 emit<ops::Ret>(vm);
   
 auto start_pc = emit_pc(vm);
@@ -258,9 +258,9 @@ emit<ops::Drop>(vm);
 emit<ops::Stop>(vm);
   
 eval(vm, start_pc);
-assert(pop(s, types::Int) == 3);
-assert(pop(s, types::Int) == 2);
-assert(pop(s, types::Int) == 1);
+assert(pop(s, vm.Int) == 3);
+assert(pop(s, vm.Int) == 2);
+assert(pop(s, vm.Int) == 1);
 ```
 
 ### threads
@@ -268,7 +268,7 @@ The VM supports preemptive multithreading and has been carefully designed to min
 
 ```
 Label target("target", emit_pc(vm));
-emit<ops::Push>(vm, types::Int, 1000);
+emit<ops::Push>(vm, vm.Int, 1000);
 emit<ops::Sleep>(vm);
 emit<ops::Stop>(vm);
 
@@ -278,5 +278,5 @@ emit<ops::Join>(vm);
 emit<ops::Stop>(vm);
   
 eval(vm, start_pc);
-assert(pop(s, types::Stack).size() == 0);
+assert(pop(s, vm.Stack).size() == 0);
 ```

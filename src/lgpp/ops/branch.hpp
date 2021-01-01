@@ -3,7 +3,9 @@
 
 #include <optional>
 
+#include "../label.hpp"
 #include "../stack.hpp"
+#include "../thread.hpp"
 #include "../val.hpp"
 #include "../op.hpp"
 

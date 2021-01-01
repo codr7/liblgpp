@@ -10,6 +10,8 @@ namespace lgpp {
 
   using namespace std;
 
+  struct VM;
+  
   struct Env {
     Env(VM &vm): vm(vm) {}
     

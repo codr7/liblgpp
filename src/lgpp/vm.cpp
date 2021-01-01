@@ -15,4 +15,6 @@ namespace lgpp {
     Thread(*this, "Thread", {&Any}) {
     start_thread(*this, this_thread::get_id());
   }
+
+  VM::~VM() {}
 }

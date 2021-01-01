@@ -1,7 +1,4 @@
 * ---1---
-* move type instances into VM
-** add alang::VM with Sub type
-** commit
 * add @-macro to shift eval to compile time
 ** get char in parse_id
 ** add binding example
