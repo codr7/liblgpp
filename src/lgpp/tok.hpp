@@ -1,6 +1,7 @@
 #ifndef LGPP_TOK_HPP
 #define LGPP_TOK_HPP
 
+#include <deque>
 #include <ostream>
 
 #include "lgpp/env.hpp"

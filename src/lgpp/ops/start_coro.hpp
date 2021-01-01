@@ -14,7 +14,7 @@ namespace lgpp::ops {
 
   template <>
   inline const Op* eval(const Op& op, const StartCoro& imp, Thread& thread) {
-    push(get_stack(thread), types::Coro, *imp.target.pc);
+    push(get_stack(thread), thread.vm.Coro, *imp.target.pc);
     return &op+1;
   }
   

@@ -2,7 +2,6 @@
 #define LGPP_OPS_START_THREAD_HPP
 
 #include "../op.hpp"
-#include "../types.hpp"
 #include "../val.hpp"
 
 namespace lgpp::ops {
@@ -16,7 +15,7 @@ namespace lgpp::ops {
   inline const Op* eval(const Op& op, const StartThread& imp, Thread& thread) {
     auto &vm(thread.vm);
     auto& t = start_thread(vm, thread, [&vm, &imp]() { eval(vm, *imp.target.pc); });
-    push(get_stack(thread), Val(types::Thread, t.id));
+    push(get_stack(thread), Val(thread.vm.Thread, t.id));
     return &op+1;
   }
 

@@ -13,7 +13,7 @@ namespace lgpp::ops {
 
   template <>
   inline const Op* eval(const Op& op, const Sleep& imp, Thread& thread) {
-    auto ms = pop(get_stack(thread), types::Int);
+    auto ms = pop(get_stack(thread), thread.vm.Int);
     this_thread::sleep_for(chrono::milliseconds(ms));
     return &op+1;
   }

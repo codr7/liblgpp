@@ -12,13 +12,14 @@ namespace lgpp {
   void derive(Trait &child, Trait &parent, Trait &root);
 
   struct Trait {
-    Trait(string name, initializer_list<Trait *> parents = {}): name(name) {
+    Trait(VM& vm, string name, initializer_list<Trait *> parents = {}): vm(vm), name(name) {
       for (auto p: parents) { derive(*this, *p, *p); }
     }
     
     Trait(const Trait &) = delete;
     Trait &operator =(const Trait &) = delete;
 
+    VM& vm;
     const string name;
     map<Trait *, Trait *> isa;
   };

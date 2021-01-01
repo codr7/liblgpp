@@ -19,7 +19,7 @@ namespace lgpp::ops {
       assert(!c->done);
       c->pc = op.pc;
       c->done = true;
-      push(get_stack(thread), types::Coro, *c);
+      push(get_stack(thread), thread.vm.Coro, *c);
     }
 
     return &op - op.pc + c.return_pc;

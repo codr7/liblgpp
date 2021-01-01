@@ -20,8 +20,9 @@ namespace lgpp {
   struct Parser {
     using Alt = function<bool (Parser&, char, istream&)>;
     
-    Parser(string file): pos(move(file)) {}
-    
+    Parser(VM& vm, string file): vm(vm), pos(move(file)) {}
+
+    VM& vm;
     Pos pos;
     Toque toks;
     deque<Alt> alts;
@@ -108,7 +109,7 @@ namespace lgpp {
   inline bool parse_int(Parser& parser, char c, istream& in) {
     if (!isdigit(c)) { return false; }
     auto p = parser.pos;
-    push<toks::Lit>(parser, p, types::Int, parse_int_base(parser, c, in, 10));
+    push<toks::Lit>(parser, p, parser.vm.Int, parse_int_base(parser, c, in, 10));
     return true;
   }
   

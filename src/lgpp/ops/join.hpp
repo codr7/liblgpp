@@ -2,7 +2,6 @@
 #define LGPP_OPS_JOIN_HPP
 
 #include "../op.hpp"
-#include "../types.hpp"
 #include "../val.hpp"
 
 namespace lgpp::ops {
@@ -12,13 +11,13 @@ namespace lgpp::ops {
   template <>
   inline const Op* eval(const Op& op, const Join& imp, Thread& thread) {
     auto& s = get_stack(thread);
-    auto tid = pop(s, types::Thread);
+    auto tid = pop(s, thread.vm.Thread);
     auto &vm(thread.vm);
     Thread& t = get_thread(vm, tid);
 
     if (!t.imp.joinable()) { throw runtime_error("Cannot join main thread"); }
     t.imp.join();
-    push(s, types::Stack, get_stack(t));
+    push(s, thread.vm.Stack, get_stack(t));
     
     VM::lock_t lock(vm.thread_mutex);
     auto found = vm.threads.find(tid);

@@ -13,7 +13,7 @@ namespace lgpp::ops {
   inline const Op* eval(const Op& op, const Zip& imp, Thread& thread) {
     auto& s = get_stack(thread);
     auto y(pop(s)), x(pop(s));
-    push(s, types::Pair, make_pair(x, y));
+    push(s, thread.vm.Pair, make_pair(x, y));
     return &op+1;
   }
 

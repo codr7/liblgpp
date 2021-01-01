@@ -27,9 +27,22 @@ namespace lgpp {
     using shared_lock_t = shared_lock<shared_mutex>;
     using lock_t = unique_lock<shared_mutex>;
 
-    VM() { start_thread(*this, this_thread::get_id()); }
-        
-    map<Thread::Id, Thread> threads;
+    VM();
+    
+    Trait Any, Num, Seq;
+
+    Type<bool> Bool;
+    Type<Coro> Coro;
+    Type<int> Int;
+    Type<lgpp::Label *> Label;
+    Type<lgpp::Macro> Macro;
+    Type<lgpp::Trait *> Meta;
+    Type<lgpp::Pair> Pair;
+    Type<lgpp::Prim> Prim;
+    Type<lgpp::Stack> Stack;
+    Type<Thread::Id> Thread;
+    
+    map<Thread::Id, lgpp::Thread> threads;
     shared_mutex thread_mutex;
   };
 

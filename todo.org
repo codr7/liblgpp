@@ -1,12 +1,21 @@
 * ---1---
+* move type instances into VM
+** add alang::VM with Sub type
+** commit
+* add @-macro to shift eval to compile time
+** get char in parse_id
+** add binding example
+* add say prim
+** add print Val method
+** add io section to readme
 * convert prims to macros
 ** add lt/gt/eq ops
-* add and/or macros
+* add and/or macros/ops
 * add +/- bindings
-* add inc/dec bindings
+** parse as inc/dec if const arg
 * fib
+* add tail calls
 * ---2---
-* add say prim
 * add String type/parser
 * add str binding
 * add map literals

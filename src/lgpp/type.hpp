@@ -8,7 +8,7 @@ namespace lgpp {
   struct Type: Trait {
     using Val = T;
     
-    Type(string name, initializer_list<Trait *> parents = {}): Trait(name, parents) {}
+    Type(VM& vm, string name, initializer_list<Trait *> parents = {}): Trait(vm, name, parents) {}
   };
 }
 

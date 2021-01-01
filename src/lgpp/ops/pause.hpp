@@ -17,7 +17,7 @@ namespace lgpp::ops {
     assert(!c->done);
     if (!((int)call.opts & (int)lgpp::Call::Opts::CORO)) { throw runtime_error("Pause outside of coro"); }
     c->pc = op.pc+1;
-    push(get_stack(thread), types::Coro, *c);
+    push(get_stack(thread), thread.vm.Coro, *c);
     return &op - op.pc + call.return_pc;
   }
 

@@ -42,21 +42,21 @@ void fibrec_bench(VM& vm) {
   Label exit("exit");
   
   Label fib("fib", emit_pc(vm));
-  emit<ops::BranchLt>(vm, exit, 0, types::Int, 2);
-  emit<ops::Dec>(vm, types::Int, 1);
+  emit<ops::BranchLt>(vm, exit, 0, vm.Int, 2);
+  emit<ops::Dec>(vm, vm.Int, 1);
   emit<ops::Cp>(vm);
-  emit<ops::Call>(vm, types::Label, &fib);
+  emit<ops::Call>(vm, vm.Label, &fib);
   emit<ops::Swap>(vm);
-  emit<ops::Dec>(vm, types::Int, 1);
-  emit<ops::Call>(vm, types::Label, &fib);
+  emit<ops::Dec>(vm, vm.Int, 1);
+  emit<ops::Call>(vm, vm.Label, &fib);
   emit<ops::Add>(vm);
 
   exit.pc = emit_pc(vm);
   emit<ops::Return>(vm);
 
   PC start_pc = emit_pc(vm);
-  emit<ops::Push>(vm, types::Int, 20);
-  emit<ops::Call>(vm, types::Label, &fib);
+  emit<ops::Push>(vm, vm.Int, 20);
+  emit<ops::Call>(vm, vm.Label, &fib);
   emit<ops::Stop>(vm);
 
   Timer timer;
@@ -64,7 +64,7 @@ void fibrec_bench(VM& vm) {
   
   for (auto i = 0; i < 100; i++) {
     eval(vm, start_pc);
-    assert(pop(s, types::Int) == 6765);
+    assert(pop(s, vm.Int) == 6765);
   }
 
   cout << "fibrec: " << timer.us() << "us" << endl;
@@ -76,20 +76,20 @@ void coro_bench(VM& vm) {
   Label exit("exit");
   
   Label target("target", emit_pc(vm));
-  emit<ops::BranchEq>(vm, exit, 0, types::Int, 0);
-  emit<ops::Dec>(vm, types::Int, 1);
+  emit<ops::BranchEq>(vm, exit, 0, vm.Int, 0);
+  emit<ops::Dec>(vm, vm.Int, 1);
   emit<ops::Pause>(vm);
   emit<ops::Go>(vm, target);
   exit.pc = emit_pc(vm);
   emit<ops::Return>(vm);
 
   auto start_pc = emit_pc(vm);
-  emit<ops::Push>(vm, types::Int, 1000000);
+  emit<ops::Push>(vm, vm.Int, 1000000);
   emit<ops::StartCoro>(vm, target);
   
   Label loop("loop", emit_pc(vm));
   emit<ops::Resume>(vm);
-  emit<ops::BranchGt>(vm, loop, 1, types::Int, 0);
+  emit<ops::BranchGt>(vm, loop, 1, vm.Int, 0);
   emit<ops::Stop>(vm);
 
   Timer timer;
@@ -104,13 +104,13 @@ void thread_bench(VM& vm) {
   auto ms = 1000;
   
   Label main("main", emit_pc(vm));
-  emit<ops::Push>(vm, types::Int, ms);
+  emit<ops::Push>(vm, vm.Int, ms);
   emit<ops::Sleep>(vm);
   emit<ops::Stop>(vm);
 
   auto start_pc = emit_pc(vm);
   emit<ops::StartThread>(vm, main);
-  emit<ops::Push>(vm, types::Int, ms);
+  emit<ops::Push>(vm, vm.Int, ms);
   emit<ops::Sleep>(vm);
   emit<ops::Join>(vm);
   emit<ops::Stop>(vm);

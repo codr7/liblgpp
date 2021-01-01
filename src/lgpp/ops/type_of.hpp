@@ -11,7 +11,7 @@ namespace lgpp::ops {
   template <>
   inline const Op* eval(const Op& op, const TypeOf& imp, Thread& thread) {
     auto& s = get_stack(thread);
-    push(s, types::Meta, &get_type(pop(s)));
+    push(s, thread.vm.Meta, &get_type(pop(s)));
     return &op+1;
   }
 

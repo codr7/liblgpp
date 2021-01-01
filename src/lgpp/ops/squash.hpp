@@ -14,7 +14,7 @@ namespace lgpp::ops {
     Stack& in = get_stack(thread), out;
     move(in.begin(), in.end(), back_inserter(out));
     in.clear();
-    push(in, types::Stack, out);
+    push(in, thread.vm.Stack, out);
     return &op+1;
   }
 
