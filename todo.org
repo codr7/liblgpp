@@ -1,6 +1,6 @@
 * ---1---
-* add @-macro to shift eval to compile time
-** get char in parse_id
+* add @ to shift tok eval to compile time
+** add separate cte parser alt
 ** add binding example
 * add say prim
 ** add print Val method
@@ -44,3 +44,5 @@ label fib
 
 fib(20)
 stop
+
+let foo sub(return 42)
