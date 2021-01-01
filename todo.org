@@ -1,21 +1,25 @@
 * ---1---
-* add @ to shift tok eval to compile time
-** add separate cte parser alt
-** add binding example
+* extract toks/types to separate dirs/files
 * add say prim
 ** add print Val method
 ** add io section to readme
 * convert prims to macros
 ** add lt/gt/eq ops
-* add and/or macros/ops
-* add +/- bindings
-** parse as inc/dec if const arg
+** add comparisons to readme
 * fib
-* add tail calls
+** add rec macro
+*** compile all args
+*** go to label
+* add and/or macros/ops
+* add bench macro
+** run 1+3
+** print runtime
 * ---2---
+* emit +/- as inc/dec if lit arg
+* add file loading to alang
+** load all args
 * add String type/parser
 * add str binding
-* add map literals
 * add Chan
 ** add Chan type
 ** use deque
@@ -28,7 +32,7 @@
 ** add Next op
 *** peek iter && push next value or NIL
 ** add Stack iter
-* add eval trace support
+* add trace support
 * ---N---
 * add tasks
 ** use Pause to switch
@@ -36,13 +40,11 @@
 ** add StartTask op
 ** add Snooze op
 
-label fib
-  if (.< 2) ret
-  dec cp fib(_)
-  .+ (swap dec fib(_))
-  ret
+let fib sub(
+  if (.< 2) _ (
+    .- 1 cp rec()
+    .+ (sw .- 1 rec())
+  )
+)
 
 fib(20)
-stop
-
-let foo sub(return 42)

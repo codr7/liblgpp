@@ -5,8 +5,9 @@
 #include <sstream>
 
 #include "lgpp/error.hpp"
-#include "lgpp/tok.hpp"
-#include "lgpp/toks.hpp"
+#include "lgpp/toks/group.hpp"
+#include "lgpp/toks/id.hpp"
+#include "lgpp/toks/lit.hpp"
 #include "lgpp/types.hpp"
 
 namespace lgpp {
@@ -41,7 +42,12 @@ namespace lgpp {
     size_t n = 0;
     char c = 0;
     
-    while (in.get(c) && isspace(c)) {
+    while (in.get(c)) {
+      if (!isspace(c)) {
+	in.unget();
+	break;
+      }
+	  
       switch (c) {
       case ' ':
       case '\t':
@@ -52,10 +58,10 @@ namespace lgpp {
         parser.pos.row++;
         parser.pos.col = Pos::START_COL;
 	n++;
+	break;
       };
     }
     
-    if (!in.eof()) { in.unget(); }
     return n;
   }
   
@@ -134,11 +140,11 @@ namespace lgpp {
       auto i = parser.toks.size();
 
       for(;;) {
-	if (!in.get(c)) { throw EParse(parser.pos, "Missing end"); }
+	skip(parser, in);
+	if (!in.get(c)) { throw EParse(parser.pos, "Missing end of expression: ", end); }
 	if (c == end) { break; }
 	in.unget();
 	if (!parse_tok(parser, in)) { throw EParse(parser.pos, "Invalid token"); }
-	skip(parser, in);
       }
 
       move(parser.toks.begin() + i, parser.toks.end(), back_inserter(toks));

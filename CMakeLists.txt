@@ -23,4 +23,7 @@ install(FILES ${inc} DESTINATION include/lgpp)
 file(GLOB ops_inc src/lgpp/ops/*.hpp)
 install(FILES ${ops_inc} DESTINATION include/lgpp/ops)
 
+file(GLOB toks_inc src/lgpp/toks/*.hpp)
+install(FILES ${ops_inc} DESTINATION include/lgpp/toks)
+
 install(FILES build/liblgpp.a DESTINATION lib)
