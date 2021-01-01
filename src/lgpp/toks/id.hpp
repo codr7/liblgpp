@@ -2,9 +2,9 @@
 #define LGPP_TOKS_ID_HPP
 
 #include <lgpp/tok.hpp>
+#include <lgpp/ops/push.hpp>
 
 namespace lgpp::toks {
-
   struct Id {
     Id(string name): name(name) {}
     string name;

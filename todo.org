@@ -1,5 +1,4 @@
 * ---1---
-* extract toks/types to separate dirs/files
 * add say prim
 ** add print Val method
 ** add io section to readme

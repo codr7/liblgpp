@@ -2,6 +2,7 @@
 #define LGPP_TOKS_LIT_HPP
 
 #include <lgpp/tok.hpp>
+#include <lgpp/ops/push.hpp>
 
 namespace lgpp::toks {
 
