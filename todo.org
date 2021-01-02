@@ -1,5 +1,4 @@
 * ---1---
-* add and/or macros/ops
 * fib
 ** add rec macro
 *** compile all args
