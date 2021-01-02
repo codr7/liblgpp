@@ -1,6 +1,7 @@
 #ifndef LGPP_TYPES_PRIM_HPP
 #define LGPP_TYPES_PRIM_HPP
 
+#include "lgpp/prim.hpp"
 #include "lgpp/type.hpp"
 
 namespace lgpp::types {

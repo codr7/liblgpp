@@ -8,7 +8,6 @@
 #include "lgpp/toks/group.hpp"
 #include "lgpp/toks/id.hpp"
 #include "lgpp/toks/lit.hpp"
-#include "lgpp/types.hpp"
 
 namespace lgpp {
   using namespace std;

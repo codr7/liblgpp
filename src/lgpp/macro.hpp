@@ -3,7 +3,6 @@
 
 #include "lgpp/env.hpp"
 #include "lgpp/tok.hpp"
-#include "lgpp/types.hpp"
 
 namespace lgpp {
   struct Parser;

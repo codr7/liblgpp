@@ -5,10 +5,22 @@
 #include <shared_mutex>
 #include <vector>
 
-#include "op.hpp"
-#include "stack.hpp"
-#include "thread.hpp"
-#include "types.hpp"
+#include "lgpp/macro.hpp"
+#include "lgpp/op.hpp"
+#include "lgpp/pair.hpp"
+#include "lgpp/stack.hpp"
+#include "lgpp/thread.hpp"
+#include "lgpp/type.hpp"
+
+#include "lgpp/types/bool.hpp"
+#include "lgpp/types/coro.hpp"
+#include "lgpp/types/int.hpp"
+#include "lgpp/types/label.hpp"
+#include "lgpp/types/macro.hpp"
+#include "lgpp/types/meta.hpp"
+#include "lgpp/types/pair.hpp"
+#include "lgpp/types/prim.hpp"
+#include "lgpp/types/stack.hpp"
 
 namespace lgpp {
 
