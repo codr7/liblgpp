@@ -1,7 +1,4 @@
 * ---1---
-* add say prim
-** add print Val method
-** add io section to readme
 * convert prims to macros
 ** add lt/gt/eq ops
 ** add comparisons to readme
@@ -38,6 +35,8 @@
 ** separate stacks
 ** add StartTask op
 ** add Snooze op
+
+Show HN: Design your own programming language in C++
 
 let fib sub(
   if (.< 2) _ (

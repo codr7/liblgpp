@@ -29,6 +29,9 @@ namespace lgpp {
     void dump(Type<T>&, const T&, ostream&);
 
     template <typename T>
+    void say(Type<T>&, const T&, ostream&);
+
+    template <typename T>
     bool is_true(Type<T>&, const T&);
 
     template <typename T>
@@ -55,7 +58,9 @@ namespace lgpp {
       virtual Trait& type() const = 0;
 
       virtual PC call(Thread&, PC, Pos) const = 0;
+
       virtual void dump(ostream&) const = 0;
+      virtual void say(ostream&) const = 0;
       
       virtual bool is_true() const = 0;
       virtual bool eq(Val) const = 0;
@@ -74,6 +79,7 @@ namespace lgpp {
 
       PC call(Thread& thread, PC pc, Pos pos) const override { return types::call(_type, data, thread, pc, pos); }
       void dump(ostream& out) const override { types::dump(_type, data, out); }
+      void say(ostream& out) const override { types::say(_type, data, out); }
       bool is_true() const override { return types::is_true(_type, data); }
       bool eq(Val y) const override { return types::eq(_type, data, y); }
       bool gt(Val y) const override { return types::gt(_type, data, y); }
@@ -114,6 +120,9 @@ namespace lgpp {
     void dump(Type<T>& type, const T& imp, ostream& out) { throw runtime_error("Not implemented"); }
 
     template <typename T>
+    void say(Type<T>& type, const T& imp, ostream& out) { dump(type, imp, out); }
+
+    template <typename T>
     bool is_true(Type<T> &type, const T& x) { return true; }
 
     template <typename T>
@@ -144,8 +153,12 @@ namespace lgpp {
 
   inline Val operator-(const Val& x, const Val& y) { return x.imp->sub(y); }
 
+  inline void dump(const Val &v, ostream &out) { v.imp->dump(out); }
+
+  inline void say(const Val &v, ostream &out) { v.imp->say(out); }
+  
   inline ostream &operator<<(ostream &out, const Val &v) {
-    v.imp->dump(out);
+    say(v, out);
     return out;
   }
 
