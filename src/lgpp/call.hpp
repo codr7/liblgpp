@@ -7,9 +7,9 @@ namespace lgpp {
   struct Call {
     enum class Opts {NONE = 0, CORO = 1};
 
-    Call(PC return_pc, Opts opts = Opts::NONE): return_pc(return_pc), opts(opts) {}
+    Call(PC pc, PC return_pc, Opts opts = Opts::NONE): pc(pc), return_pc(return_pc), opts(opts) {}
 
-    PC return_pc;
+    PC pc, return_pc;
     Opts opts;
   };
 }

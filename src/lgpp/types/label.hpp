@@ -7,8 +7,9 @@ namespace lgpp::types {
 
   template <>
   inline PC call(Type<lgpp::Label *>& type, lgpp::Label* const& imp, Thread& thread, PC return_pc, Pos pos) {
-    push_call(thread, return_pc);	
-    return *imp->pc; 
+    PC pc = *imp->pc;
+    push_call(thread, pc, return_pc);	
+    return pc; 
   }
 
   template <>

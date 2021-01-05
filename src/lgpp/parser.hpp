@@ -84,9 +84,7 @@ namespace lgpp {
     return true;
   }
 
-  inline bool parse_id(Parser& parser, char c, istream& in) {
-    return parse_id_pred(parser, c, in, nullptr);
-  }
+  inline bool parse_id(Parser& parser, char c, istream& in) { return parse_id_pred(parser, c, in, nullptr); }
 
   int parse_int_base(Parser &parser, char c, istream &in, int base) {
     int v(0);

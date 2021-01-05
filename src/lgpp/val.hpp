@@ -78,8 +78,10 @@ namespace lgpp {
       Trait& type() const override { return _type; }
 
       PC call(Thread& thread, PC pc, Pos pos) const override { return types::call(_type, data, thread, pc, pos); }
+
       void dump(ostream& out) const override { types::dump(_type, data, out); }
       void say(ostream& out) const override { types::say(_type, data, out); }
+
       bool is_true() const override { return types::is_true(_type, data); }
       bool eq(Val y) const override { return types::eq(_type, data, y); }
       bool gt(Val y) const override { return types::gt(_type, data, y); }
@@ -142,7 +144,7 @@ namespace lgpp {
   }
 
   inline PC call(const Val& x, Thread& thread, PC pc, Pos pos) { return x.imp->call(thread, pc, pos); }
-  
+
   constexpr bool operator==(const Val& x, const Val& y) { return x.imp->eq(y); }
 
   constexpr bool operator>(const Val& x, const Val& y) { return x.imp->gt(y); }

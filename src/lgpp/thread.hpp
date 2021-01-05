@@ -74,7 +74,12 @@ namespace lgpp {
 
   template <typename...Args>
   void push_call(Thread& thread, Args&&...args) { thread.calls.emplace_back(forward<Args>(args)...); }
-  
+
+  inline optional<Call> peek_call(Thread& thread) {
+    if (thread.calls.empty()) { return nullopt; }
+    return thread.calls.back();
+  }
+
   inline Call pop_call(Thread& thread) {
     if (thread.calls.empty()) { throw runtime_error("Call stack is empty"); }
     auto c = thread.calls.back();
@@ -85,7 +90,7 @@ namespace lgpp {
   inline PC resume(const Coro &coro, Thread& thread, PC return_pc, Pos pos) {
     if (coro.done) { throw ERun(pos, "Coro is done"); }
     push_coro(thread, coro);
-    push_call(thread, return_pc, Call::Opts::CORO);
+    push_call(thread, coro.pc, return_pc, Call::Opts::CORO);
     return coro.pc;
   }
 

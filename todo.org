@@ -1,11 +1,14 @@
 * ---1---
-* fib
-** add rec macro
-*** compile all args
-*** go to label
+* replace bindings by default in let
+* add splat
+** add .. macro
+** [1 2 3]..
+** use pred in parse_id
+* add squash
+** [..]
+** trap in wrapper around parse_group
 * add bench macro
-** run 1+3
-** print runtime
+** print run time
 * ---2---
 * emit +/- as inc/dec if lit arg
 * add file loading to alang
@@ -33,10 +36,17 @@
 ** add Snooze op
 
 let fib sub(
-  if (.< 2) _ (
-    .- 1 cp rec()
-    .+ (sw .- 1 rec())
+  if (cp .< 2) _ (
+    .- 1 cp recall
+    .+ (sw .- 1 recall)
   )
 )
 
 fib(20)
+
+let fib sub(
+  if (cp .< 2) _ (
+    + (.- 1 cp recall)
+      (sw .- 1 recall)
+  )
+)
