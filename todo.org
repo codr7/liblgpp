@@ -1,5 +1,8 @@
 * ---1---
 * replace bindings by default in let
+* switch thread type to storing Thread*
+* call subs automagically without arglists
+** update readme
 * add splat
 ** add .. macro
 ** [1 2 3]..
@@ -9,8 +12,8 @@
 ** trap in wrapper around parse_group
 * add bench macro
 ** print run time
-* ---2---
 * emit +/- as inc/dec if lit arg
+* ---2---
 * add file loading to alang
 ** load all args
 * add String type/parser
@@ -37,16 +40,9 @@
 
 let fib sub(
   if (cp .< 2) _ (
-    .- 1 cp recall
-    .+ (sw .- 1 recall)
-  )
-)
-
-fib(20)
-
-let fib sub(
-  if (cp .< 2) _ (
     + (.- 1 cp recall)
       (sw .- 1 recall)
   )
 )
+
+fib(20)

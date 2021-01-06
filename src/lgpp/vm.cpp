@@ -12,9 +12,8 @@ namespace lgpp {
     Pair(*this, "Pair", {&Any}),
     Prim(*this, "Prim", {&Any}),
     Stack(*this, "Stack", {&Any, &Seq}),
-    Thread(*this, "Thread", {&Any}) {
-    start_thread(*this, this_thread::get_id());
-  }
+    Thread(*this, "Thread", {&Any}),
+    thread_cache(&start_thread(*this, this_thread::get_id())) {}
 
   VM::~VM() {}
 }

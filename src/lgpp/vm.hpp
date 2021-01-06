@@ -57,6 +57,7 @@ namespace lgpp {
     
     map<Thread::Id, lgpp::Thread> threads;
     shared_mutex thread_mutex;
+    lgpp::Thread *thread_cache;
   };
 
   template <typename T, typename...Args>
@@ -82,9 +83,14 @@ namespace lgpp {
 
   inline Thread& get_thread(VM &vm, Thread::Id id) {
     VM::shared_lock_t lock(vm.thread_mutex);
-    auto found = vm.threads.find(id);
-    if (found == vm.threads.end()) { throw runtime_error("Thread not found"); }
-    return found->second;
+
+    if (vm.thread_cache->id != id) {
+      auto found = vm.threads.find(id);
+      if (found == vm.threads.end()) { throw runtime_error("Thread not found"); }
+      vm.thread_cache = &found->second;
+    }
+    
+    return *vm.thread_cache;
   }
 
   inline const Thread& get_thread(const VM &vm, Thread::Id id) { return get_thread(const_cast<VM &>(vm), id); }
